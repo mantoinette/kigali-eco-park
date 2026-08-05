@@ -20,8 +20,8 @@ spring:
       mode: never
 
 server:
-  # 8082 avoids conflicts with local services already using 8080/8081
-  port: ${SERVER_PORT:8082}
+  # Render sets PORT; locally default stays 8082
+  port: ${PORT:${SERVER_PORT:8082}}
 
 app:
   # In production, set PUBLIC_SITE_URL to the deployed HTTPS website.
