@@ -30,7 +30,8 @@ app:
   api:
     public-base-url: ${PUBLIC_API_URL:http://localhost:8082}
   cors:
-    allowed-origins: http://localhost:5173,http://localhost:3000
+    # Comma-separated. On Render set CORS_ALLOWED_ORIGINS to your Vercel URL(s).
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
   upload:
     root: uploads
     public-base-url: ${PUBLIC_API_URL:http://localhost:8082}
