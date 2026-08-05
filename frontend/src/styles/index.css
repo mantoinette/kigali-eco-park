@@ -1,0 +1,328 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-gray-800 antialiased;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white shadow-md hover:bg-primary-dark hover:shadow-lg;
+  }
+
+  .btn-outline {
+    @apply border-2 border-white/90 bg-white/10 text-white backdrop-blur-sm hover:bg-white hover:text-primary-dark;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-primary bg-white text-primary hover:bg-primary hover:text-white;
+  }
+
+  .section-container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-title {
+    @apply font-display text-3xl font-bold text-primary-dark sm:text-4xl;
+  }
+
+  .section-subtitle {
+    @apply mt-3 max-w-2xl text-lg text-gray-600;
+  }
+
+  .card {
+    @apply rounded-2xl bg-white p-6 shadow-card transition hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  .auth-page {
+    @apply flex min-h-[70vh] items-center justify-center bg-surface px-4 py-12;
+  }
+
+  .auth-card {
+    @apply w-full max-w-md rounded-2xl bg-white p-8 shadow-card;
+  }
+
+  .auth-header {
+    @apply mb-6 text-center;
+  }
+
+  .auth-badge {
+    @apply text-4xl;
+  }
+
+  .auth-form {
+    @apply space-y-4;
+  }
+
+  .auth-form label {
+    @apply block text-sm font-medium text-gray-700;
+  }
+
+  .auth-form input {
+    @apply mt-1 w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20;
+  }
+
+  .auth-error {
+    @apply rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700;
+  }
+
+  .page-hero-strip {
+    @apply bg-primary py-12 text-white;
+  }
+
+  .page-body {
+    @apply py-12;
+  }
+
+  .about-block {
+    @apply mb-10;
+  }
+
+  .about-list {
+    @apply mt-4 list-disc space-y-2 pl-5 text-gray-700;
+  }
+}
+
+.leaflet-container {
+  z-index: 0;
+  border-radius: 1rem;
+}
+
+/* —— Compact outdoor tree label (attach to tree) —— */
+.tree-label-sheet {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.park-plaque {
+  --plaque-green: #1b7a43;
+  /* Physical park tag: 16cm × 10cm */
+  width: min(100%, 160mm);
+  height: 100mm;
+  background: var(--plaque-green);
+  color: #fff;
+  border-radius: 0;
+  padding: 3.5mm;
+  box-shadow: 0 12px 28px rgba(27, 122, 67, 0.25);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+.park-plaque-border {
+  height: 100%;
+  border: 1.25px solid #fff;
+  box-sizing: border-box;
+}
+
+.park-plaque-content {
+  height: 100%;
+  padding: 4.5mm 5mm 3mm;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.park-plaque-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3mm 5mm;
+  align-items: start;
+}
+
+.park-plaque-local {
+  margin: 0 0 2mm;
+  font-size: 15pt;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.park-plaque-line {
+  margin: 0 0 0.6mm;
+  font-size: 6.2pt;
+  line-height: 1.35;
+  font-weight: 400;
+  color: #fff;
+}
+
+.park-plaque-line strong {
+  font-weight: 700;
+}
+
+.park-plaque-gap {
+  margin-top: 0.4mm;
+}
+
+.park-plaque-qr-box {
+  background: #fff;
+  padding: 1.4mm;
+  width: 28mm;
+  border-radius: 0.4mm;
+  flex-shrink: 0;
+}
+
+.park-plaque-qr {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.park-plaque-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 6mm;
+  margin-top: 3.5mm;
+  flex: 1;
+  align-content: start;
+}
+
+.park-plaque-col {
+  min-width: 0;
+}
+
+.park-plaque-uses {
+  margin-top: 0.5mm;
+}
+
+.park-plaque-uses .park-plaque-line {
+  margin-bottom: 0.45mm;
+}
+
+.park-plaque-brand {
+  margin-top: auto;
+  padding-top: 2mm;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.park-plaque-logo {
+  display: block;
+  width: 28mm;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 700px) {
+  .park-plaque {
+    width: 100%;
+    height: auto;
+    min-height: 100mm;
+  }
+
+  .park-plaque-header,
+  .park-plaque-body {
+    grid-template-columns: 1fr;
+  }
+
+  .park-plaque-qr-box {
+    margin: 0 auto;
+    width: 32mm;
+  }
+
+  .park-plaque-body {
+    row-gap: 3mm;
+  }
+
+  .park-plaque-local {
+    font-size: 18pt;
+    text-align: center;
+  }
+}
+
+@media print {
+  /* PDF page = exact green label size, nothing else */
+  @page {
+    size: 160mm 100mm;
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: #1b7a43 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 160mm !important;
+    height: 100mm !important;
+    overflow: hidden !important;
+  }
+
+  /* Hide every site chrome / helper UI */
+  .no-print,
+  .site-header,
+  .site-footer,
+  header,
+  footer,
+  nav,
+  aside {
+    display: none !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .park-plaque,
+  .park-plaque * {
+    visibility: visible !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .qr-label-page,
+  .tree-label-sheet {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    width: 160mm !important;
+    max-width: 160mm !important;
+    height: 100mm !important;
+  }
+
+  .park-plaque {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    box-shadow: none !important;
+    width: 160mm !important;
+    height: 100mm !important;
+    background: #1b7a43 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .park-plaque-border,
+  .park-plaque-content {
+    height: 100%;
+  }
+
+  .park-plaque-brand {
+    display: flex !important;
+  }
+
+  .park-plaque-logo,
+  .park-plaque-qr {
+    display: block !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

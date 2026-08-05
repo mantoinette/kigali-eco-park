@@ -1,0 +1,60 @@
+import { useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import Layout from './components/Layout';
+import HomePage from './pages/HomePage';
+import TreesPage from './pages/TreesPage';
+import TreePreviewPage from './pages/TreePreviewPage';
+import ScanTreePage from './pages/ScanTreePage';
+import TreeByIdPage from './pages/TreeByIdPage';
+import MapPage from './pages/MapPage';
+import ContactPage from './pages/ContactPage';
+import PrivacyPage from './pages/PrivacyPage';
+import FaqPage from './pages/FaqPage';
+import AboutPage from './pages/AboutPage';
+import LoginPage from './pages/LoginPage';
+import QrLabelPage from './pages/QrLabelPage';
+import RegisterPage from './pages/RegisterPage';
+import AdminDashboard from './pages/AdminDashboard';
+import { fetchTrees } from './api/client';
+import { useLanguage } from './context/LanguageContext';
+
+function SearchRedirect() {
+  const location = useLocation();
+  return <Navigate to={{ pathname: '/trees', search: location.search }} replace />;
+}
+
+export default function App() {
+  const { language } = useLanguage();
+  const [trees, setTrees] = useState([]);
+
+  useEffect(() => {
+    fetchTrees(language)
+      .then(setTrees)
+      .catch(() => setTrees([]));
+  }, [language]);
+
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomePage trees={trees} />} />
+        <Route path="/trees" element={<TreesPage />} />
+        <Route path="/trees/:slug" element={<TreePreviewPage />} />
+        <Route path="/map" element={<MapPage />} />
+        <Route path="/search" element={<SearchRedirect />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/scan/:qrCodeId" element={<ScanTreePage />} />
+        <Route path="/tree/:id" element={<TreeByIdPage />} />
+        <Route path="/plantlist" element={<Navigate to="/trees" replace />} />
+        <Route path="/qr-label/:slug" element={<QrLabelPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/faq" element={<FaqPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/*" element={<AdminDashboard />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Layout>
+  );
+}

@@ -1,0 +1,24 @@
+# Dependencies & build
+backend/target/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Local env & uploads
+.env
+.env.*
+backend/uploads/
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
