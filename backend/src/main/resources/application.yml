@@ -3,10 +3,14 @@ spring:
     name: kigali-eco-park
   datasource:
     # Port 5435 = Docker Compose Postgres for this project (see docker-compose.yml)
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5435}/${DB_NAME:kigali_eco_park_db}
+    # On Render set DB_SSLMODE=require (or leave default require when DB_HOST is set via env).
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5435}/${DB_NAME:kigali_eco_park_db}?sslmode=${DB_SSLMODE:disable}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,7 +24,8 @@ spring:
       mode: never
 
 server:
-  # Render sets PORT; locally default stays 8082
+  # Render sets PORT; bind all interfaces so the platform health check can see it
+  address: 0.0.0.0
   port: ${PORT:${SERVER_PORT:8082}}
 
 app:
