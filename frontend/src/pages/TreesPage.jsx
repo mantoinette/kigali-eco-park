@@ -91,29 +91,42 @@ export default function TreesPage() {
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setError('');
-    fetchTreeCatalog({
-      lang: language,
-      q,
-      family,
-      category,
-      nativeStatus,
-      page,
-      size: PAGE_SIZE,
-    })
-      .then((data) => {
-        if (!cancelled) setCatalog(data);
+    let attempt = 0;
+
+    const loadCatalog = () => {
+      attempt += 1;
+      setLoading(true);
+      setError('');
+      fetchTreeCatalog({
+        lang: language,
+        q,
+        family,
+        category,
+        nativeStatus,
+        page,
+        size: PAGE_SIZE,
       })
-      .catch((err) => {
-        if (!cancelled) {
+        .then((data) => {
+          if (cancelled) return;
+          setCatalog(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          if (cancelled) return;
+          // Render free tier can take ~50s to wake; retry once.
+          if (attempt < 2) {
+            setTimeout(() => {
+              if (!cancelled) loadCatalog();
+            }, 2500);
+            return;
+          }
           setCatalog(null);
           setError(err.message || t(language, 'error'));
-        }
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+          setLoading(false);
+        });
+    };
+
+    loadCatalog();
     return () => {
       cancelled = true;
     };
@@ -301,10 +314,23 @@ export default function TreesPage() {
             </span>
           </div>
 
-          {loading && <LoadingSpinner />}
+          {loading && (
+            <div className="py-8 text-center">
+              <LoadingSpinner />
+              <p className="mt-4 text-sm text-gray-500">{t(language, 'loadingTreesHint')}</p>
+            </div>
+          )}
           {!loading && error && (
             <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-8 text-center text-red-800">
-              {error}
+              <p>{error}</p>
+              <p className="mt-2 text-sm text-red-700/80">{t(language, 'apiWakeHint')}</p>
+              <button
+                type="button"
+                className="btn btn-primary mt-4 !rounded-xl"
+                onClick={() => window.location.reload()}
+              >
+                {t(language, 'retryLoad')}
+              </button>
             </div>
           )}
           {!loading && !error && trees.length === 0 && (
