@@ -35,9 +35,9 @@ public class QrCodeService {
         Tree tree = treeRepository.findBySlugAndPublishedTrue(slug)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tree not found"));
 
-        // QR codes on the tree should always open the dedicated tree page:
-        // TREE-001 -> /trees/TREE-001
-        String url = frontendBaseUrl + "/trees/" + tree.getQrCodeId();
+        // Park QR codes unlock the full guide:
+        // TREE-001 -> /scan/TREE-001
+        String url = frontendBaseUrl + "/scan/" + tree.getQrCodeId();
         String base64 = generateBase64QrCode(url);
 
         return new QrCodeResponseDto(
@@ -52,7 +52,7 @@ public class QrCodeService {
     public String buildTreeUrl(String slug) {
         Tree tree = treeRepository.findBySlugAndPublishedTrue(slug)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tree not found"));
-        return frontendBaseUrl + "/trees/" + tree.getQrCodeId();
+        return frontendBaseUrl + "/scan/" + tree.getQrCodeId();
     }
 
     private String generateBase64QrCode(String content) {

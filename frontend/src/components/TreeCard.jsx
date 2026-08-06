@@ -5,8 +5,8 @@ import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
 
 /**
- * Catalogue summary card — no QR on the listing.
- * Detail URL uses tree code so it matches printed QR destinations (/trees/TREE-001).
+ * Catalogue preview card — no QR, no full guide link.
+ * Full information unlocks only by scanning the physical park QR.
  */
 export default function TreeCard({ tree }) {
   const { language } = useLanguage();
@@ -16,7 +16,7 @@ export default function TreeCard({ tree }) {
     setImgFailed(false);
   }, [tree.primaryImageUrl, tree.qrCodeId, tree.slug]);
 
-  const treePage = `/trees/${tree.qrCodeId || tree.slug}`;
+  const previewPage = `/trees/${tree.qrCodeId || tree.slug}`;
   const imageUrl = resolveMediaUrl(tree.primaryImageUrl);
 
   return (
@@ -30,7 +30,7 @@ export default function TreeCard({ tree }) {
         )}
       </div>
 
-      <Link to={treePage} className="block bg-cream" aria-label={tree.commonName}>
+      <Link to={previewPage} className="block bg-cream" aria-label={tree.commonName}>
         <div className="flex aspect-[4/3] items-center justify-center p-4">
           {imageUrl && !imgFailed ? (
             <img
@@ -56,18 +56,16 @@ export default function TreeCard({ tree }) {
           )}
         </div>
 
-        {tree.shortDescription && (
-          <p className="mt-3 mb-4 line-clamp-2 text-sm leading-relaxed text-gray-600">
-            {tree.shortDescription}
-          </p>
-        )}
+        <p className="mt-3 mb-4 text-xs leading-relaxed text-gray-500">
+          {t(language, 'cardScanHint')}
+        </p>
 
         <div className="mt-auto">
           <Link
-            to={treePage}
+            to={previewPage}
             className="block w-full rounded-xl bg-primary py-2.5 text-center text-sm font-semibold text-white transition hover:bg-primary-dark"
           >
-            {t(language, 'viewTreeDetails')}
+            {t(language, 'howToUnlock')}
           </Link>
         </div>
       </div>
