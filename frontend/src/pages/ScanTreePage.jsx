@@ -27,5 +27,5 @@ export default function ScanTreePage() {
       .finally(() => setLoading(false));
   }, [qrCodeId, language]);
 
-  return <TreeDetail tree={tree} loading={loading} error={error} />;
+  return <TreeDetail key={qrCodeId} tree={tree} loading={loading} error={error} />;
 }

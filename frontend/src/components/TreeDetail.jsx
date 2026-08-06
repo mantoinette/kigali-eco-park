@@ -145,12 +145,17 @@ export default function TreeDetail({ tree, loading, error }) {
   }, [tree]);
 
   useEffect(() => {
+    setAudioSrc(null);
+    setVideoSrc(null);
+  }, [tree?.qrCodeId, tree?.slug]);
+
+  useEffect(() => {
     if (!tree?.audioUrl) {
       setAudioSrc(null);
       return;
     }
     setAudioSrc(resolveAudioUrl(tree.audioUrl, language));
-  }, [tree, language]);
+  }, [tree?.qrCodeId, tree?.audioUrl, language]);
 
   useEffect(() => {
     if (!tree?.videoUrl || tree.videoUrl.startsWith('internal:')) {
@@ -158,7 +163,7 @@ export default function TreeDetail({ tree, loading, error }) {
       return;
     }
     setVideoSrc(resolveVideoUrl(tree.videoUrl, language));
-  }, [tree, language]);
+  }, [tree?.qrCodeId, tree?.videoUrl, language]);
 
   useEffect(() => {
     if (!tree?.slug) {
@@ -259,7 +264,12 @@ export default function TreeDetail({ tree, loading, error }) {
             <section className="card overflow-hidden !p-0">
               <div className="p-6 pb-0">
                 <h2 className="text-xl font-bold text-primary-dark">🎬 {t(language, 'watchVideo')}</h2>
-                <p className="mt-2 text-sm text-gray-600">{t(language, 'watchVideoTreeSubtitle')}</p>
+                <p className="mt-2 text-sm text-gray-600">
+                  {t(language, 'watchVideoTreeSubtitle').replace(
+                    '{species}',
+                    tree.scientificName || tree.commonName || ''
+                  )}
+                </p>
               </div>
               <div className="mt-4 aspect-video bg-black">
                 {isYoutubeEmbed(videoSrc) ? (

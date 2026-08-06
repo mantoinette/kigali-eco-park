@@ -105,7 +105,7 @@ export const uiText = {
     listenDescriptionSubtitle: 'Park audio guide — history, ecology, and cultural uses of this indigenous species.',
     watchVideo: 'Watch a short video',
     watchVideoSubtitle: 'Forest restoration and indigenous trees in Rwanda (IUCN — Sebeya catchment).',
-    watchVideoTreeSubtitle: 'Watch the tree guide video — history, identification, uses, and ecology of Syzygium guineense at Kigali Eco-Park.',
+    watchVideoTreeSubtitle: 'Watch the tree guide video — history, identification, uses, and ecology of {species} at Kigali Eco-Park.',
     playVideo: 'Play video guide',
     pauseVideo: 'Pause video guide',
     treeVideoHint: 'Press play to watch the tree guide with narration and photos.',
