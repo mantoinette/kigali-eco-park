@@ -47,7 +47,7 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
             SELECT t FROM Tree t
             LEFT JOIN FETCH t.translations
             LEFT JOIN FETCH t.images
-            WHERE t.qrCodeId = :qrCodeId AND t.published = true
+            WHERE LOWER(t.qrCodeId) = LOWER(:qrCodeId) AND t.published = true
             """)
     Optional<Tree> findPublishedByQrCodeIdWithDetails(@Param("qrCodeId") String qrCodeId);
 

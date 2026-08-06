@@ -218,6 +218,130 @@
   object-fit: contain;
 }
 
+/* —— A4 portrait tree sign (print template) —— */
+.tree-a4-print {
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 210 / 297;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.tree-a4-print-inner {
+  height: 100%;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #111827;
+  box-sizing: border-box;
+}
+
+.tree-a4-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tree-a4-qr-img {
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+.tree-a4-qr-placeholder {
+  width: 120px;
+  height: 120px;
+  background: #f3f4f6;
+}
+
+.tree-a4-body {
+  flex: 1;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tree-a4-titleblock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tree-a4-code {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #065f46;
+}
+
+.tree-a4-tree-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.tree-a4-scientific {
+  font-size: 14px;
+}
+
+.tree-a4-meta {
+  font-size: 13px;
+}
+
+.tree-a4-meta-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tree-a4-meta-label {
+  font-weight: 800;
+  color: #374151;
+}
+
+.tree-a4-meta-value {
+  color: #111827;
+}
+
+.tree-a4-section {
+  font-size: 12.5px;
+}
+
+.tree-a4-section-title {
+  font-weight: 900;
+  margin-bottom: 4px;
+  color: #0f766e;
+}
+
+.tree-a4-section-text {
+  white-space: pre-wrap;
+  line-height: 1.35;
+}
+
+.tree-a4-uses {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.tree-a4-footer {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11.5px;
+}
+
+.tree-a4-scan-text {
+  font-weight: 700;
+  color: #065f46;
+}
+
+.tree-a4-website-url {
+  word-break: break-word;
+}
+
 @media (max-width: 700px) {
   .park-plaque {
     width: 100%;
@@ -246,20 +370,13 @@
 }
 
 @media print {
-  /* PDF page = exact green label size, nothing else */
-  @page {
-    size: 160mm 100mm;
-    margin: 0;
-  }
-
+  /* Default to A4 (browser default). We control what is visible. */
   html,
   body {
-    background: #1b7a43 !important;
+    background: #fff !important;
     margin: 0 !important;
     padding: 0 !important;
-    width: 160mm !important;
-    height: 100mm !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
   /* Hide every site chrome / helper UI */
@@ -279,6 +396,11 @@
 
   .park-plaque,
   .park-plaque * {
+    visibility: visible !important;
+  }
+
+  .tree-a4-print,
+  .tree-a4-print * {
     visibility: visible !important;
   }
 
@@ -324,5 +446,34 @@
     display: block !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+
+  /* A4 portrait tree sign */
+  .tree-a4-print {
+    width: 210mm !important;
+    height: 297mm !important;
+    max-width: 210mm !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  .tree-a4-print-inner {
+    height: 100% !important;
+    padding: 16mm 14mm !important;
+  }
+
+  .tree-a4-qr-img,
+  .tree-a4-qr-placeholder {
+    width: 55mm !important;
+    height: auto !important;
+  }
+
+  .tree-a4-code {
+    font-size: 14pt !important;
+  }
+
+  .tree-a4-tree-name {
+    font-size: 22pt !important;
   }
 }
