@@ -7,7 +7,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
 const HERO_IMG = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80';
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 15;
 
 const CATEGORY_LABELS = {
   en: {
@@ -59,8 +59,9 @@ function shortFamily(family) {
 }
 
 /**
- * Explore Trees — searchable, filterable, paginated catalogue.
- * Each card opens /trees/{slug}; new DB trees appear automatically.
+ * Explore Trees — searchable, filterable, paginated catalogue (15 per page).
+ * Each card opens /trees/{qrCodeId}; new DB trees appear automatically.
+ * QR codes are not shown here — only on the tree details / printable sign.
  */
 export default function TreesPage() {
   const { language } = useLanguage();

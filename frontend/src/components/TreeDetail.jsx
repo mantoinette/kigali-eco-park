@@ -343,7 +343,7 @@ export default function TreeDetail({ tree, loading, error }) {
                 {otherTrees.map((item) => (
                   <Link
                     key={item.id}
-                    to={`/trees/${item.slug}`}
+                    to={`/trees/${item.qrCodeId || item.slug}`}
                     className="flex items-center gap-3 rounded-xl border border-gray-100 bg-surface px-4 py-3 transition hover:border-primary/30 hover:bg-primary/5"
                   >
                     {item.primaryImageUrl ? (

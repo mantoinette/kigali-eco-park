@@ -8,8 +8,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
 /**
- * Dedicated page for one tree only — same full guide as a QR scan,
- * addressed by slug for catalog links and future species pages.
+ * Dedicated page for one tree — full guide + printable A4 sign.
+ * Accepts /trees/{qrCodeId} (TREE-001) or /trees/{slug}.
  */
 export default function TreePreviewPage() {
   const { slug } = useParams();
@@ -23,8 +23,13 @@ export default function TreePreviewPage() {
   useEffect(() => {
     setLoading(true);
     setError(null);
+    const looksLikeTreeCode = /^tree[-_]?\d+$/i.test(String(slug || ''));
+    const loadTree = looksLikeTreeCode
+      ? fetchTreeByQrCode(slug, language).catch(() => fetchTreeBySlug(slug, language))
+      : fetchTreeBySlug(slug, language).catch(() => fetchTreeByQrCode(slug, language));
+
     Promise.all([
-      fetchTreeBySlug(slug, language).catch(() => fetchTreeByQrCode(slug, language)),
+      loadTree,
       fetchTrees(language).catch(() => []),
     ])
       .then(([detail, list]) => {
@@ -141,9 +146,7 @@ export default function TreePreviewPage() {
         <div className="section-container flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {siblings.prev ? (
             <Link
-              to={allTrees.some((item) => String(item.slug || '').toLowerCase() === String(slug || '').toLowerCase())
-                ? `/trees/${siblings.prev.slug}`
-                : `/trees/${siblings.prev.qrCodeId}`}
+              to={`/trees/${siblings.prev.qrCodeId || siblings.prev.slug}`}
               className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-primary-dark transition hover:border-primary/30"
             >
               ← {siblings.prev.commonName}
@@ -158,9 +161,7 @@ export default function TreePreviewPage() {
 
           {siblings.next ? (
             <Link
-              to={allTrees.some((item) => String(item.slug || '').toLowerCase() === String(slug || '').toLowerCase())
-                ? `/trees/${siblings.next.slug}`
-                : `/trees/${siblings.next.qrCodeId}`}
+              to={`/trees/${siblings.next.qrCodeId || siblings.next.slug}`}
               className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-right text-sm font-semibold text-primary-dark transition hover:border-primary/30 sm:text-left"
             >
               {siblings.next.commonName} →
