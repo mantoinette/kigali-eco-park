@@ -1,31 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import TreeDetail from '../components/TreeDetail';
-import { fetchTreeByQrCode } from '../api/client';
-import { useLanguage } from '../context/LanguageContext';
+import { Navigate, useParams } from 'react-router-dom';
 
 /**
- * Full tree profile — only reachable by scanning a park QR code
- * (/scan/{qrCodeId}).
+ * QR scan entry — always lands on the dedicated Tree Details page
+ * (/trees/TREE-001) so Information, Images, Uses, Print Sign, and QR match.
  */
 export default function ScanTreePage() {
   const { qrCodeId } = useParams();
-  const { language } = useLanguage();
-  const [tree, setTree] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-    fetchTreeByQrCode(qrCodeId, language)
-      .then(setTree)
-      .catch((err) => {
-        setTree(null);
-        setError(err.message);
-      })
-      .finally(() => setLoading(false));
-  }, [qrCodeId, language]);
-
-  return <TreeDetail key={qrCodeId} tree={tree} loading={loading} error={error} />;
+  return <Navigate to={`/trees/${qrCodeId}`} replace />;
 }

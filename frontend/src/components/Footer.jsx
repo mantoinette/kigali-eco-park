@@ -34,9 +34,12 @@ export default function Footer() {
         <div>
           <h3 className="mb-4 font-semibold">{t(language, 'footerLinks')}</h3>
           <ul className="space-y-2 text-sm">
+            <li><Link to="/" className="text-white/80 hover:text-white">{t(language, 'navHome')}</Link></li>
+            <li><Link to="/trees" className="text-white/80 hover:text-white">{t(language, 'exploreTrees')}</Link></li>
+            <li><Link to="/map" className="text-white/80 hover:text-white">{t(language, 'navMap')}</Link></li>
             <li><Link to="/about" className="text-white/80 hover:text-white">{t(language, 'aboutUs')}</Link></li>
+            <li><Link to="/contact" className="text-white/80 hover:text-white">{t(language, 'navContact')}</Link></li>
             <li><Link to="/privacy" className="text-white/80 hover:text-white">{t(language, 'privacyPolicy')}</Link></li>
-            <li><Link to="/faq" className="text-white/80 hover:text-white">{t(language, 'faq')}</Link></li>
           </ul>
           <div className="mt-4 flex gap-3 text-xl">
             <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">📘</a>

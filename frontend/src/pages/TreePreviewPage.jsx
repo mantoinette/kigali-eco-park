@@ -8,7 +8,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
 /**
- * Dedicated page for one tree — full guide + printable A4 sign.
+ * Dedicated Tree Details page structure:
+ * Information → Images → Uses → Print Tree Sign (A4) → QR Code
  * Accepts /trees/{qrCodeId} (TREE-001) or /trees/{slug}.
  */
 export default function TreePreviewPage() {
@@ -53,9 +54,6 @@ export default function TreePreviewPage() {
 
   const siblings = useMemo(() => {
     if (!allTrees.length) return { prev: null, next: null, index: -1 };
-    // Support both URLs:
-    // - /trees/{slug} (species slug)
-    // - /trees/{qrCodeId} (TREE-001, TREE-002, ...)
     const identifierLower = String(slug || '').toLowerCase();
     const isSlugUrl = allTrees.some((item) => String(item.slug || '').toLowerCase() === identifierLower);
     const index = isSlugUrl
@@ -81,68 +79,107 @@ export default function TreePreviewPage() {
 
   return (
     <div>
-      <div className="border-b border-primary/10 bg-white">
-        <div className="section-container flex flex-col gap-4 py-6 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs text-gray-500">{tree?.qrCodeId ? `Tree ${tree.qrCodeId}` : null}</p>
-            <h1 className="mt-1 text-2xl font-bold text-gray-900">{tree?.commonName}</h1>
-            <p className="mt-1 text-sm text-gray-600">
-              <em>{tree?.scientificName}</em>
-            </p>
-          </div>
-
-          <div className="no-print flex flex-col gap-3 sm:items-end">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => window.print()}
-              disabled={!qr}
-              title={!qr ? 'Loading QR code…' : 'Print this tree sign'}
-            >
-              {qr ? 'Print / Save as PDF' : 'Loading QR…'}
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => window.print()}
-              disabled={!qr}
-              title={!qr ? 'Loading QR code…' : 'Download (save) as PDF via your browser print dialog'}
-            >
-              {qr ? 'Download PDF' : 'Loading…'}
-            </button>
-            <p className="text-xs text-gray-500">Optimized for A4 portrait lamination</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="section-container py-8">
-        {/* Printable A4 sign (this is what will appear when you print) */}
-        <TreeA4PrintTemplate tree={tree} qr={qr} />
-      </div>
-
-      <div className="border-b border-primary/10 bg-white">
+      <div className="no-print border-b border-primary/10 bg-white">
         <div className="section-container flex flex-wrap items-center justify-between gap-3 py-4">
           <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
             <Link to="/" className="hover:text-primary-dark">{t(language, 'navHome')}</Link>
             <span aria-hidden="true">/</span>
-            <Link to="/trees" className="hover:text-primary-dark">{t(language, 'navTrees')}</Link>
+            <Link to="/trees" className="hover:text-primary-dark">{t(language, 'exploreTrees')}</Link>
             <span aria-hidden="true">/</span>
             <span className="font-medium text-primary-dark">{tree.commonName}</span>
           </nav>
 
-          {siblings.index >= 0 && (
-            <p className="text-xs text-gray-400">
-              {t(language, 'treeOfTotal')
-                .replace('{current}', String(siblings.index + 1))
-                .replace('{total}', String(allTrees.length))}
-            </p>
-          )}
+          <div className="flex flex-wrap items-center gap-3">
+            {siblings.index >= 0 && (
+              <p className="text-xs text-gray-400">
+                {t(language, 'treeOfTotal')
+                  .replace('{current}', String(siblings.index + 1))
+                  .replace('{total}', String(allTrees.length))}
+              </p>
+            )}
+            <a
+              href="#print-tree-sign"
+              className="rounded-xl border border-primary/25 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary-dark hover:bg-primary/10"
+            >
+              {t(language, 'jumpToPrintSign')}
+            </a>
+          </div>
         </div>
       </div>
 
+      {/* Tree Details: Information · Images · Uses · (media / map) */}
       <TreeDetail tree={tree} loading={false} error={null} />
 
-      <div className="border-t border-gray-200 bg-surface py-8">
+      {/* Print Tree Sign (A4) + QR Code — not shown on Explore Trees listing */}
+      <section id="print-tree-sign" className="border-t border-primary/10 bg-white py-12">
+        <div className="section-container">
+          <div className="mx-auto max-w-4xl">
+            <div className="no-print mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                  {t(language, 'treeDetailsTitle')}
+                </p>
+                <h2 className="mt-2 font-display text-2xl font-semibold text-primary-dark sm:text-3xl">
+                  {t(language, 'printTreeSign')}
+                </h2>
+                <p className="mt-2 max-w-xl text-sm text-gray-600">{t(language, 'printTreeSignHint')}</p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => window.print()}
+                  disabled={!qr}
+                >
+                  {qr ? 'Print / Save as PDF' : 'Loading QR…'}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => window.print()}
+                  disabled={!qr}
+                >
+                  {qr ? 'Download PDF' : 'Loading…'}
+                </button>
+              </div>
+            </div>
+
+            <div className="grid gap-8 lg:grid-cols-[1fr_220px] lg:items-start">
+              <TreeA4PrintTemplate tree={tree} qr={qr} />
+
+              <aside className="no-print rounded-2xl border border-gray-200 bg-surface p-5">
+                <h3 className="text-lg font-bold text-primary-dark">{t(language, 'treeQrCode')}</h3>
+                <p className="mt-2 text-sm text-gray-600">{t(language, 'treeQrCodeHint')}</p>
+                <div className="mt-4 flex justify-center rounded-xl bg-white p-3 ring-1 ring-gray-100">
+                  {qr?.qrCodeBase64 ? (
+                    <img
+                      src={qr.qrCodeBase64}
+                      alt={t(language, 'scanWithPhoneAlt')}
+                      className="h-40 w-40"
+                    />
+                  ) : (
+                    <div className="flex h-40 w-40 items-center justify-center">
+                      <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary/30 border-t-primary" />
+                    </div>
+                  )}
+                </div>
+                {tree.qrCodeId && (
+                  <p className="mt-3 text-center font-mono text-sm font-bold text-primary-dark">
+                    {tree.qrCodeId}
+                  </p>
+                )}
+                {qr?.url && (
+                  <code className="mt-3 block break-all rounded-lg bg-white px-2 py-2 text-[10px] text-gray-500 ring-1 ring-gray-100">
+                    {qr.url}
+                  </code>
+                )}
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="no-print border-t border-gray-200 bg-surface py-8">
         <div className="section-container flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {siblings.prev ? (
             <Link

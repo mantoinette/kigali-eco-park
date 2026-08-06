@@ -37,8 +37,8 @@ export default function TreeMap({ markers }) {
             <div className="min-w-[180px]">
               <strong>{tree.commonName}</strong>
               <p className="text-xs italic text-gray-600">{tree.scientificName}</p>
-              <Link to={`/trees/${tree.slug}`} className="mt-2 inline-block text-sm text-primary">
-                {t(language, 'viewOnMap')}
+              <Link to={`/trees/${tree.qrCodeId || tree.slug}`} className="mt-2 inline-block text-sm text-primary">
+                {t(language, 'viewTreeDetails')}
               </Link>
             </div>
           </Popup>

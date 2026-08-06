@@ -225,7 +225,7 @@ export default function TreeDetail({ tree, loading, error }) {
           </div>
 
           {meta.length > 0 && (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div id="tree-information" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {meta.map((item) => (
                 <div key={item.label} className="rounded-xl bg-white p-4 shadow-sm">
                   <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{item.label}</p>
@@ -235,8 +235,41 @@ export default function TreeDetail({ tree, loading, error }) {
             </div>
           )}
 
-          <InfoSection title={t(language, 'description')} content={tree.description} icon="📋" />
-          <InfoSection title={t(language, 'uses')} content={tree.uses} icon="🛠️" />
+          <div id="tree-information-detail">
+            <InfoSection title={t(language, 'treeInformation')} content={tree.description} icon="📋" />
+          </div>
+
+          {tree.images?.length > 0 && (
+            <section id="tree-images" className="card">
+              <h2 className="mb-4 text-xl font-bold text-primary-dark">{t(language, 'gallery')}</h2>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {tree.images.map((img) => (
+                  <button
+                    key={img.id}
+                    type="button"
+                    onClick={() => setActiveImage(img)}
+                    className={`overflow-hidden rounded-xl border-2 ${
+                      activeImage?.id === img.id ? 'border-primary' : 'border-transparent'
+                    }`}
+                  >
+                    <GalleryImage
+                      src={resolveMediaUrl(img.url)}
+                      alt={img.caption || ''}
+                      className="aspect-square w-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+              {activeImage?.caption && (
+                <p className="mt-3 text-sm text-gray-600">{activeImage.caption}</p>
+              )}
+            </section>
+          )}
+
+          <div id="tree-uses">
+            <InfoSection title={t(language, 'uses')} content={tree.uses} icon="🛠️" />
+          </div>
+
           <InfoSection title={t(language, 'ecologicalImportance')} content={tree.ecologicalImportance} icon="🌍" />
           <BulletSection title={t(language, 'interestingFacts')} content={tree.interestingFacts} icon="✨" />
 
@@ -299,33 +332,6 @@ export default function TreeDetail({ tree, loading, error }) {
                   </video>
                 )}
               </div>
-            </section>
-          )}
-
-          {tree.images?.length > 0 && (
-            <section className="card">
-              <h2 className="mb-4 text-xl font-bold text-primary-dark">{t(language, 'gallery')}</h2>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {tree.images.map((img) => (
-                  <button
-                    key={img.id}
-                    type="button"
-                    onClick={() => setActiveImage(img)}
-                    className={`overflow-hidden rounded-xl border-2 ${
-                      activeImage?.id === img.id ? 'border-primary' : 'border-transparent'
-                    }`}
-                  >
-                    <GalleryImage
-                      src={resolveMediaUrl(img.url)}
-                      alt={img.caption || ''}
-                      className="aspect-square w-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-              {activeImage?.caption && (
-                <p className="mt-3 text-sm text-gray-600">{activeImage.caption}</p>
-              )}
             </section>
           )}
 
