@@ -8,6 +8,10 @@ export function resolveMediaUrl(url) {
     return url;
   }
   try {
+    // In production (Vercel), we cannot rely on same-domain proxying.
+    // Keep absolute /media and /uploads URLs intact so audio/video work.
+    if (import.meta.env.PROD) return url;
+
     const parsed = new URL(url);
     if (
       parsed.pathname.startsWith('/uploads/')
