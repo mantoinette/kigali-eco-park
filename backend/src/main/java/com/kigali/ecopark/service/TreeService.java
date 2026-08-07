@@ -119,7 +119,7 @@ public class TreeService {
                 .map(Tree::getScientificName)
                 .distinct()
                 .count();
-        return new SiteStatsDto(documented, 350, species, 120, 5000, 3);
+        return new SiteStatsDto(documented, 22000, species, 45, 5000, 3);
     }
 
     public TreeDetailDto getTreeById(Long id, String languageCode) {
