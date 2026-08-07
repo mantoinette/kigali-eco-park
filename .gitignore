@@ -8,6 +8,7 @@ frontend/.vite/
 .env
 .env.*
 backend/uploads/
+backend/src/main/resources/static/media/tmp/
 *.log
 
 # IDE

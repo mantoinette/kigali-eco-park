@@ -93,6 +93,16 @@ export default function QrLabelPage() {
 
   return (
     <div className="qr-label-page bg-surface px-4 py-8 sm:px-6">
+      {/* Print/PDF = green plaque only (16×10 cm), not a full website page */}
+      <style>{`
+        @media print {
+          @page {
+            size: 160mm 100mm;
+            margin: 0;
+          }
+        }
+      `}</style>
+
       <div className="no-print mx-auto mb-6 flex max-w-xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Link to="/trees" className="text-sm font-medium text-primary-dark hover:underline">
