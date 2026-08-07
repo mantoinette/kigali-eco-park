@@ -91,7 +91,9 @@ public class DataSeeder {
         } else {
             Tree tree = existing.get();
             SyzygiumGuineenseData.applyMetadata(tree, apiPublicBaseUrl);
-            if (needsImageRefresh(tree) || hasWrongSpeciesImages(tree, SyzygiumGuineenseData.SLUG)) {
+            if (needsMediaUrlRefresh(tree, SyzygiumGuineenseData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, SyzygiumGuineenseData.SLUG)) {
                 List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
                         SyzygiumGuineenseData.SLUG,
                         SyzygiumGuineenseData.SCIENTIFIC_NAME,
@@ -164,7 +166,7 @@ public class DataSeeder {
         );
     }
 
-    /** Re-point DB media URLs after deploy when bundled files change (e.g. ficus-ovata-v2). */
+    /** Re-point DB media URLs after deploy when bundled files change (e.g. TREE-002). */
     private boolean needsMediaUrlRefresh(Tree tree, String expectedPathFragment) {
         String audio = tree.getAudioUrl();
         return audio == null || !audio.contains(expectedPathFragment);

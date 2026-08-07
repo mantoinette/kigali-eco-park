@@ -22,10 +22,9 @@ public final class SyzygiumGuineenseData {
     public static final String AGE_ESTIMATE = "Approx. 15–40 years (park specimen)";
     public static final double LATITUDE = -1.9686;
     public static final double LONGITUDE = 30.1045;
-    /** Base path for park-recorded narrations (language suffix added by the frontend). */
-    public static final String AUDIO_BASE_PATH = "/media/audio/syzygium-guineense";
-    /** Base path for tree videos (language suffix -en/-fr/-rw added by the frontend). */
-    public static final String VIDEO_BASE_PATH = "/media/video/syzygium-guineense";
+    /** One file set per park tree ID — cannot collide with other species. */
+    public static final String AUDIO_BASE_PATH = "/media/audio/TREE-001";
+    public static final String VIDEO_BASE_PATH = "/media/video/TREE-001";
 
     private SyzygiumGuineenseData() {}
 
