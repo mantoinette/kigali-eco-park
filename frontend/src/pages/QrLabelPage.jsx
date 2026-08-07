@@ -38,6 +38,20 @@ const PLAQUE_COPY = {
       'Latex traditionally applied for skin conditions such as ringworm.',
     ],
   },
+  'aeschynomene-elaphroxylon': {
+    localName: 'UMUBURU',
+    englishName: 'ambatch / pith-tree',
+    family: 'Fabaceae',
+    akamaro: 'Ibiti byoroshye byo gukora floats n\'amato Ubucukuzi bw\'ubusitani',
+    ubuvuzi:
+      'Ntibikoreshwa cyane nk\'ubuvuzi — ahubwo ni igiti cy\'amazi gifite agaciro ku bucukuzi n\'ubuzima bw\'ibishanga.',
+    uses: [
+      'Lightweight rot-resistant wood for fishing-net floats.',
+      'Trunks lashed together to make rafts and small boats.',
+      'Local crafts such as stools and sun screens.',
+      'Sometimes planted as an ornamental wetland shrub.',
+    ],
+  },
 };
 
 function ParkLogo() {

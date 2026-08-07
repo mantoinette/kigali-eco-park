@@ -38,6 +38,8 @@ public class DataSeeder {
                     seedSyzygiumGuineense(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status ->
                     seedFicusOvata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            tx.executeWithoutResult(status ->
+                    seedAeschynomeneElaphroxylon(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status -> keepOnlyPublishedParkTrees(treeRepository));
         };
     }
@@ -141,11 +143,47 @@ public class DataSeeder {
         }
     }
 
-    /** Keep Umugote + Umurehe published; unpublish any other seeded leftovers. */
+    void seedAeschynomeneElaphroxylon(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(AeschynomeneElaphroxylonData.SLUG);
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            AeschynomeneElaphroxylonData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    AeschynomeneElaphroxylonData.SLUG,
+                    AeschynomeneElaphroxylonData.SCIENTIFIC_NAME,
+                    AeschynomeneElaphroxylonData.imageSources()
+            );
+            AeschynomeneElaphroxylonData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            AeschynomeneElaphroxylonData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsImageRefresh(tree) || hasWrongSpeciesImages(tree, AeschynomeneElaphroxylonData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        AeschynomeneElaphroxylonData.SLUG,
+                        AeschynomeneElaphroxylonData.SCIENTIFIC_NAME,
+                        AeschynomeneElaphroxylonData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    AeschynomeneElaphroxylonData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
+    /** Keep the three park guide trees published; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
                 .filter(t -> !SyzygiumGuineenseData.SLUG.equals(t.getSlug())
-                        && !FicusOvataData.SLUG.equals(t.getSlug()))
+                        && !FicusOvataData.SLUG.equals(t.getSlug())
+                        && !AeschynomeneElaphroxylonData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -179,10 +217,13 @@ public class DataSeeder {
         return tree.getImages().stream().anyMatch(img -> {
             String url = img.getUrl() == null ? "" : img.getUrl().toLowerCase();
             if (FicusOvataData.SLUG.equals(slug)) {
-                return url.contains("syzygium");
+                return url.contains("syzygium") || url.contains("aeschynomene");
             }
             if (SyzygiumGuineenseData.SLUG.equals(slug)) {
-                return url.contains("ficus_ovata") || url.contains("ficus-ovata");
+                return url.contains("ficus_ovata") || url.contains("ficus-ovata") || url.contains("aeschynomene");
+            }
+            if (AeschynomeneElaphroxylonData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata");
             }
             return false;
         });

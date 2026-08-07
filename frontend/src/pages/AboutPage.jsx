@@ -126,6 +126,9 @@ export default function AboutPage() {
             <Link to="/qr-label/ficus-ovata" className="btn btn-secondary">
               Umurehe (TREE-002)
             </Link>
+            <Link to="/qr-label/aeschynomene-elaphroxylon" className="btn btn-secondary">
+              Umuburu (TREE-003)
+            </Link>
           </div>
         </div>
       </section>
