@@ -1,46 +1,29 @@
-import { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
-import { fetchSiteStats } from '../api/client';
 
-const FALLBACK = {
-  treesGoal: 22000,
-  speciesGoal: 45,
-  totalVisitors: 5000,
-  languagesSupported: 3,
+/** Official park highlight figures (shown on the home page). */
+const PARK_STATS = {
+  trees: 22000,
+  species: 45,
+  visitors: 5000,
+  languages: 3,
 };
 
 function formatStat(value, language) {
   const n = Number(value);
   if (!Number.isFinite(n)) return value;
-  const locale = language === 'fr' ? 'fr-FR' : language === 'rw' ? 'en-US' : 'en-US';
+  const locale = language === 'fr' ? 'fr-FR' : 'en-US';
   return n.toLocaleString(locale);
 }
 
 export default function StatsSection() {
   const { language } = useLanguage();
-  const [stats, setStats] = useState(FALLBACK);
-
-  useEffect(() => {
-    fetchSiteStats()
-      .then((data) => {
-        if (data) {
-          setStats({
-            treesGoal: data.treesGoal ?? FALLBACK.treesGoal,
-            speciesGoal: data.speciesGoal ?? FALLBACK.speciesGoal,
-            totalVisitors: data.totalVisitors ?? FALLBACK.totalVisitors,
-            languagesSupported: data.languagesSupported ?? FALLBACK.languagesSupported,
-          });
-        }
-      })
-      .catch(() => setStats(FALLBACK));
-  }, []);
 
   const items = [
-    { value: formatStat(stats.treesGoal, language), label: t(language, 'statTreesLabel') },
-    { value: formatStat(stats.speciesGoal, language), label: t(language, 'statSpeciesLabel') },
-    { value: formatStat(stats.totalVisitors, language), label: t(language, 'statVisitorsLabel') },
-    { value: formatStat(stats.languagesSupported, language), label: t(language, 'statLanguagesLabel') },
+    { value: formatStat(PARK_STATS.trees, language), label: t(language, 'statTreesLabel') },
+    { value: formatStat(PARK_STATS.species, language), label: t(language, 'statSpeciesLabel') },
+    { value: formatStat(PARK_STATS.visitors, language), label: t(language, 'statVisitorsLabel') },
+    { value: formatStat(PARK_STATS.languages, language), label: t(language, 'statLanguagesLabel') },
   ];
 
   return (
