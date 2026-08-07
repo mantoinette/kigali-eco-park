@@ -281,9 +281,12 @@ export default function TreeDetail({ tree, loading, error }) {
           {audioSrc && (
             <section className="card">
               <h2 className="text-xl font-bold text-primary-dark">🎧 {t(language, 'listenDescription')}</h2>
-              <p className="mt-2 text-sm text-gray-600">{t(language, 'listenDescriptionSubtitle')}</p>
+              <p className="mt-2 text-sm text-gray-600">
+                {t(language, 'listenDescriptionSubtitle')}
+                {tree.qrCodeId ? ` · ${tree.qrCodeId} · ${tree.scientificName}` : ''}
+              </p>
               <audio
-                key={audioSrc}
+                key={`${tree.qrCodeId}-${audioSrc}`}
                 controls
                 className="mt-4 w-full"
                 src={audioSrc}
@@ -308,6 +311,7 @@ export default function TreeDetail({ tree, loading, error }) {
                     '{species}',
                     tree.scientificName || tree.commonName || ''
                   )}
+                  {tree.qrCodeId ? ` · ${tree.qrCodeId}` : ''}
                 </p>
               </div>
               <div className="mt-4 aspect-video bg-black">
@@ -322,7 +326,7 @@ export default function TreeDetail({ tree, loading, error }) {
                   />
                 ) : (
                   <video
-                    key={videoSrc}
+                    key={`${tree.qrCodeId}-${videoSrc}`}
                     controls
                     playsInline
                     preload="metadata"

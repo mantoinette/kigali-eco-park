@@ -25,12 +25,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations(location);
 
-        // Bundled guides win first. Uploads/media is fallback only (never override JAR media).
+        // ONLY classpath — never serve stale uploads/media duplicates from Render disk.
+        // Each tree has unique files: TREE-001-* (Umugote) and TREE-002-* (Umurehe).
         registry.addResourceHandler("/media/**")
-                .addResourceLocations(
-                        "classpath:/static/media/",
-                        location + "media/"
-                )
-                .setCachePeriod(3600);
+                .addResourceLocations("classpath:/static/media/")
+                .setCachePeriod(0);
     }
 }

@@ -123,10 +123,9 @@ public class DataSeeder {
             treeRepository.save(tree);
         } else {
             Tree tree = existing.get();
+            // Always rewrite audio/video to TREE-002-* so Umurehe cannot keep stale Umugote URLs.
             FicusOvataData.refreshExisting(tree, apiPublicBaseUrl);
-            if (needsMediaUrlRefresh(tree, FicusOvataData.AUDIO_BASE_PATH)
-                    || needsImageRefresh(tree)
-                    || hasWrongSpeciesImages(tree, FicusOvataData.SLUG)) {
+            if (needsImageRefresh(tree) || hasWrongSpeciesImages(tree, FicusOvataData.SLUG)) {
                 List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
                         FicusOvataData.SLUG,
                         FicusOvataData.SCIENTIFIC_NAME,
