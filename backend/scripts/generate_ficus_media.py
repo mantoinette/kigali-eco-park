@@ -81,7 +81,7 @@ async def synthesize_audio() -> dict[str, Path]:
     AUDIO_DIR.mkdir(parents=True, exist_ok=True)
     out: dict[str, Path] = {}
     for lang, (voice, text) in SCRIPTS.items():
-        path = AUDIO_DIR / f"ficus-ovata-{lang}.mp3"
+        path = AUDIO_DIR / f"ficus-ovata-v2-{lang}.mp3"
         print(f"Generating audio {path.name} ({voice})")
         await edge_tts.Communicate(text, voice).save(str(path))
         out[lang] = path
@@ -138,7 +138,7 @@ async def main() -> None:
     print(f"Using {len(images)} images")
     audio_files = await synthesize_audio()
     for lang, audio_path in audio_files.items():
-        make_video(audio_path, images, VIDEO_DIR / f"ficus-ovata-{lang}.mp4")
+        make_video(audio_path, images, VIDEO_DIR / f"ficus-ovata-v2-{lang}.mp4")
     print("Done — Umurehe media is unique from Umugote.")
 
 

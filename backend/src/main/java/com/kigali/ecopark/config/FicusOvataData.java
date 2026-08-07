@@ -24,8 +24,9 @@ public final class FicusOvataData {
     public static final String AGE_ESTIMATE = "Approx. 12–35 years (park specimen)";
     public static final double LATITUDE = -1.9689;
     public static final double LONGITUDE = 30.1050;
-    public static final String AUDIO_BASE_PATH = "/media/audio/ficus-ovata";
-    public static final String VIDEO_BASE_PATH = "/media/video/ficus-ovata";
+    /** v2 filenames — distinct from Umugote; avoids stale Render upload duplicates. */
+    public static final String AUDIO_BASE_PATH = "/media/audio/ficus-ovata-v2";
+    public static final String VIDEO_BASE_PATH = "/media/video/ficus-ovata-v2";
     public static final String REFERENCE_URL =
             "https://easyscape.com/species/Ficus-ovata(Oval-leaved-Fig)";
 

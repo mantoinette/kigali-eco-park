@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { fetchTreeByQrCode, fetchTreeBySlug } from '../api/client';
+import { fetchQrCode, fetchTreeByQrCode, fetchTreeBySlug } from '../api/client';
 import LoadingSpinner from '../components/LoadingSpinner';
-import TreeDetail from '../components/TreeDetail';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
 
 /**
  * Public preview only — full guide unlocks by scanning the park QR (/scan/TREE-001).
+ * Shows the same QR image that is printed and attached to the tree.
  */
 export default function TreePreviewPage() {
   const { slug } = useParams();
   const { language } = useLanguage();
   const [tree, setTree] = useState(null);
+  const [qr, setQr] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [imgFailed, setImgFailed] = useState(false);
@@ -28,9 +29,17 @@ export default function TreePreviewPage() {
       : fetchTreeBySlug(slug, language).catch(() => fetchTreeByQrCode(slug, language));
 
     loadTree
-      .then(setTree)
+      .then((detail) => {
+        setTree(detail);
+        if (detail?.slug) {
+          return fetchQrCode(detail.slug).then(setQr).catch(() => setQr(null));
+        }
+        setQr(null);
+        return null;
+      })
       .catch((err) => {
         setTree(null);
+        setQr(null);
         setError(err.message);
       })
       .finally(() => setLoading(false));
@@ -87,15 +96,51 @@ export default function TreePreviewPage() {
             <p className="mt-2 text-lg italic text-gray-500">{tree.scientificName}</p>
             {tree.family && <p className="mt-2 text-sm text-gray-400">{tree.family}</p>}
 
-            <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">
-                {t(language, 'previewNoticeTitle')}
+            <div className="mt-8 rounded-2xl border border-primary/20 bg-white px-5 py-5 shadow-sm ring-1 ring-primary/10">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                {t(language, 'qrOnTreeLabel')}
               </p>
-              <h2 className="mt-2 text-xl font-bold text-amber-950">{t(language, 'scanAtParkTitle')}</h2>
-              <p className="mt-3 text-sm leading-relaxed text-amber-950/90">
-                {t(language, 'previewNoticeText')}
+              <h2 className="mt-2 text-xl font-bold text-primary-dark">{t(language, 'scanWithPhoneTitle')}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                {t(language, 'treeQrAttachHint')}
               </p>
-              <p className="mt-4 text-sm font-medium text-amber-900">{t(language, 'scanAtParkSteps')}</p>
+
+              <div className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:items-start">
+                <div className="rounded-2xl border-2 border-primary/25 bg-white p-3 shadow-sm">
+                  {qr?.qrCodeBase64 ? (
+                    <img
+                      src={qr.qrCodeBase64}
+                      alt={t(language, 'scanWithPhoneAlt')}
+                      className="h-44 w-44 sm:h-48 sm:w-48"
+                    />
+                  ) : (
+                    <div className="flex h-44 w-44 items-center justify-center sm:h-48 sm:w-48">
+                      <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary/30 border-t-primary" />
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1 text-center sm:pt-2 sm:text-left">
+                  <p className="text-sm font-medium text-primary-dark">{t(language, 'scanWithPhoneHint')}</p>
+                  <p className="mt-3 font-mono text-sm font-bold tracking-wide text-primary">
+                    {tree.qrCodeId}
+                  </p>
+                  {qr?.url && (
+                    <p className="mt-2 break-all text-xs text-gray-500">{qr.url}</p>
+                  )}
+                  <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
+                    {tree.slug && (
+                      <Link to={`/qr-label/${tree.slug}`} className="btn btn-primary !rounded-xl !px-4 !py-2 text-xs">
+                        {t(language, 'printLabel')}
+                      </Link>
+                    )}
+                    {qr?.treeId && (
+                      <Link to={`/scan/${qr.treeId}`} className="btn btn-secondary !rounded-xl !px-4 !py-2 text-xs">
+                        {t(language, 'testTreePage')}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">

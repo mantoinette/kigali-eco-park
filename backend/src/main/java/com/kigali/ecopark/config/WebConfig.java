@@ -25,11 +25,12 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations(location);
 
-        // Tree audio/video guides — classpath (bundled) or uploads/media (per-tree files on server)
+        // Bundled guides win first. Uploads/media is fallback only (never override JAR media).
         registry.addResourceHandler("/media/**")
                 .addResourceLocations(
                         "classpath:/static/media/",
                         location + "media/"
-                );
+                )
+                .setCachePeriod(3600);
     }
 }
