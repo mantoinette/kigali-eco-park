@@ -114,7 +114,7 @@ public final class FicusOvataData {
                         2
                 ),
                 new TreeImageAcquisitionService.ImageRequest(
-                        "direct:https://commons.wikimedia.org/wiki/Special:FilePath/Ficus_ovata-2-JNTBGRI-kerala-India.jpg",
+                        "direct:https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Ficus_ovata-2-JNTBGRI-kerala-India.jpg/1280px-Ficus_ovata-2-JNTBGRI-kerala-India.jpg",
                         "Ficus ovata — oval-leaved crown habit",
                         false,
                         3

@@ -60,30 +60,35 @@ function BulletSection({ title, content, icon }) {
   );
 }
 
-function resolveAudioUrl(audioUrl, language) {
+function resolveAudioUrl(audioUrl, language, treeId) {
   if (!audioUrl) return null;
   const resolved = resolveMediaUrl(audioUrl);
   const match = resolved.match(/^(.*\/media\/audio\/[^/]+)-([a-z]{2})\.mp3$/i);
-  if (!match) return resolved;
-  return `${match[1]}-${language}.mp3`;
+  const base = match ? `${match[1]}-${language}.mp3` : resolved;
+  if (!treeId) return base;
+  const sep = base.includes('?') ? '&' : '?';
+  return `${base}${sep}tree=${encodeURIComponent(treeId)}`;
 }
 
-function resolveVideoUrl(videoUrl, language) {
+function resolveVideoUrl(videoUrl, language, treeId) {
   if (!videoUrl || videoUrl.startsWith('internal:')) return videoUrl;
   if (isYoutubeEmbed(videoUrl)) return videoUrl;
 
   const resolved = resolveMediaUrl(videoUrl);
   const withLang = resolved.match(/^(.*\/media\/video\/[^/]+)-([a-z]{2})\.mp4$/i);
+  let base = resolved;
   if (withLang) {
-    return `${withLang[1]}-${language}.mp4`;
+    base = `${withLang[1]}-${language}.mp4`;
+  } else {
+    const bare = resolved.match(/^(.*\/media\/video\/[^/]+)\.mp4$/i);
+    if (bare) {
+      base = `${bare[1]}-${language}.mp4`;
+    }
   }
 
-  const bare = resolved.match(/^(.*\/media\/video\/[^/]+)\.mp4$/i);
-  if (bare) {
-    return `${bare[1]}-${language}.mp4`;
-  }
-
-  return resolved;
+  if (!treeId) return base;
+  const sep = base.includes('?') ? '&' : '?';
+  return `${base}${sep}tree=${encodeURIComponent(treeId)}`;
 }
 
 function TreeHeroImage({ src, alt }) {
@@ -154,7 +159,7 @@ export default function TreeDetail({ tree, loading, error }) {
       setAudioSrc(null);
       return;
     }
-    setAudioSrc(resolveAudioUrl(tree.audioUrl, language));
+    setAudioSrc(resolveAudioUrl(tree.audioUrl, language, tree.qrCodeId));
   }, [tree?.qrCodeId, tree?.audioUrl, language]);
 
   useEffect(() => {
@@ -162,7 +167,7 @@ export default function TreeDetail({ tree, loading, error }) {
       setVideoSrc(null);
       return;
     }
-    setVideoSrc(resolveVideoUrl(tree.videoUrl, language));
+    setVideoSrc(resolveVideoUrl(tree.videoUrl, language, tree.qrCodeId));
   }, [tree?.qrCodeId, tree?.videoUrl, language]);
 
   useEffect(() => {
@@ -283,8 +288,9 @@ export default function TreeDetail({ tree, loading, error }) {
                 className="mt-4 w-full"
                 src={audioSrc}
                 onError={() => {
-                  if (tree.audioUrl && audioSrc !== tree.audioUrl) {
-                    setAudioSrc(tree.audioUrl);
+                  const fallback = resolveAudioUrl(tree.audioUrl, language, tree.qrCodeId);
+                  if (fallback && audioSrc !== fallback) {
+                    setAudioSrc(fallback);
                   }
                 }}
               >
@@ -323,8 +329,9 @@ export default function TreeDetail({ tree, loading, error }) {
                     className="h-full w-full"
                     src={videoSrc}
                     onError={() => {
-                      if (tree.videoUrl && videoSrc !== tree.videoUrl) {
-                        setVideoSrc(tree.videoUrl);
+                      const fallback = resolveVideoUrl(tree.videoUrl, language, tree.qrCodeId);
+                      if (fallback && videoSrc !== fallback) {
+                        setVideoSrc(fallback);
                       }
                     }}
                   >

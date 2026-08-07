@@ -91,7 +91,7 @@ public class DataSeeder {
         } else {
             Tree tree = existing.get();
             SyzygiumGuineenseData.applyMetadata(tree, apiPublicBaseUrl);
-            if (needsImageRefresh(tree)) {
+            if (needsImageRefresh(tree) || hasWrongSpeciesImages(tree, SyzygiumGuineenseData.SLUG)) {
                 List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
                         SyzygiumGuineenseData.SLUG,
                         SyzygiumGuineenseData.SCIENTIFIC_NAME,
@@ -122,16 +122,19 @@ public class DataSeeder {
         } else {
             Tree tree = existing.get();
             FicusOvataData.refreshExisting(tree, apiPublicBaseUrl);
-            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
-                    FicusOvataData.SLUG,
-                    FicusOvataData.SCIENTIFIC_NAME,
-                    FicusOvataData.imageSources()
-            );
-            if (!images.isEmpty()) {
-                // Clear then flush orphans before insert — avoids duplicate-key races on refresh
-                tree.getImages().clear();
-                treeRepository.saveAndFlush(tree);
-                FicusOvataData.attachImages(tree, images);
+            if (needsMediaUrlRefresh(tree, FicusOvataData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, FicusOvataData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        FicusOvataData.SLUG,
+                        FicusOvataData.SCIENTIFIC_NAME,
+                        FicusOvataData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    FicusOvataData.attachImages(tree, images);
+                }
             }
             treeRepository.save(tree);
         }
@@ -157,6 +160,30 @@ public class DataSeeder {
                         || img.getUrl().isBlank()
                         || img.getUrl().contains("localhost")
                         || img.getUrl().contains("127.0.0.1")
+                        || img.getUrl().contains("/wiki/Special:FilePath")
         );
+    }
+
+    /** Re-point DB media URLs after deploy when bundled files change (e.g. ficus-ovata-v2). */
+    private boolean needsMediaUrlRefresh(Tree tree, String expectedPathFragment) {
+        String audio = tree.getAudioUrl();
+        return audio == null || !audio.contains(expectedPathFragment);
+    }
+
+    /** Prevent cross-tree gallery mix-ups (e.g. Syzygium photos on Ficus). */
+    private boolean hasWrongSpeciesImages(Tree tree, String slug) {
+        if (tree.getImages() == null || tree.getImages().isEmpty()) {
+            return false;
+        }
+        return tree.getImages().stream().anyMatch(img -> {
+            String url = img.getUrl() == null ? "" : img.getUrl().toLowerCase();
+            if (FicusOvataData.SLUG.equals(slug)) {
+                return url.contains("syzygium");
+            }
+            if (SyzygiumGuineenseData.SLUG.equals(slug)) {
+                return url.contains("ficus_ovata") || url.contains("ficus-ovata");
+            }
+            return false;
+        });
     }
 }
