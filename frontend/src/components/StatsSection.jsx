@@ -1,5 +1,6 @@
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
+import CountUp from './CountUp';
 
 /** Official park highlight figures (shown on the home page). */
 const PARK_STATS = {
@@ -9,21 +10,14 @@ const PARK_STATS = {
   languages: 3,
 };
 
-function formatStat(value, language) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return value;
-  const locale = language === 'fr' ? 'fr-FR' : 'en-US';
-  return n.toLocaleString(locale);
-}
-
 export default function StatsSection() {
   const { language } = useLanguage();
 
   const items = [
-    { value: formatStat(PARK_STATS.trees, language), label: t(language, 'statTreesLabel') },
-    { value: formatStat(PARK_STATS.species, language), label: t(language, 'statSpeciesLabel') },
-    { value: formatStat(PARK_STATS.visitors, language), label: t(language, 'statVisitorsLabel') },
-    { value: formatStat(PARK_STATS.languages, language), label: t(language, 'statLanguagesLabel') },
+    { value: PARK_STATS.trees, label: t(language, 'statTreesLabel'), duration: 2200 },
+    { value: PARK_STATS.species, label: t(language, 'statSpeciesLabel'), duration: 1400 },
+    { value: PARK_STATS.visitors, label: t(language, 'statVisitorsLabel'), duration: 1800 },
+    { value: PARK_STATS.languages, label: t(language, 'statLanguagesLabel'), duration: 1000 },
   ];
 
   return (
@@ -49,9 +43,12 @@ export default function StatsSection() {
               key={item.label}
               className="border-b border-white/10 px-4 py-8 text-center last:border-b-0 sm:border-b sm:odd:border-r sm:odd:border-white/10 lg:border-b-0 lg:border-r-0 lg:px-8"
             >
-              <div className="font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-                {item.value}
-              </div>
+              <CountUp
+                value={item.value}
+                language={language}
+                duration={item.duration}
+                className="block font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl"
+              />
               <div className="mt-3 text-sm font-medium uppercase tracking-[0.16em] text-white/70">
                 {item.label}
               </div>

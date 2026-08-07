@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import TreeCard from '../components/TreeCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import CountUp from '../components/CountUp';
 import { fetchTreeCatalog, fetchTreeFilters } from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
@@ -307,10 +308,10 @@ export default function TreesPage() {
                 {t(language, 'treesCatalogSubtitle')}
               </p>
             </div>
-            <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary-dark">
-              {t(language, 'showingTreesCount')
-                .replace('{shown}', String(trees.length))
-                .replace('{total}', String(totalElements))}
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary-dark">
+              <CountUp value={trees.length} language={language} duration={900} />
+              <span className="font-medium text-primary/70">/</span>
+              <CountUp value={totalElements} language={language} duration={1100} />
             </span>
           </div>
 
