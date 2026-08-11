@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
+import { displayCommonName } from '../utils/treeDisplay';
 
 export default function PlantListPage({ trees }) {
   const { language } = useLanguage();
@@ -31,7 +32,7 @@ export default function PlantListPage({ trees }) {
             {trees.map((tree) => (
               <li key={tree.id} className="name-only-item">
                 <div className="name-only-main">
-                  <span className="name-only-common">{tree.commonName}</span>
+                  <span className="name-only-common">{displayCommonName(tree, language)}</span>
                   <span className="name-only-scientific">{tree.scientificName}</span>
                 </div>
                 <span className="name-only-hint">{t(language, 'scanAtPark')}</span>

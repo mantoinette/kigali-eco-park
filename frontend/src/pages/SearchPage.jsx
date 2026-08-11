@@ -4,6 +4,7 @@ import { searchTrees } from '../api/client';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
+import { displayCommonName } from '../utils/treeDisplay';
 
 export default function SearchPage() {
   const { language } = useLanguage();
@@ -68,7 +69,7 @@ export default function SearchPage() {
                     <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-2xl">🌳</div>
                   )}
                   <div>
-                    <p className="font-semibold text-primary-dark">{tree.commonName}</p>
+                    <p className="font-semibold text-primary-dark">{displayCommonName(tree, language)}</p>
                     <p className="text-sm italic text-gray-500">{tree.scientificName}</p>
                     {tree.family && <p className="text-xs text-gray-500">{tree.family}</p>}
                   </div>

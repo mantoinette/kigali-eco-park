@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
+import { displayCommonName } from '../utils/treeDisplay';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Sidebar({ trees = [], open, onNavigate }) {
@@ -90,7 +91,7 @@ export default function Sidebar({ trees = [], open, onNavigate }) {
               <div key={tree.id} className="nav-tree-name">
                 <span className="tree-dot" aria-hidden="true" />
                 <span className="tree-link-text">
-                  <span className="tree-common">{tree.commonName}</span>
+                  <span className="tree-common">{displayCommonName(tree, language)}</span>
                   <span className="tree-scientific">{tree.scientificName}</span>
                 </span>
               </div>

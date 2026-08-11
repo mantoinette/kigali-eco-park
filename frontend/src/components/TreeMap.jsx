@@ -7,6 +7,7 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
+import { displayCommonName } from '../utils/treeDisplay';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -35,7 +36,7 @@ export default function TreeMap({ markers }) {
         <Marker key={tree.id} position={[tree.latitude, tree.longitude]}>
           <Popup>
             <div className="min-w-[180px]">
-              <strong>{tree.commonName}</strong>
+              <strong>{displayCommonName(tree, language)}</strong>
               <p className="text-xs italic text-gray-600">{tree.scientificName}</p>
               <Link to={`/trees/${tree.qrCodeId || tree.slug}`} className="mt-2 inline-block text-sm text-primary">
                 {t(language, 'howToUnlock')}
