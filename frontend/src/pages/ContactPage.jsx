@@ -7,8 +7,8 @@ const HERO_IMG = 'https://images.unsplash.com/photo-1426604966848-d7ad8d697227?a
 const CONTACT_ITEMS = [
   { icon: '📍', labelKey: 'contactAddressLabel', value: 'Kigali Eco Park, Kigali, Rwanda' },
   { icon: '🕐', labelKey: 'contactHoursTitle', valueKey: 'parkHours' },
-  { icon: '📧', labelKey: 'contactEmailLabel', value: 'info@ecopark.rw', href: 'mailto:info@ecopark.rw' },
-  { icon: '📞', labelKey: 'contactPhoneLabel', value: '+250 788 000 000', href: 'tel:+250788000000' },
+  { icon: '📧', labelKey: 'contactEmailLabel', value: 'ateliernagaa@gmail.com', href: 'mailto:ateliernagaa@gmail.com' },
+  { icon: '📞', labelKey: 'contactPhoneLabel', value: '+250 785 553 044', href: 'tel:+250785553044' },
 ];
 
 export default function ContactPage() {

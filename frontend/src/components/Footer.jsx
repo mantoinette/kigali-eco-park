@@ -122,16 +122,16 @@ export default function Footer() {
                   <span className="mt-0.5 text-emerald-200/80">
                     <IconMail />
                   </span>
-                  <a href="mailto:info@ecopark.rw" className="transition hover:text-white">
-                    info@ecopark.rw
+                  <a href="mailto:ateliernagaa@gmail.com" className="transition hover:text-white">
+                    ateliernagaa@gmail.com
                   </a>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-0.5 text-emerald-200/80">
                     <IconPhone />
                   </span>
-                  <a href="tel:+250788000000" className="transition hover:text-white">
-                    +250 788 000 000
+                  <a href="tel:+250785553044" className="transition hover:text-white">
+                    +250 785 553 044
                   </a>
                 </li>
               </ul>
