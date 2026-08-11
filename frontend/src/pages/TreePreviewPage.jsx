@@ -5,6 +5,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
+import { displayCommonName } from '../utils/treeDisplay';
 
 /**
  * Public preview only — full guide unlocks by scanning the park QR (/scan/TREE-001).
@@ -56,6 +57,7 @@ export default function TreePreviewPage() {
   }
 
   const imageUrl = resolveMediaUrl(tree.images?.find((img) => img.primary)?.url || tree.images?.[0]?.url);
+  const commonName = displayCommonName(tree, language);
 
   return (
     <div className="bg-surface">
@@ -65,7 +67,7 @@ export default function TreePreviewPage() {
           <span aria-hidden="true">/</span>
           <Link to="/trees" className="hover:text-primary-dark">{t(language, 'exploreTrees')}</Link>
           <span aria-hidden="true">/</span>
-          <span className="font-medium text-primary-dark">{tree.commonName}</span>
+          <span className="font-medium text-primary-dark">{commonName}</span>
         </div>
       </div>
 
@@ -76,7 +78,7 @@ export default function TreePreviewPage() {
               {imageUrl && !imgFailed ? (
                 <img
                   src={imageUrl}
-                  alt={tree.commonName}
+                  alt={commonName}
                   className="max-h-full max-w-full object-contain"
                   onError={() => setImgFailed(true)}
                 />
@@ -91,7 +93,7 @@ export default function TreePreviewPage() {
               <p className="font-mono text-sm font-bold tracking-wide text-primary">{tree.qrCodeId}</p>
             )}
             <h1 className="mt-2 font-display text-3xl font-semibold text-primary-dark sm:text-4xl">
-              {tree.commonName}
+              {commonName}
             </h1>
             <p className="mt-2 text-lg italic text-gray-500">{tree.scientificName}</p>
             {tree.family && <p className="mt-2 text-sm text-gray-400">{tree.family}</p>}

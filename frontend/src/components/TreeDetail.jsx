@@ -10,6 +10,7 @@ import { fetchTrees } from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
+import { displayCommonName } from '../utils/treeDisplay';
 import LoadingSpinner from './LoadingSpinner';
 
 function isYoutubeEmbed(url) {
@@ -203,12 +204,13 @@ export default function TreeDetail({ tree, loading, error }) {
     { label: t(language, 'age'), value: tree.ageEstimate },
     { label: t(language, 'height'), value: tree.typicalHeight },
   ].filter((m) => m.value);
+  const commonName = displayCommonName(tree, language);
 
   return (
     <article className="bg-surface">
       <div className="relative h-[min(70vh,520px)] overflow-hidden">
         {activeImage ? (
-          <TreeHeroImage src={resolveMediaUrl(activeImage.url)} alt={tree.commonName} />
+          <TreeHeroImage src={resolveMediaUrl(activeImage.url)} alt={commonName} />
         ) : (
           <div className="flex h-full items-center justify-center bg-primary/10 text-8xl">🌳</div>
         )}
@@ -217,7 +219,7 @@ export default function TreeDetail({ tree, loading, error }) {
           <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
             {t(language, 'indigenousTree')}
           </span>
-          <h1 className="mt-3 font-display text-4xl font-bold sm:text-5xl">{tree.commonName}</h1>
+          <h1 className="mt-3 font-display text-4xl font-bold sm:text-5xl">{commonName}</h1>
           <p className="mt-2 text-lg italic opacity-90">{tree.scientificName}</p>
         </div>
       </div>

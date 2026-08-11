@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
+import { displayCommonName } from '../utils/treeDisplay';
 
 /**
  * Catalogue preview card — no QR, no full guide link.
@@ -11,6 +12,7 @@ import { resolveMediaUrl } from '../utils/mediaUrl';
 export default function TreeCard({ tree }) {
   const { language } = useLanguage();
   const [imgFailed, setImgFailed] = useState(false);
+  const commonName = displayCommonName(tree, language);
 
   useEffect(() => {
     setImgFailed(false);
@@ -30,12 +32,12 @@ export default function TreeCard({ tree }) {
         )}
       </div>
 
-      <Link to={previewPage} className="block bg-cream" aria-label={tree.commonName}>
+      <Link to={previewPage} className="block bg-cream" aria-label={commonName}>
         <div className="flex aspect-[4/3] items-center justify-center p-4">
           {imageUrl && !imgFailed ? (
             <img
               src={imageUrl}
-              alt={tree.commonName}
+              alt={commonName}
               className="max-h-full max-w-full object-contain transition duration-300 group-hover:scale-[1.02]"
               onError={() => setImgFailed(true)}
             />
@@ -48,7 +50,7 @@ export default function TreeCard({ tree }) {
       <div className="flex flex-1 flex-col p-4">
         <div className="min-w-0 flex-1">
           <h3 className="font-display text-lg font-semibold leading-snug text-primary-dark">
-            {tree.commonName}
+            {commonName}
           </h3>
           <p className="mt-0.5 text-sm italic text-gray-500">{tree.scientificName}</p>
           {tree.family && (

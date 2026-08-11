@@ -4,6 +4,7 @@ import { fetchQrCode } from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
+import { displayCommonName } from '../utils/treeDisplay';
 
 /**
  * Unified park interpretive sign — tree illustration and QR label
@@ -14,6 +15,7 @@ export default function TreeShowcase({ tree }) {
   const [qr, setQr] = useState(null);
   const [imgFailed, setImgFailed] = useState(false);
   const imageUrl = resolveMediaUrl(tree.primaryImageUrl);
+  const commonName = displayCommonName(tree, language);
 
   useEffect(() => {
     setImgFailed(false);
@@ -44,7 +46,7 @@ export default function TreeShowcase({ tree }) {
           {imageUrl && !imgFailed ? (
             <img
               src={imageUrl}
-              alt={tree.commonName}
+              alt={commonName}
               className="max-h-[min(52vw,22rem)] w-full max-w-lg object-contain drop-shadow-lg sm:max-h-[26rem]"
               onError={() => setImgFailed(true)}
             />
@@ -75,7 +77,7 @@ export default function TreeShowcase({ tree }) {
 
               <div className="min-w-0 flex-1 text-center sm:text-left">
                 <h2 className="font-display text-2xl font-semibold leading-tight text-primary-dark sm:text-3xl">
-                  {tree.commonName}
+                  {commonName}
                 </h2>
                 <p className="mt-1 font-display text-base italic text-gray-500 sm:text-lg">
                   {tree.scientificName}
