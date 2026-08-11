@@ -106,7 +106,8 @@
 }
 
 .park-plaque {
-  --plaque-green: #1b7a43;
+  /* Softer park green — less saturated than the original deep forest fill */
+  --plaque-green: #1a4e2a;
   /* Physical park tag: 16cm × 10cm */
   width: min(100%, 160mm);
   height: 100mm;
@@ -114,7 +115,7 @@
   color: #fff;
   border-radius: 0;
   padding: 3.5mm;
-  box-shadow: 0 12px 28px rgba(27, 122, 67, 0.25);
+  box-shadow: 0 12px 28px rgba(74, 155, 100, 0.22);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
@@ -432,7 +433,7 @@
     width: 160mm !important;
     max-width: 160mm !important;
     height: 100mm !important;
-    background: #1b7a43 !important;
+    background: #1a4e2a !important;
     color: #fff !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
