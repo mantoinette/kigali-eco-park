@@ -170,7 +170,7 @@ public final class SyzygiumGuineenseData {
     }
 
     private static TreeTranslation kinyarwanda(Tree tree) {
-        TreeTranslation t = base(tree, "rw", "Umubavu w'Igihugu");
+        TreeTranslation t = base(tree, "rw", "Umugote");
         t.setShortDescription(
                 "Igiti cy'igihugu kidapfa ibyatsi gifite ibyatsi by'icyatsi kibisi, indabo z'impumuro nziza n'imbuto zirya — ingenzi mu masaka y'igihugu ahameza."
         );
