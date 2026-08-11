@@ -28,12 +28,15 @@ export default function Navbar() {
   return (
     <header className="no-print sticky top-0 z-50 border-b border-gray-200/80 bg-white/95 shadow-nav backdrop-blur-md">
       <div className="section-container flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="flex shrink-0 items-center">
+        <Link to="/" className="flex shrink-0 items-center gap-2.5">
           <img
             src="/kigali-eco-park-brand.png"
-            alt="Kigali Eco-Park"
+            alt={t(language, 'siteName')}
             className="h-12 w-auto object-contain"
           />
+          <span className="hidden font-display text-base font-bold leading-tight text-primary-dark sm:block sm:text-lg">
+            {t(language, 'siteName')}
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label={t(language, 'mainNav')}>

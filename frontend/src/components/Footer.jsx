@@ -77,9 +77,12 @@ export default function Footer() {
               <Link to="/" className="inline-block">
                 <img
                   src="/kigali-eco-park-logo.png"
-                  alt="Kigali Eco-Park"
+                  alt={t(language, 'siteName')}
                   className="h-14 w-auto object-contain sm:h-16"
                 />
+                <p className="mt-3 font-display text-lg font-bold tracking-wide text-white">
+                  {t(language, 'siteName')}
+                </p>
               </Link>
               <p className="mt-5 text-sm leading-relaxed text-white/75">
                 {t(language, 'footerTagline')}
