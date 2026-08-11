@@ -32,7 +32,7 @@ export default function Navbar() {
           <img
             src="/treescan-rwanda-logo.png"
             alt={t(language, 'siteName')}
-            className="h-12 w-auto max-w-[220px] object-contain object-left sm:h-14 sm:max-w-[260px]"
+            className="h-11 w-auto max-w-[200px] object-contain object-left sm:h-12 sm:max-w-[240px]"
           />
         </Link>
 

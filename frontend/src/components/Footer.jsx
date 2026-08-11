@@ -74,11 +74,14 @@ export default function Footer() {
         <div className="section-container py-14 sm:py-16">
           <div className="grid gap-12 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
             <div className="max-w-sm">
-              <Link to="/" className="inline-block rounded-xl bg-white/95 p-3 shadow-sm">
+              <Link
+                to="/"
+                className="inline-flex rounded-lg bg-white px-3 py-2 ring-1 ring-white/20"
+              >
                 <img
                   src="/treescan-rwanda-logo.png"
                   alt={t(language, 'siteName')}
-                  className="h-16 w-auto max-w-[260px] object-contain object-left sm:h-[4.5rem]"
+                  className="h-14 w-auto max-w-[240px] object-contain object-left sm:h-16"
                 />
               </Link>
               <p className="mt-5 text-sm leading-relaxed text-white/75">
