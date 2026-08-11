@@ -314,7 +314,7 @@ export default function TreeDetail({ tree, loading, error }) {
                 <p className="mt-2 text-sm text-gray-600">
                   {t(language, 'watchVideoTreeSubtitle').replace(
                     '{species}',
-                    tree.scientificName || tree.commonName || ''
+                    tree.scientificName || commonName || ''
                   )}
                   {tree.qrCodeId ? ` · ${tree.qrCodeId}` : ''}
                 </p>
@@ -322,7 +322,7 @@ export default function TreeDetail({ tree, loading, error }) {
               <div className="mt-4 aspect-video bg-black">
                 {isYoutubeEmbed(videoSrc) ? (
                   <iframe
-                    title={tree.commonName}
+                    title={commonName}
                     src={videoSrc}
                     className="h-full w-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -351,7 +351,7 @@ export default function TreeDetail({ tree, loading, error }) {
             </section>
           )}
 
-          <TreeLocationMap lat={tree.latitude} lng={tree.longitude} name={tree.commonName} language={language} />
+          <TreeLocationMap lat={tree.latitude} lng={tree.longitude} name={commonName} language={language} />
 
           <InfoSection title={t(language, 'additionalInfo')} content={tree.additionalInfo} icon="ℹ️" />
 
@@ -376,7 +376,7 @@ export default function TreeDetail({ tree, loading, error }) {
                       <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-xl">🌳</span>
                     )}
                     <div className="min-w-0">
-                      <p className="truncate font-semibold text-primary-dark">{item.commonName}</p>
+                      <p className="truncate font-semibold text-primary-dark">{displayCommonName(item, language)}</p>
                       <p className="truncate text-xs italic text-gray-500">{item.scientificName}</p>
                     </div>
                   </Link>
