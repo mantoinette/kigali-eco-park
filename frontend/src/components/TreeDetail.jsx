@@ -240,7 +240,8 @@ export default function TreeDetail({ tree, loading, error }) {
             </div>
           )}
 
-          <div id="tree-information-detail">
+          <div id="tree-information-detail" className="space-y-8">
+            <BulletSection title={t(language, 'quickFacts')} content={tree.quickFacts} icon="📌" />
             <InfoSection title={t(language, 'treeInformation')} content={tree.description} icon="📋" />
           </div>
 
@@ -271,11 +272,13 @@ export default function TreeDetail({ tree, loading, error }) {
             </section>
           )}
 
-          <div id="tree-uses">
+          <div id="tree-uses" className="space-y-8">
+            <InfoSection title={t(language, 'commonAreas')} content={tree.commonAreas} icon="📍" />
             <InfoSection title={t(language, 'uses')} content={tree.uses} icon="🛠️" />
+            <InfoSection title={t(language, 'benefits')} content={tree.benefitsToPeopleAndWildlife} icon="🌿" />
+            <InfoSection title={t(language, 'ecologicalImportance')} content={tree.ecologicalImportance} icon="🌍" />
           </div>
 
-          <InfoSection title={t(language, 'ecologicalImportance')} content={tree.ecologicalImportance} icon="🌍" />
           <BulletSection title={t(language, 'interestingFacts')} content={tree.interestingFacts} icon="✨" />
 
           {audioSrc && (
@@ -348,8 +351,6 @@ export default function TreeDetail({ tree, loading, error }) {
 
           <TreeLocationMap lat={tree.latitude} lng={tree.longitude} name={tree.commonName} language={language} />
 
-          <InfoSection title={t(language, 'benefits')} content={tree.benefitsToPeopleAndWildlife} icon="🤝" />
-          <InfoSection title={t(language, 'commonAreas')} content={tree.commonAreas} icon="📍" />
           <InfoSection title={t(language, 'additionalInfo')} content={tree.additionalInfo} icon="ℹ️" />
 
           {otherTrees.length > 0 && (

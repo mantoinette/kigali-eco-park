@@ -22,7 +22,7 @@ export default function TreeCard({ tree }) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-gray-200/60 transition hover:-translate-y-0.5 hover:shadow-showcase">
       <div className="flex items-center justify-between gap-2 bg-gradient-to-r from-primary-dark to-primary px-4 py-2.5">
-        <span className="text-[10px] font-bold tracking-widest text-white/90">KIGALI ECO-PARK</span>
+        <span className="text-[10px] font-bold tracking-widest text-white/90">TREE SCAN RWANDA</span>
         {tree.qrCodeId && (
           <span className="rounded-full bg-white/20 px-2.5 py-0.5 font-mono text-[10px] font-bold text-white">
             {tree.qrCodeId}

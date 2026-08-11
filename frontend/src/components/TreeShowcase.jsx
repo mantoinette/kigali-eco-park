@@ -31,7 +31,7 @@ export default function TreeShowcase({ tree }) {
       <div className="flex items-center justify-between gap-3 bg-gradient-to-r from-primary-dark to-primary px-5 py-3.5 text-white sm:px-7">
         <div className="flex items-center gap-2.5">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 text-sm" aria-hidden="true">🌿</span>
-          <span className="text-xs font-bold tracking-[0.15em] sm:text-sm">KIGALI ECO-PARK</span>
+          <span className="text-xs font-bold tracking-[0.12em] sm:text-sm">TREE SCAN RWANDA</span>
         </div>
         <span className="rounded-full bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider sm:text-xs">
           {t(language, 'indigenousTree')}

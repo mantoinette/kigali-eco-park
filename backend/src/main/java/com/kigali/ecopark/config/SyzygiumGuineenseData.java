@@ -132,7 +132,7 @@ public final class SyzygiumGuineenseData {
     }
 
     private static TreeTranslation english(Tree tree) {
-        TreeTranslation t = base(tree, "en", "Woodland Waterberry");
+        TreeTranslation t = base(tree, "en", "Waterberry");
         t.setShortDescription(
                 "A native evergreen waterberry with glossy leaves, fragrant white flowers, and edible purple berries — a cornerstone of Rwanda's wetland forests."
         );
@@ -205,51 +205,47 @@ public final class SyzygiumGuineenseData {
     private static TreeTranslation kinyarwanda(Tree tree) {
         TreeTranslation t = base(tree, "rw", "Umugote");
         t.setShortDescription(
-                "Umugote (Syzygium guineense) ni igiti kiba mu mashya yo mu misozi nka Nyumgwe, n'ahandi."
+                "Umugote ni igiti kiboneka cyane mu mashyamba no mu misozi, harimo n'ahantu nka Nyungwe."
         );
         t.setInterestingFacts(String.join("\n",
-                "Izina ry'ikinyarwanda: Umugote.",
-                "Izina ry'ubumenyi: Syzygium guineense.",
-                "Kiba mu mashyamba yo mu misozi nka Nyumgwe, n'ahandi.",
-                "Igiti gikomeye — bakoresha batinda amateme kandi bubakisha.",
-                "Imbuto ziribwa n'abantu ndetse n'inyoni zinyuranye."
-        ));
-        t.setQuickFacts(String.join("\n",
-                "Izina ry'ikinyarwanda: Umugote",
+                "Izina ry'igiti: Umugote",
                 "Izina ry'ubumenyi: Syzygium guineense",
                 "Umuryango: Myrtaceae",
-                "Izina ry'icyongereza: Waterberry / water pear",
-                "Aho gikura: Mu mashya yo mu misozi (urugero: Nyumgwe)",
-                "Akamaro: Amateme, ubwubatsi, imbuto ziribwa",
-                "Ubuvuzi: Imbuto zivura amacinya; ibishishwa by'igiti bitetse bikavura gucibwamo"
+                "Izina ry'Icyongereza: Waterberry / Water Pear",
+                "Imbuto ziribwa n'abantu ndetse n'inyamaswa"
+        ));
+        t.setQuickFacts(String.join("\n",
+                "Izina ry'igiti: Umugote",
+                "Izina ry'ubumenyi: Syzygium guineense",
+                "Umuryango: Myrtaceae",
+                "Izina ry'Icyongereza: Waterberry / Water Pear"
         ));
         t.setDescription(
-                "Umugote — Syzygium guineense — ni igiti kiba mu mashya yo mu misozi nka Nyumgwe, n'ahandi.\n\n" +
-                "Ni igiti cy'igihugu gikunze gukura mu mashya n'ahantu h'imisozi. Abaturage bamenya Umugote " +
-                "nk'igiti gifite agaciro ku bucukuzi n'ubuzima bw'abantu n'inyoni."
-        );
-        t.setUses(
-                "Akamaro: Kigira igiti gikomeye bakoresha batinda amateme, kandi bubakisha. " +
-                "Imbuto ziribwa n'abantu ndetse n'inyoni zinyuranye.\n\n" +
-                "Kuvura: Imbuto zivura amacinya, naho ibishishwa by'igiti bitetse bikavura gucibwamo."
-        );
-        t.setEcologicalImportance(
-                "Umugote ukura mu mashya yo mu misozi, agira uruhare mu kubungabunga amashya n'ibidukikije " +
-                "by'imisozi. Imbuto zayo ziribwa n'inyoni zinyuranye, bigafasha ubuzima bw'ibinyabuzima mu mashya."
-        );
-        t.setBenefitsToPeopleAndWildlife(
-                "Ku bantu: Gitanga igiti gikomeye gikoreshwa mu gutinda amateme no mu bwubatsi. Imbuto ziribwa; " +
-                "zikoreshwa kandi mu kuvura amacinya. Ibishishwa by'igiti bitetse bikoreshwa mu kuvura gucibwamo.\n\n" +
-                "Ku nyamaswa: Imbuto ziribwa n'inyoni zinyuranye."
+                "Umugote ni igiti cy'igihugu cy'u Rwanda. Izina ryacyo ry'ubumenyi ni Syzygium guineense, " +
+                "kandi kiri mu muryango wa Myrtaceae. Mu Cyongereza cyitwa Waterberry cyangwa Water Pear.\n\n" +
+                "Abashyitsi n'abaturage bamenya iki giti nk'Umugote — izina ry'ikinyarwanda rikoreshwa hose " +
+                "mu busitani no mu mateka y'igihugu."
         );
         t.setCommonAreas(
-                "Mu mashya yo mu misozi nka Nyumgwe, n'ahandi hameze nk'aho."
+                "Umugote ni igiti kiboneka cyane mu mashyamba no mu misozi, harimo n'ahantu nka Nyungwe."
+        );
+        t.setUses(
+                "Igiti cyacyo kirakomeye kandi gishobora gukoreshwa mu gukora no kubaka ibintu bitandukanye.\n\n" +
+                "Imbuto zacyo ziribwa n'abantu ndetse n'inyamaswa zitandukanye, cyane cyane inyoni n'inguge."
+        );
+        t.setBenefitsToPeopleAndWildlife(
+                "Imbuto z'umugote zikoreshwa mu buvuzi gakondo mu kuvura amacinya.\n\n" +
+                "Ibishishwa by'igiti bitekwa, maze amazi yabyo agakoreshwa mu kuvura gucibwamo."
+        );
+        t.setEcologicalImportance(
+                "Kubera ko Umugote ukura mu mashyamba n'imisozi, ufasha mu kubungabunga ibidukikije by'amashyamba " +
+                "no gutanga imbuto ku nyoni n'izindi nyamaswa."
         );
         t.setAdditionalInfo(
-                "Izina ry'ikinyarwanda: Umugote.\n" +
-                "Izina ry'ubumenyi: Syzygium guineense.\n" +
-                "Umuryango: Myrtaceae.\n" +
-                "Izina ry'icyongereza: Waterberry cyangwa water pear.\n\n" +
+                "Izina ry'igiti: Umugote\n" +
+                "Izina ry'ubumenyi: Syzygium guineense\n" +
+                "Umuryango: Myrtaceae\n" +
+                "Izina ry'Icyongereza: Waterberry / Water Pear\n\n" +
                 "Sikana kode ya QR ku kimenyetso cy'igiti kugira ngo usubire kuri umuyobozi wuzuye."
         );
         return t;
