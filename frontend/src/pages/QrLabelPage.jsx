@@ -12,16 +12,17 @@ import { t } from '../i18n/ui';
 const PLAQUE_COPY = {
   'syzygium-guineense': {
     localName: 'UMUGOTE',
-    englishName: 'waterberry',
+    englishName: 'Waterberry or water pear',
     family: 'Myrtaceae',
-    akamaro: 'Imbuto ziribwa Igiti kirubakishwa',
+    akamaro:
+      'Kigira igiti gikomeye bakoresha batinda amateme, kandi bubakisha. Imbuto ziribwa n\'abantu ndetse n\'inyoni zinyuranye.',
     ubuvuzi:
-      "Igishihwa kivura inzoka zo munda. Imizi yinikwa mu mazi ikavura igicuri, igifu Imbuto nazo zivura inzoka zo munda n' amacinya.",
+      "Imbuto zivura amacinya, naho ibishishwa by'igiti bitetse bikavura gucibwamo.",
     uses: [
-      'The fruits are edible',
+      'Firewood.',
+      'The fruits are eaten by humans, birds and monkeys.',
       'The fruits are used as a remedy for dysentery.',
       'The decoction of the bark is used as an antidiarrheic.',
-      'The roots are soaked and consumed to treat epilepsy, stomachache, as well as purgative and anthelmintic.',
     ],
   },
   'ficus-ovata': {

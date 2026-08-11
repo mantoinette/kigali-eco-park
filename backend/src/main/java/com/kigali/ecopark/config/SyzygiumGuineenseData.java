@@ -205,71 +205,52 @@ public final class SyzygiumGuineenseData {
     private static TreeTranslation kinyarwanda(Tree tree) {
         TreeTranslation t = base(tree, "rw", "Umugote");
         t.setShortDescription(
-                "Igiti cy'igihugu kidapfa ibyatsi gifite ibyatsi by'icyatsi kibisi, indabo z'impumuro nziza n'imbuto zirya — ingenzi mu masaka y'igihugu ahameza."
+                "Umugote (Syzygium guineense) ni igiti kiba mu mashya yo mu misozi nka Nyumgwe, n'ahandi."
         );
         t.setInterestingFacts(String.join("\n",
-                "Gishobora kubaho imyaka irenga 200 mu bihe byiza.",
-                "Cyavutse mu Burasirazuba bw'Afurika kandi kiboneka mu turere tw'Afurika y'ubuturo.",
-                "Indabo zitera mu gihe cy'Agasozi kugeza ku Ukuboza mu Rwanda.",
-                "Ibyatsi bishya biba ibara ry'ubutare n'umutuku.",
-                "Imbuto zirya ni ibiribwa by'ingenzi by'abana mu Burasirazuba bw'Afurika."
+                "Izina ry'ikinyarwanda: Umugote.",
+                "Izina ry'ubumenyi: Syzygium guineense.",
+                "Kiba mu mashyamba yo mu misozi nka Nyumgwe, n'ahandi.",
+                "Igiti gikomeye — bakoresha batinda amateme kandi bubakisha.",
+                "Imbuto ziribwa n'abantu ndetse n'inyoni zinyuranye."
         ));
         t.setQuickFacts(String.join("\n",
+                "Izina ry'ikinyarwanda: Umugote",
+                "Izina ry'ubumenyi: Syzygium guineense",
                 "Umuryango: Myrtaceae",
-                "Uburebure busanzwe: metero 10–25",
-                "Ubwoko: Igiti kidapfa ibyatsi gifite igiti cyuzuye",
-                "Ibyatsi: Bikurura hamwe, by'icyatsi kibisi; ibishya biba ibara ry'ubutare n'umutuku",
-                "Indabo: Z'umweru, zifite impumuro nziza (Agasozi–Ukuboza)",
-                "Imbuto: Nyinshi, zibiba umuhora kugeza ku zirabwa (Ukuboza– Mata)",
-                "Aho zikura: Impande z'imigezi, imigezi, imbibi z'amasaka"
+                "Izina ry'icyongereza: Waterberry / water pear",
+                "Aho gikura: Mu mashya yo mu misozi (urugero: Nyumgwe)",
+                "Akamaro: Amateme, ubwubatsi, imbuto ziribwa",
+                "Ubuvuzi: Imbuto zivura amacinya; ibishishwa by'igiti bitetse bikavura gucibwamo"
         ));
         t.setDescription(
-                "Syzygium guineense ni igiti kinini kidapfa ibyatsi gifite inkomoko mu buhinga bwa Afrika yo " +
-                "hepfo y'ubutaka bwa Sahara. Kimenyekana cyane nka woodland waterberry cyangwa water pear " +
-                "kuko gikunda ahantu hameza n'imigezi. Gifite umubumbe mugari, amashami yamanuka, n'igiti " +
-                "cyuzuye gitanga igicucu kinini.\n\n" +
-                "Ibyatsi bishya biba ibara ry'ubutare n'umutuku mbere yo guhinduka iby'icyatsi kibisi. Mu gihe " +
-                "cyacyo, gitanga indabo z'umweru zifite impumuro nziza, hanyuma imbuto ziboneka zigira " +
-                "umuhondo kugeza ku zirabwa. Mu Rwanda, Syzygium guineense subsp. guineense ibarwa mu " +
-                "flora y'igihugu kandi ni ubwoko bw'ingenzi bw'ibidukikije by'ahantu hameza."
+                "Umugote — Syzygium guineense — ni igiti kiba mu mashya yo mu misozi nka Nyumgwe, n'ahandi.\n\n" +
+                "Ni igiti cy'igihugu gikunze gukura mu mashya n'ahantu h'imisozi. Abaturage bamenya Umugote " +
+                "nk'igiti gifite agaciro ku bucukuzi n'ubuzima bw'abantu n'inyoni."
         );
         t.setUses(
-                "Ibiti n'ubukorikori: Ibiti by'ibara ry'umutuku bucoro, bikomeye, biramba kandi byoroshye " +
-                "gukoresha. Bikoreshwa mu kubaka, gukora ibikoresho by'urugo, inkoni, ibishushanyo, inkingi, " +
-                "n'amato y'abakurambere.\n\n" +
-                "Ibiribwa: Imbuto zirabwa zirya—cyane n'abana—cyangwa zikoreshwa mu gukora ibinyobwa. Umushyushya " +
-                "w'iryoshye ushobora gusucwa n'imbuto isigara.\n\n" +
-                "Ubuvejuru: Igiti, ibyatsi, n'imizi bikoreshwa mu buvuzi bwa kinyarwanda ku ndwara zo mu nda " +
-                "n'izindi. Iburira: imiti y'igiti ishobora kuba y'uburozi niba itagenzuwe neza.\n\n" +
-                "Izindi nyungu: Igiti cy'ibara, ibyatsi n'indabo by'amatungo, gutera inzuki, n'igiti cy'igicucu " +
-                "mu busitani n'imirima y'ikawa."
+                "Akamaro: Kigira igiti gikomeye bakoresha batinda amateme, kandi bubakisha. " +
+                "Imbuto ziribwa n'abantu ndetse n'inyoni zinyuranye.\n\n" +
+                "Kuvura: Imbuto zivura amacinya, naho ibishishwa by'igiti bitetse bikavura gucibwamo."
         );
         t.setEcologicalImportance(
-                "Syzygium guineense ni ubwoko bw'ingenzi mu bidukikije by'Afurika by'ahantu hameza. Imizi yacyo " +
-                "ifasha mu kubungabunga imbibi y'imigezi no gukumira erosiyo y'ubutaka. Igiti cyuzuye gafasha " +
-                "gucunga ubushyuhe n'ubushuhe mu masaka n'imbibi z'imigezi.\n\n" +
-                "Indabo zifite impumuro nziza zishaka inzuki n'izindi nyongera. Imbuto zirabwa zirirwa n'inyoni " +
-                "n'inyamaswa, zigatanga imbuto mu turere. Igiti cyihanganira amazi menshi mu gihe runaka, " +
-                "bikacyo gikora cyane mu kugarura imigezi no kurinda amasoko y'amazi mu Rwanda rwo mu misozi."
+                "Umugote ukura mu mashya yo mu misozi, agira uruhare mu kubungabunga amashya n'ibidukikije " +
+                "by'imisozi. Imbuto zayo ziribwa n'inyoni zinyuranye, bigafasha ubuzima bw'ibinyabuzima mu mashya."
         );
         t.setBenefitsToPeopleAndWildlife(
-                "Ku bantu: Gitanga igicucu, imbuto zirya, ibimera by'ubuvuzi, ibiti, inkoni, n'amariba. Mu bihe " +
-                "bigoye byari ibiribwa by'ingenzi mu bice by'Uburasirazuba bw'Afurika. Inzuki zishaka indabo, " +
-                "bikafasha ubworozi bw'inzuki.\n\n" +
-                "Ku nyamaswa: Inyoni n'inyamaswa zirya imbuto. Igiti gitanga ahantu ho kurara no kwihisha mu " +
-                "giti cyacyo. Ibinyabutabire n'uduraganda busura indabo, bigafasha ubuzima bw'ibinyabuzima mu busitani."
+                "Ku bantu: Gitanga igiti gikomeye gikoreshwa mu gutinda amateme no mu bwubatsi. Imbuto ziribwa; " +
+                "zikoreshwa kandi mu kuvura amacinya. Ibishishwa by'igiti bitetse bikoreshwa mu kuvura gucibwamo.\n\n" +
+                "Ku nyamaswa: Imbuto ziribwa n'inyoni zinyuranye."
         );
         t.setCommonAreas(
-                "Iboneka mu turere tw'Afurika y'ubuturo kuva ku nkombe z'inyanja kugeza metero 2,500. Mu " +
-                "Burasirazuba bw'Afurika iboneka mu Rwanda, Uganda, Kenya, Tanzaniya, Etiyopiya n'ahandi.\n\n" +
-                "Imiterere y'ahantu ibarizwamo harimo imbibi z'amasaka, impande z'imigezi, savana ihumeka, " +
-                "imigezi, n'imigezi myinshi. Mu Rwanda ihuza n'amasaka n'imbibi z'imigezi mu gihugu hose."
+                "Mu mashya yo mu misozi nka Nyumgwe, n'ahandi hameze nk'aho."
         );
         t.setAdditionalInfo(
-                "Muri Kigali Eco-Park, iki giti cyigisha abashyitsi ibimera by'igihugu by'amasaka ahameza. " +
-                "Sikana kode ya QR ku kimenyetso kugira ngo usubire kuri iyi paje igihe cyose.\n\n" +
-                "Amazina yo kuyita: Waterberry, water pear, Syzygium guineense subsp. guineense.\n" +
-                "Igihe cy'indabo (mu karere): Agasozi – Ukuboza. Igihe cy'imbuto: Ukubozo – Mata."
+                "Izina ry'ikinyarwanda: Umugote.\n" +
+                "Izina ry'ubumenyi: Syzygium guineense.\n" +
+                "Umuryango: Myrtaceae.\n" +
+                "Izina ry'icyongereza: Waterberry cyangwa water pear.\n\n" +
+                "Sikana kode ya QR ku kimenyetso cy'igiti kugira ngo usubire kuri umuyobozi wuzuye."
         );
         return t;
     }
