@@ -17,6 +17,11 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/90 via-primary-dark/70 to-primary/40" />
 
       <div className="section-container relative z-10 py-20 text-white">
+        <img
+          src="/treescan-rwanda-logo.png"
+          alt={t(language, 'siteName')}
+          className="mb-6 h-16 w-auto max-w-[280px] rounded-xl bg-white/95 object-contain p-2 shadow-lg sm:h-20 sm:max-w-[340px]"
+        />
         <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-sm backdrop-blur-sm">
           <span aria-hidden="true">🌳</span>
           {t(language, 'heroBadge')}

@@ -74,15 +74,12 @@ export default function Footer() {
         <div className="section-container py-14 sm:py-16">
           <div className="grid gap-12 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
             <div className="max-w-sm">
-              <Link to="/" className="inline-block">
+              <Link to="/" className="inline-block rounded-xl bg-white/95 p-3 shadow-sm">
                 <img
-                  src="/kigali-eco-park-logo.png"
+                  src="/treescan-rwanda-logo.png"
                   alt={t(language, 'siteName')}
-                  className="h-14 w-auto object-contain sm:h-16"
+                  className="h-16 w-auto max-w-[260px] object-contain object-left sm:h-[4.5rem]"
                 />
-                <p className="mt-3 font-display text-lg font-bold tracking-wide text-white">
-                  {t(language, 'siteName')}
-                </p>
               </Link>
               <p className="mt-5 text-sm leading-relaxed text-white/75">
                 {t(language, 'footerTagline')}
