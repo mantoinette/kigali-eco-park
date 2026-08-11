@@ -37,6 +37,39 @@ public final class SyzygiumGuineenseData {
         tree.getTranslations().add(french(tree));
     }
 
+    /**
+     * Update an existing managed tree without clear()+insert (avoids unique constraint on language_code).
+     */
+    public static void refreshExisting(Tree tree, String apiPublicBaseUrl) {
+        applyMetadata(tree, apiPublicBaseUrl);
+        upsertTranslation(tree, english(tree));
+        upsertTranslation(tree, kinyarwanda(tree));
+        upsertTranslation(tree, french(tree));
+    }
+
+    private static void upsertTranslation(Tree tree, TreeTranslation fresh) {
+        for (TreeTranslation existing : tree.getTranslations()) {
+            if (fresh.getLanguageCode().equalsIgnoreCase(existing.getLanguageCode())) {
+                copyContent(fresh, existing);
+                return;
+            }
+        }
+        tree.getTranslations().add(fresh);
+    }
+
+    private static void copyContent(TreeTranslation from, TreeTranslation to) {
+        to.setCommonName(from.getCommonName());
+        to.setShortDescription(from.getShortDescription());
+        to.setInterestingFacts(from.getInterestingFacts());
+        to.setQuickFacts(from.getQuickFacts());
+        to.setDescription(from.getDescription());
+        to.setUses(from.getUses());
+        to.setEcologicalImportance(from.getEcologicalImportance());
+        to.setBenefitsToPeopleAndWildlife(from.getBenefitsToPeopleAndWildlife());
+        to.setCommonAreas(from.getCommonAreas());
+        to.setAdditionalInfo(from.getAdditionalInfo());
+    }
+
     public static void applyMetadata(Tree tree, String apiPublicBaseUrl) {
         tree.setScientificName(SCIENTIFIC_NAME);
         tree.setSlug(SLUG);

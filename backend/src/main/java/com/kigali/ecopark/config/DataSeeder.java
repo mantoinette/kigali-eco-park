@@ -92,7 +92,8 @@ public class DataSeeder {
             treeRepository.save(tree);
         } else {
             Tree tree = existing.get();
-            SyzygiumGuineenseData.applyMetadata(tree, apiPublicBaseUrl);
+            // Always refresh translations so name fixes (e.g. Umugote) apply on redeploy.
+            SyzygiumGuineenseData.refreshExisting(tree, apiPublicBaseUrl);
             if (needsMediaUrlRefresh(tree, SyzygiumGuineenseData.AUDIO_BASE_PATH)
                     || needsImageRefresh(tree)
                     || hasWrongSpeciesImages(tree, SyzygiumGuineenseData.SLUG)) {
