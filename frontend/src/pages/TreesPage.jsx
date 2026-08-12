@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import TreeCard from '../components/TreeCard';
+import TreeDirectory from '../components/TreeDirectory';
 import LoadingSpinner from '../components/LoadingSpinner';
-import CountUp from '../components/CountUp';
 import { fetchTreeCatalog, fetchTreeFilters } from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
 const HERO_IMG = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80';
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 25;
 
 const CATEGORY_LABELS = {
   en: {
@@ -60,9 +59,8 @@ function shortFamily(family) {
 }
 
 /**
- * Explore Trees — searchable, filterable, paginated catalogue (15 per page).
- * Each card opens /trees/{qrCodeId}; new DB trees appear automatically.
- * QR codes are not shown here — only on the tree details / printable sign.
+ * Explore Trees — compact searchable directory (not a card grid).
+ * Each name opens /trees/{qrCodeId}; new DB trees appear automatically.
  */
 export default function TreesPage() {
   const { language } = useLanguage();
@@ -145,6 +143,14 @@ export default function TreesPage() {
     },
     [searchParams, setSearchParams]
   );
+
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      const next = searchInput.trim();
+      if (next !== q) updateParams({ q: next });
+    }, 320);
+    return () => clearTimeout(handle);
+  }, [searchInput, q, updateParams]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -299,7 +305,7 @@ export default function TreesPage() {
 
       <section className="py-12 sm:py-16">
         <div className="section-container">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="font-display text-2xl font-semibold text-primary-dark sm:text-3xl">
                 {t(language, 'treesCatalogTitle')}
@@ -308,10 +314,10 @@ export default function TreesPage() {
                 {t(language, 'treesCatalogSubtitle')}
               </p>
             </div>
-            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary-dark">
-              <CountUp value={trees.length} language={language} duration={900} />
-              <span className="font-medium text-primary/70">/</span>
-              <CountUp value={totalElements} language={language} duration={1100} />
+            <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary-dark">
+              {t(language, 'showingTreesCount')
+                .replace('{shown}', String(trees.length))
+                .replace('{total}', String(totalElements))}
             </span>
           </div>
 
@@ -345,11 +351,7 @@ export default function TreesPage() {
             </div>
           )}
           {!loading && !error && trees.length > 0 && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {trees.map((tree) => (
-                <TreeCard key={tree.id} tree={tree} />
-              ))}
-            </div>
+            <TreeDirectory trees={trees} />
           )}
 
           {!loading && totalPages > 1 && (

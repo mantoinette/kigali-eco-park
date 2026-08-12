@@ -137,7 +137,7 @@ export default function TreePreviewPage() {
                     )}
                     {qr?.treeId && (
                       <Link to={`/scan/${qr.treeId}`} className="btn btn-secondary !rounded-xl !px-4 !py-2 text-xs">
-                        {t(language, 'testTreePage')}
+                        {t(language, 'fullGuideAfterScan')}
                       </Link>
                     )}
                   </div>
