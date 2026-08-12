@@ -12,6 +12,7 @@ import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
 import { displayCommonName } from '../utils/treeDisplay';
 import LoadingSpinner from './LoadingSpinner';
+import { TreeSpeciesHeading } from './TreeSpeciesHeading';
 
 function isYoutubeEmbed(url) {
   return url && (url.includes('youtube.com') || url.includes('youtu.be'));
@@ -210,7 +211,7 @@ export default function TreeDetail({ tree, loading, error }) {
     <article className="bg-surface">
       <div className="relative h-[min(70vh,520px)] overflow-hidden">
         {activeImage ? (
-          <TreeHeroImage src={resolveMediaUrl(activeImage.url)} alt={commonName} />
+          <TreeHeroImage src={resolveMediaUrl(activeImage.url)} alt={tree.scientificName || commonName} />
         ) : (
           <div className="flex h-full items-center justify-center bg-primary/10 text-8xl">🌳</div>
         )}
@@ -219,8 +220,14 @@ export default function TreeDetail({ tree, loading, error }) {
           <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
             {t(language, 'indigenousTree')}
           </span>
-          <h1 className="mt-3 font-display text-4xl font-bold sm:text-5xl">{commonName}</h1>
-          <p className="mt-2 text-lg italic opacity-90">{tree.scientificName}</p>
+          <div className="mt-3">
+            <TreeSpeciesHeading
+              scientificName={tree.scientificName}
+              commonName={commonName}
+              variant="hero"
+              inverted
+            />
+          </div>
         </div>
       </div>
 
@@ -376,8 +383,10 @@ export default function TreeDetail({ tree, loading, error }) {
                       <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-xl">🌳</span>
                     )}
                     <div className="min-w-0">
-                      <p className="truncate font-semibold text-primary-dark">{displayCommonName(item, language)}</p>
-                      <p className="truncate text-xs italic text-gray-500">{item.scientificName}</p>
+                      <p className="truncate font-serif text-sm font-semibold italic text-primary-dark">
+                        {item.scientificName}
+                      </p>
+                      <p className="truncate text-xs text-gray-500">{displayCommonName(item, language)}</p>
                     </div>
                   </Link>
                 ))}
