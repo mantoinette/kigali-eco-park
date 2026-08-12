@@ -24,5 +24,5 @@ export default function TreeByIdPage() {
       .finally(() => setLoading(false));
   }, [id, language]);
 
-  return <TreeDetail tree={tree} loading={loading} error={error} />;
+  return <TreeDetail key={`${id}-${language}`} tree={tree} loading={loading} error={error} />;
 }

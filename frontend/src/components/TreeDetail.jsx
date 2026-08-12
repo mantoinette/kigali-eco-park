@@ -11,12 +11,15 @@ import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
 import { displayCommonName } from '../utils/treeDisplay';
+import {
+  isYoutubeEmbed,
+  nextAudioFallbackLang,
+  nextVideoFallbackLang,
+  resolveTreeAudioUrl,
+  resolveTreeVideoUrl,
+} from '../utils/treeMedia';
 import LoadingSpinner from './LoadingSpinner';
 import { TreeSpeciesHeading } from './TreeSpeciesHeading';
-
-function isYoutubeEmbed(url) {
-  return url && (url.includes('youtube.com') || url.includes('youtu.be'));
-}
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -60,37 +63,6 @@ function BulletSection({ title, content, icon }) {
       </ul>
     </section>
   );
-}
-
-function resolveAudioUrl(audioUrl, language, treeId) {
-  if (!audioUrl) return null;
-  const resolved = resolveMediaUrl(audioUrl);
-  const match = resolved.match(/^(.*\/media\/audio\/[^/]+)-([a-z]{2})\.mp3$/i);
-  const base = match ? `${match[1]}-${language}.mp3` : resolved;
-  if (!treeId) return base;
-  const sep = base.includes('?') ? '&' : '?';
-  return `${base}${sep}tree=${encodeURIComponent(treeId)}`;
-}
-
-function resolveVideoUrl(videoUrl, language, treeId) {
-  if (!videoUrl || videoUrl.startsWith('internal:')) return videoUrl;
-  if (isYoutubeEmbed(videoUrl)) return videoUrl;
-
-  const resolved = resolveMediaUrl(videoUrl);
-  const withLang = resolved.match(/^(.*\/media\/video\/[^/]+)-([a-z]{2})\.mp4$/i);
-  let base = resolved;
-  if (withLang) {
-    base = `${withLang[1]}-${language}.mp4`;
-  } else {
-    const bare = resolved.match(/^(.*\/media\/video\/[^/]+)\.mp4$/i);
-    if (bare) {
-      base = `${bare[1]}-${language}.mp4`;
-    }
-  }
-
-  if (!treeId) return base;
-  const sep = base.includes('?') ? '&' : '?';
-  return `${base}${sep}tree=${encodeURIComponent(treeId)}`;
 }
 
 function TreeHeroImage({ src, alt }) {
@@ -142,6 +114,8 @@ export default function TreeDetail({ tree, loading, error }) {
   const [activeImage, setActiveImage] = useState(null);
   const [audioSrc, setAudioSrc] = useState(null);
   const [videoSrc, setVideoSrc] = useState(null);
+  const [audioTriedLangs, setAudioTriedLangs] = useState(() => new Set());
+  const [videoTriedLangs, setVideoTriedLangs] = useState(() => new Set());
   const [otherTrees, setOtherTrees] = useState([]);
 
   useEffect(() => {
@@ -152,25 +126,19 @@ export default function TreeDetail({ tree, loading, error }) {
   }, [tree]);
 
   useEffect(() => {
-    setAudioSrc(null);
-    setVideoSrc(null);
-  }, [tree?.qrCodeId, tree?.slug]);
-
-  useEffect(() => {
-    if (!tree?.audioUrl) {
+    setAudioTriedLangs(new Set());
+    setVideoTriedLangs(new Set());
+    if (!tree?.audioUrl && !tree?.qrCodeId) {
       setAudioSrc(null);
-      return;
+    } else {
+      setAudioSrc(resolveTreeAudioUrl(tree, language));
     }
-    setAudioSrc(resolveAudioUrl(tree.audioUrl, language, tree.qrCodeId));
-  }, [tree?.qrCodeId, tree?.audioUrl, language]);
-
-  useEffect(() => {
-    if (!tree?.videoUrl || tree.videoUrl.startsWith('internal:')) {
+    if (!tree?.videoUrl && !tree?.qrCodeId) {
       setVideoSrc(null);
-      return;
+    } else {
+      setVideoSrc(resolveTreeVideoUrl(tree, language));
     }
-    setVideoSrc(resolveVideoUrl(tree.videoUrl, language, tree.qrCodeId));
-  }, [tree?.qrCodeId, tree?.videoUrl, language]);
+  }, [tree, language]);
 
   useEffect(() => {
     if (!tree?.slug) {
@@ -298,15 +266,18 @@ export default function TreeDetail({ tree, loading, error }) {
                 {tree.qrCodeId ? ` · ${tree.qrCodeId} · ${tree.scientificName}` : ''}
               </p>
               <audio
-                key={`${tree.qrCodeId}-${audioSrc}`}
+                key={`${tree.qrCodeId}-${language}-audio`}
                 controls
                 className="mt-4 w-full"
                 src={audioSrc}
                 onError={() => {
-                  const fallback = resolveAudioUrl(tree.audioUrl, language, tree.qrCodeId);
-                  if (fallback && audioSrc !== fallback) {
-                    setAudioSrc(fallback);
-                  }
+                  const tried = new Set(audioTriedLangs);
+                  tried.add(language);
+                  const fallbackLang = nextAudioFallbackLang(language, tried);
+                  if (!fallbackLang) return;
+                  tried.add(fallbackLang);
+                  setAudioTriedLangs(tried);
+                  setAudioSrc(resolveTreeAudioUrl(tree, fallbackLang));
                 }}
               >
                 <track kind="captions" />
@@ -338,17 +309,20 @@ export default function TreeDetail({ tree, loading, error }) {
                   />
                 ) : (
                   <video
-                    key={`${tree.qrCodeId}-${videoSrc}`}
+                    key={`${tree.qrCodeId}-${language}-video`}
                     controls
                     playsInline
                     preload="metadata"
                     className="h-full w-full"
                     src={videoSrc}
                     onError={() => {
-                      const fallback = resolveVideoUrl(tree.videoUrl, language, tree.qrCodeId);
-                      if (fallback && videoSrc !== fallback) {
-                        setVideoSrc(fallback);
-                      }
+                      const tried = new Set(videoTriedLangs);
+                      tried.add(language);
+                      const fallbackLang = nextVideoFallbackLang(language, tried);
+                      if (!fallbackLang) return;
+                      tried.add(fallbackLang);
+                      setVideoTriedLangs(tried);
+                      setVideoSrc(resolveTreeVideoUrl(tree, fallbackLang));
                     }}
                   >
                     <track kind="captions" />

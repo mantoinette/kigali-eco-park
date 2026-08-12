@@ -63,7 +63,7 @@ export default function ScanTreePage() {
         </div>
       </div>
 
-      <TreeDetail key={qrCodeId} tree={tree} loading={false} error={null} />
+      <TreeDetail key={`${qrCodeId}-${language}`} tree={tree} loading={false} error={null} />
 
       <section id="print-tree-sign" className="border-t border-primary/10 bg-white py-12">
         <div className="section-container">
