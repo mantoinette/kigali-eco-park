@@ -34,7 +34,7 @@ export default function Navbar() {
             alt={t(language, 'siteName')}
             className="h-11 w-auto max-w-[200px] object-contain object-left sm:h-12 sm:max-w-[240px]"
           />
-
+        </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label={t(language, 'mainNav')}>
           {links.map((link) => (

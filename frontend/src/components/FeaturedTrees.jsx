@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import TreeCard from './TreeCard';
+import TreeDirectory from './TreeDirectory';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
-/** Home featured strip — one card per tree, each opens its own page. */
+/** Home featured strip — compact directory preview, not large cards. */
 export default function FeaturedTrees({ trees }) {
   const { language } = useLanguage();
 
@@ -14,7 +14,7 @@ export default function FeaturedTrees({ trees }) {
   return (
     <section className="bg-surface py-20">
       <div className="section-container">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               {t(language, 'treesPageEyebrow')}
@@ -27,11 +27,7 @@ export default function FeaturedTrees({ trees }) {
           </Link>
         </div>
 
-        <div className={`grid gap-6 ${featured.length === 1 ? 'mx-auto max-w-md' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
-          {featured.map((tree) => (
-            <TreeCard key={tree.id} tree={tree} />
-          ))}
-        </div>
+        <TreeDirectory trees={featured} />
       </div>
     </section>
   );

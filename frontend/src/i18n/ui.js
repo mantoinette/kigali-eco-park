@@ -56,7 +56,7 @@ export const uiText = {
     whyMobileTitle: 'Mobile Friendly',
     whyMobileText: 'Works perfectly on any smartphone.',
     featuredTrees: 'Featured Trees',
-    featuredTreesIntro: 'Each card opens that tree’s own page — one species at a time.',
+    featuredTreesIntro: 'Select a tree to open its page — then scan the park QR for the full guide.',
     featuredTreeFallback: 'An indigenous tree species documented at Kigali Eco Park.',
     viewDetails: 'View Details',
     viewAllTrees: 'Explore Trees',
