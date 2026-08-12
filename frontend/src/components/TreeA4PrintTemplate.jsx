@@ -53,13 +53,12 @@ export default function TreeA4PrintTemplate({ tree, qr }) {
 
         <main className="tree-a4-body">
           <div className="tree-a4-titleblock">
-            <div className="tree-a4-code">{tree?.qrCodeId}</div>
-            <div className="tree-a4-tree-name">{tree?.commonName}</div>
             {tree?.scientificName ? (
-              <div className="tree-a4-scientific">
+              <div className="tree-a4-scientific-primary">
                 <em>{tree.scientificName}</em>
               </div>
             ) : null}
+            <div className="tree-a4-tree-name">{tree?.commonName}</div>
           </div>
 
           <div className="tree-a4-meta">

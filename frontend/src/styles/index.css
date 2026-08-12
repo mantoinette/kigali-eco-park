@@ -221,16 +221,17 @@
 
 /* —— A4 portrait tree sign (print template) —— */
 .tree-a4-print {
-  width: 100%;
-  max-width: 520px;
+  width: min(100%, 210mm);
+  max-width: 210mm;
   aspect-ratio: 210 / 297;
   background: #fff;
   box-sizing: border-box;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
 }
 
 .tree-a4-print-inner {
   height: 100%;
-  padding: 18px 16px;
+  padding: 14mm 12mm;
   display: flex;
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
@@ -246,14 +247,14 @@
 }
 
 .tree-a4-qr-img {
-  width: 120px;
+  width: 38mm;
   height: auto;
   display: block;
 }
 
 .tree-a4-qr-placeholder {
-  width: 120px;
-  height: 120px;
+  width: 38mm;
+  height: 38mm;
   background: #f3f4f6;
 }
 
@@ -272,19 +273,29 @@
 }
 
 .tree-a4-code {
-  font-size: 14px;
+  font-size: 10pt;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: #065f46;
 }
 
+.tree-a4-scientific-primary {
+  font-size: 18pt;
+  font-weight: 700;
+  font-style: italic;
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.15;
+  color: #064e3b;
+}
+
 .tree-a4-tree-name {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 11pt;
+  font-weight: 600;
+  color: #4b5563;
 }
 
 .tree-a4-scientific {
-  font-size: 14px;
+  font-size: 11pt;
 }
 
 .tree-a4-meta {
@@ -477,10 +488,14 @@
   }
 
   .tree-a4-code {
-    font-size: 14pt !important;
+    font-size: 12pt !important;
+  }
+
+  .tree-a4-scientific-primary {
+    font-size: 22pt !important;
   }
 
   .tree-a4-tree-name {
-    font-size: 22pt !important;
+    font-size: 13pt !important;
   }
 }
