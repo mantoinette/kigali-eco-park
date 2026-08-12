@@ -53,6 +53,21 @@ const PLAQUE_COPY = {
       'Sometimes planted as an ornamental wetland shrub.',
     ],
   },
+  'albizia-versicolor': {
+    localName: 'UMUBUBA',
+    englishName: 'poison-pod albizia / large-leaved albizia',
+    family: 'Fabaceae',
+    akamaro:
+      'Kivangwa n\'imyaka. Bakibazamo ibikoresho byo mu gikoni. Igiti cy\'igicucu n\'ubuhinzi bw\'ibiti.',
+    ubuvuzi:
+      'Igishihwa n\'imizi bikoreshwa mu buvuzi gakondo: kuvura inzoka zo munda, kwongera amaraso, kubyimbirwa, indwara z\'ibanga, kubabara umutwe, impfu n\'uburwayi bwo mu zuru.',
+    uses: [
+      'Medicinal bark and roots for anaemia, swollen glands, anthelmintic and headache relief.',
+      'Powdered bark sniffed for coughs, headache and sinusitis.',
+      'Timber for building; bark fibre for household items.',
+      'Firewood and agroforestry shade tree — note toxic pods for livestock.',
+    ],
+  },
 };
 
 function ParkLogo() {

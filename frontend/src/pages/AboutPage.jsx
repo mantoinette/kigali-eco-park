@@ -129,6 +129,9 @@ export default function AboutPage() {
             <Link to="/qr-label/aeschynomene-elaphroxylon" className="btn btn-secondary">
               Umuburu (TREE-003)
             </Link>
+            <Link to="/qr-label/albizia-versicolor" className="btn btn-secondary">
+              Umububa (TREE-004)
+            </Link>
           </div>
         </div>
       </section>

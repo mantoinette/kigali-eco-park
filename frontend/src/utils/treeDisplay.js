@@ -19,6 +19,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'Ambatch',
     fr: 'Ambatch',
   },
+  'albizia-versicolor': {
+    rw: 'Umububa',
+    en: 'Poison-pod Albizia',
+    fr: 'Albizie versicolore',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);
