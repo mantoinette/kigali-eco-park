@@ -108,11 +108,11 @@ export default function QrLabelPage() {
 
   return (
     <div className="qr-label-page bg-surface px-4 py-8 sm:px-6">
-      {/* Print/PDF = green plaque only (16×10 cm), not a full website page */}
+      {/* Print/PDF = green A4 plaque only, not the full website page */}
       <style>{`
         @media print {
           @page {
-            size: 160mm 100mm;
+            size: A4 portrait;
             margin: 0;
           }
         }
@@ -167,13 +167,15 @@ export default function QrLabelPage() {
             <div className="park-plaque-content">
               <div className="park-plaque-header">
                 <div className="park-plaque-header-text">
-                  <h1 className="park-plaque-local">{localName}</h1>
-                  <p className="park-plaque-line">
-                    <strong>Scientific name:</strong> {qr.scientificName?.toUpperCase()}
+                  <h1 className="park-plaque-scientific">
+                    <em>{qr.scientificName}</em>
+                  </h1>
+                  <p className="park-plaque-line park-plaque-line-header">
+                    <strong>Local name:</strong> {localName}
                   </p>
                   {family && (
-                    <p className="park-plaque-line">
-                      <strong>Family :</strong> {family}
+                    <p className="park-plaque-line park-plaque-line-header">
+                      <strong>Family:</strong> {family}
                     </p>
                   )}
                 </div>
@@ -190,24 +192,24 @@ export default function QrLabelPage() {
                 <div className="park-plaque-col">
                   {akamaro && (
                     <p className="park-plaque-line park-plaque-gap">
-                      <strong>Akamaro:</strong> {akamaro}
+                      <strong className="park-plaque-line-label">Akamaro:</strong> {akamaro}
                     </p>
                   )}
                   {ubuvuzi && (
                     <p className="park-plaque-line">
-                      <strong>Ubuvuzi :</strong> {ubuvuzi}
+                      <strong className="park-plaque-line-label">Ubuvuzi:</strong> {ubuvuzi}
                     </p>
                   )}
                 </div>
 
                 <div className="park-plaque-col">
                   <p className="park-plaque-line">
-                    <strong>Commonname:</strong> {englishName}
+                    <strong className="park-plaque-line-label">Common name:</strong> {englishName}
                   </p>
                   {uses.length > 0 && (
                     <div className="park-plaque-uses">
                       <p className="park-plaque-line">
-                        <strong>Uses :</strong>
+                        <strong className="park-plaque-line-label">Uses:</strong>
                       </p>
                       {uses.map((item) => (
                         <p key={item} className="park-plaque-line">
@@ -226,7 +228,7 @@ export default function QrLabelPage() {
           </div>
         </section>
         <p className="no-print mt-3 text-center text-xs text-gray-500">
-          Tree label size: 16 × 10 cm — cut along the green edge to attach on the tree
+          A4 portrait (210 × 297 mm) — print or save as PDF with background graphics enabled
         </p>
       </div>
 
