@@ -29,6 +29,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'Common bamboo',
     fr: 'Bambou commun',
   },
+  'erythrina-abyssinica': {
+    rw: 'Umuko',
+    en: 'Red hot poker tree',
+    fr: 'Érythrine d\'Abyssinie',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);

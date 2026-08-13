@@ -44,6 +44,8 @@ public class DataSeeder {
                     seedAlbiziaVersicolor(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status ->
                     seedBambusaVulgaris(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            tx.executeWithoutResult(status ->
+                    seedErythrinaAbyssinica(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status -> keepOnlyPublishedParkTrees(treeRepository));
         };
     }
@@ -257,6 +259,43 @@ public class DataSeeder {
         }
     }
 
+    void seedErythrinaAbyssinica(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(ErythrinaAbyssinicaData.SLUG);
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            ErythrinaAbyssinicaData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    ErythrinaAbyssinicaData.SLUG,
+                    ErythrinaAbyssinicaData.SCIENTIFIC_NAME,
+                    ErythrinaAbyssinicaData.imageSources()
+            );
+            ErythrinaAbyssinicaData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            ErythrinaAbyssinicaData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, ErythrinaAbyssinicaData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, ErythrinaAbyssinicaData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        ErythrinaAbyssinicaData.SLUG,
+                        ErythrinaAbyssinicaData.SCIENTIFIC_NAME,
+                        ErythrinaAbyssinicaData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    ErythrinaAbyssinicaData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
@@ -264,7 +303,8 @@ public class DataSeeder {
                         && !FicusOvataData.SLUG.equals(t.getSlug())
                         && !AeschynomeneElaphroxylonData.SLUG.equals(t.getSlug())
                         && !AlbiziaVersicolorData.SLUG.equals(t.getSlug())
-                        && !BambusaVulgarisData.SLUG.equals(t.getSlug()))
+                        && !BambusaVulgarisData.SLUG.equals(t.getSlug())
+                        && !ErythrinaAbyssinicaData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -299,23 +339,27 @@ public class DataSeeder {
             String url = img.getUrl() == null ? "" : img.getUrl().toLowerCase();
             if (FicusOvataData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("aeschynomene") || url.contains("albizia")
-                        || url.contains("bambusa");
+                        || url.contains("bambusa") || url.contains("erythrina");
             }
             if (SyzygiumGuineenseData.SLUG.equals(slug)) {
                 return url.contains("ficus_ovata") || url.contains("ficus-ovata") || url.contains("aeschynomene")
-                        || url.contains("albizia") || url.contains("bambusa");
+                        || url.contains("albizia") || url.contains("bambusa") || url.contains("erythrina");
             }
             if (AeschynomeneElaphroxylonData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("albizia") || url.contains("bambusa");
+                        || url.contains("albizia") || url.contains("bambusa") || url.contains("erythrina");
             }
             if (AlbiziaVersicolorData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("aeschynomene") || url.contains("bambusa");
+                        || url.contains("aeschynomene") || url.contains("bambusa") || url.contains("erythrina");
             }
             if (BambusaVulgarisData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("aeschynomene") || url.contains("albizia");
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("erythrina");
+            }
+            if (ErythrinaAbyssinicaData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa");
             }
             return false;
         });

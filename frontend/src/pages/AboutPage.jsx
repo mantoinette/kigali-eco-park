@@ -135,6 +135,9 @@ export default function AboutPage() {
             <Link to="/qr-label/bambusa-vulgaris" className="btn btn-secondary">
               Umugano (TREE-005)
             </Link>
+            <Link to="/qr-label/erythrina-abyssinica" className="btn btn-secondary">
+              Umuko (TREE-006)
+            </Link>
           </div>
         </div>
       </section>

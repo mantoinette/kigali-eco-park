@@ -83,6 +83,21 @@ const PLAQUE_COPY = {
       'Leaves as livestock fodder; planted to control riverbank erosion.',
     ],
   },
+  'erythrina-abyssinica': {
+    localName: 'UMUKO',
+    englishName: 'red hot poker tree / Abyssinian coral tree',
+    family: 'Fabaceae',
+    akamaro:
+      'Kubandwa Ryangombe. Gufumbira ubutaka — gukoresha nk\'ifumbire y\'ubutaka.',
+    ubuvuzi:
+      'Indwara z\'umwijima — igishihwa cy\'igiti gikoreshwa mu kuvura indwara z\'umwijima. Inzoka zo munda, ibinyoro, ibisebe, umwijima na malariya. Indeberezi mu burobyi — ubusa bw\'igishihwa.',
+    uses: [
+      'Socio-cultural: used in religious ceremonies of Ryangombe.',
+      'Traditional medicine: stem bark for liver complaints.',
+      'Fishing: corky bark used as floats.',
+      'Agroforestry: shade and soil enrichment (green manure).',
+    ],
+  },
 };
 
 function ParkLogo() {
