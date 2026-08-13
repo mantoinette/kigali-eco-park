@@ -36,13 +36,13 @@ export default function TreeA4PrintTemplate({ tree, qr }) {
   const usesLines = usesList.length ? usesList : formatMultilineText(tree?.uses);
 
   return (
-    <div className="tree-a4-print mx-auto border border-gray-200 bg-white">
+    <div className="tree-a4-print mx-auto">
       <div className="tree-a4-print-inner">
         <header className="tree-a4-header">
           <div className="tree-a4-logo">
             <ParkLogo />
           </div>
-          <div className="tree-a4-qr">
+          <div className="tree-a4-qr-box">
             {qrCodeBase64 ? (
               <img src={qrCodeBase64} alt={`QR to ${tree?.commonName}`} className="tree-a4-qr-img" />
             ) : (

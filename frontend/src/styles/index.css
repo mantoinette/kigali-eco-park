@@ -106,19 +106,22 @@
 }
 
 .park-plaque {
-  --plaque-green: #1a4e2a;
+  /* Darker than btn-primary (#2E7D32) */
+  --plaque-green: #1B5E20;
   /* A4 portrait: 210 mm × 297 mm */
   width: min(100%, 210mm);
   height: 297mm;
   max-width: 210mm;
-  background: var(--plaque-green);
-  color: #fff;
+  background: var(--plaque-green) !important;
+  color: #fff !important;
   border-radius: 0;
   padding: 8mm;
-  box-shadow: 0 12px 28px rgba(74, 155, 100, 0.22);
+  box-shadow: 0 12px 28px rgba(27, 94, 32, 0.28);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .park-plaque-border {
@@ -234,12 +237,17 @@
 
 /* —— A4 portrait tree sign (print template) —— */
 .tree-a4-print {
+  --plaque-green: #1B5E20;
   width: min(100%, 210mm);
   max-width: 210mm;
   aspect-ratio: 210 / 297;
-  background: #fff;
+  background: var(--plaque-green) !important;
+  color: #fff !important;
   box-sizing: border-box;
-  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 28px rgba(27, 94, 32, 0.28);
+  border: none;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .tree-a4-print-inner {
@@ -248,7 +256,7 @@
   display: flex;
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
-  color: #111827;
+  color: #fff;
   box-sizing: border-box;
 }
 
@@ -257,6 +265,13 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
+}
+
+.tree-a4-qr-box {
+  background: #fff;
+  padding: 3mm;
+  border-radius: 1mm;
+  flex-shrink: 0;
 }
 
 .tree-a4-qr-img {
@@ -289,7 +304,7 @@
   font-size: 10pt;
   font-weight: 800;
   letter-spacing: 0.08em;
-  color: #065f46;
+  color: #fff;
 }
 
 .tree-a4-scientific-primary {
@@ -298,13 +313,13 @@
   font-style: italic;
   font-family: Georgia, 'Times New Roman', serif;
   line-height: 1.15;
-  color: #064e3b;
+  color: #fff;
 }
 
 .tree-a4-tree-name {
   font-size: 11pt;
   font-weight: 600;
-  color: #4b5563;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .tree-a4-scientific {
@@ -323,11 +338,11 @@
 
 .tree-a4-meta-label {
   font-weight: 800;
-  color: #374151;
+  color: #fff;
 }
 
 .tree-a4-meta-value {
-  color: #111827;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .tree-a4-section {
@@ -337,17 +352,19 @@
 .tree-a4-section-title {
   font-weight: 900;
   margin-bottom: 4px;
-  color: #0f766e;
+  color: #fff;
 }
 
 .tree-a4-section-text {
   white-space: pre-wrap;
   line-height: 1.35;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .tree-a4-uses {
   margin: 0;
   padding-left: 16px;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .tree-a4-footer {
@@ -360,11 +377,12 @@
 
 .tree-a4-scan-text {
   font-weight: 700;
-  color: #065f46;
+  color: #fff;
 }
 
 .tree-a4-website-url {
   word-break: break-word;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 @media (max-width: 700px) {
@@ -464,7 +482,7 @@
     max-width: 210mm !important;
     height: 297mm !important;
     padding: 8mm !important;
-    background: #1a4e2a !important;
+    background: #1B5E20 !important;
     color: #fff !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -511,19 +529,27 @@
     width: 65mm !important;
   }
 
-  /* A4 portrait tree sign */
+  /* A4 portrait tree sign — same dark green plaque */
   .tree-a4-print {
     width: 210mm !important;
     height: 297mm !important;
     max-width: 210mm !important;
     border: none !important;
     box-shadow: none !important;
-    background: #fff !important;
+    background: #1B5E20 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .tree-a4-print-inner {
     height: 100% !important;
     padding: 16mm 14mm !important;
+    color: #fff !important;
+  }
+
+  .tree-a4-qr-box {
+    background: #fff !important;
   }
 
   .tree-a4-qr-img,
@@ -532,15 +558,16 @@
     height: auto !important;
   }
 
-  .tree-a4-code {
-    font-size: 12pt !important;
-  }
-
-  .tree-a4-scientific-primary {
-    font-size: 22pt !important;
+  .tree-a4-code,
+  .tree-a4-scientific-primary,
+  .tree-a4-section-title,
+  .tree-a4-scan-text,
+  .tree-a4-meta-label {
+    color: #fff !important;
   }
 
   .tree-a4-tree-name {
     font-size: 13pt !important;
+    color: rgba(255, 255, 255, 0.9) !important;
   }
 }
