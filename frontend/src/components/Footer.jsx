@@ -74,14 +74,11 @@ export default function Footer() {
         <div className="section-container py-14 sm:py-16">
           <div className="grid gap-12 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
             <div className="max-w-sm">
-              <Link
-                to="/"
-                className="inline-flex rounded-lg bg-white px-3 py-2 ring-1 ring-white/20"
-              >
+              <Link to="/" className="inline-block transition-opacity hover:opacity-90">
                 <img
                   src="/treescan-rwanda-logo.png"
                   alt={t(language, 'siteName')}
-                  className="h-14 w-auto max-w-[240px] object-contain object-left sm:h-16"
+                  className="h-14 w-auto max-w-[240px] object-contain object-left drop-shadow-sm sm:h-16"
                 />
               </Link>
               <p className="mt-5 text-sm leading-relaxed text-white/75">
@@ -184,11 +181,14 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10">
-          <div className="section-container flex flex-col items-center justify-between gap-3 py-5 text-center text-xs text-white/55 sm:flex-row sm:text-left">
+          <div className="section-container flex flex-col gap-3 py-5 text-center text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between sm:text-left">
             <p>
               © {year} {t(language, 'siteName')}. {t(language, 'allRightsReserved')}
             </p>
-            <p className="tracking-wide text-white/45">{t(language, 'footerGuided')}</p>
+            <div className="flex flex-col items-center gap-1 sm:items-end">
+              <p className="tracking-wide text-white/45">{t(language, 'footerGuided')}</p>
+              <p className="font-medium text-white/60">{t(language, 'footerDevelopedBy')}</p>
+            </div>
           </div>
         </div>
       </div>
