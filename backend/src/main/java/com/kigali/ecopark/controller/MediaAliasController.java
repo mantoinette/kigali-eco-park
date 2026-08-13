@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Maps legacy species filenames to unique per-tree media (TREE-001 … TREE-004).
+ * Maps legacy species filenames to unique per-tree media (TREE-001 … TREE-005).
  */
 @RestController
 public class MediaAliasController {
@@ -44,7 +44,7 @@ public class MediaAliasController {
     static String resolveCanonicalName(String fileName) {
         String lower = fileName == null ? "" : fileName.toLowerCase();
         if (lower.startsWith("tree-001-") || lower.startsWith("tree-002-") || lower.startsWith("tree-003-")
-                || lower.startsWith("tree-004-")) {
+                || lower.startsWith("tree-004-") || lower.startsWith("tree-005-")) {
             return fileName;
         }
         if (lower.startsWith("syzygium-guineense-")) {
@@ -61,6 +61,9 @@ public class MediaAliasController {
         }
         if (lower.startsWith("albizia-versicolor-")) {
             return "TREE-004-" + fileName.substring("albizia-versicolor-".length());
+        }
+        if (lower.startsWith("bambusa-vulgaris-")) {
+            return "TREE-005-" + fileName.substring("bambusa-vulgaris-".length());
         }
         return fileName;
     }

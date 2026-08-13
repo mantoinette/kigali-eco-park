@@ -24,6 +24,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'Poison-pod Albizia',
     fr: 'Albizie versicolore',
   },
+  'bambusa-vulgaris': {
+    rw: 'Umugano',
+    en: 'Common bamboo',
+    fr: 'Bambou commun',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);

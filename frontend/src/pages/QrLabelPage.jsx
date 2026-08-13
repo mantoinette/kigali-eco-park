@@ -68,6 +68,21 @@ const PLAQUE_COPY = {
       'Firewood and agroforestry shade tree — note toxic pods for livestock.',
     ],
   },
+  'bambusa-vulgaris': {
+    localName: 'UMUGANO',
+    englishName: 'common bamboo',
+    family: 'Poaceae',
+    akamaro:
+      'Umulimbo, kubaka, gukora uruzitiro, kuboha ibikoresho byo mu rugo. Amababi bayagaburira amatungo. Barwanya isuri ku nkengero z\'imigezi. Uyu mugano ni gakondo mu Rwanda.',
+    ubuvuzi:
+      'Amababi barayavuza. Hakorwamo ibikoresho by\'ubukorikori (inkooko, inkangara, intaro, n\'ibindi).',
+    uses: [
+      'Ornamental plant, fence, construction and basketry.',
+      'Used to make boats, furniture and paper.',
+      'Split stems for brooms, baskets and musical instruments.',
+      'Leaves as livestock fodder; planted to control riverbank erosion.',
+    ],
+  },
 };
 
 function ParkLogo() {

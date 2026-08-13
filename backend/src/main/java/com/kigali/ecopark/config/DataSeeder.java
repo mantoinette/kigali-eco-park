@@ -42,6 +42,8 @@ public class DataSeeder {
                     seedAeschynomeneElaphroxylon(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status ->
                     seedAlbiziaVersicolor(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            tx.executeWithoutResult(status ->
+                    seedBambusaVulgaris(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status -> keepOnlyPublishedParkTrees(treeRepository));
         };
     }
@@ -218,13 +220,51 @@ public class DataSeeder {
         }
     }
 
+    void seedBambusaVulgaris(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(BambusaVulgarisData.SLUG);
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            BambusaVulgarisData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    BambusaVulgarisData.SLUG,
+                    BambusaVulgarisData.SCIENTIFIC_NAME,
+                    BambusaVulgarisData.imageSources()
+            );
+            BambusaVulgarisData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            BambusaVulgarisData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, BambusaVulgarisData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, BambusaVulgarisData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        BambusaVulgarisData.SLUG,
+                        BambusaVulgarisData.SCIENTIFIC_NAME,
+                        BambusaVulgarisData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    BambusaVulgarisData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
                 .filter(t -> !SyzygiumGuineenseData.SLUG.equals(t.getSlug())
                         && !FicusOvataData.SLUG.equals(t.getSlug())
                         && !AeschynomeneElaphroxylonData.SLUG.equals(t.getSlug())
-                        && !AlbiziaVersicolorData.SLUG.equals(t.getSlug()))
+                        && !AlbiziaVersicolorData.SLUG.equals(t.getSlug())
+                        && !BambusaVulgarisData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -258,19 +298,24 @@ public class DataSeeder {
         return tree.getImages().stream().anyMatch(img -> {
             String url = img.getUrl() == null ? "" : img.getUrl().toLowerCase();
             if (FicusOvataData.SLUG.equals(slug)) {
-                return url.contains("syzygium") || url.contains("aeschynomene") || url.contains("albizia");
+                return url.contains("syzygium") || url.contains("aeschynomene") || url.contains("albizia")
+                        || url.contains("bambusa");
             }
             if (SyzygiumGuineenseData.SLUG.equals(slug)) {
                 return url.contains("ficus_ovata") || url.contains("ficus-ovata") || url.contains("aeschynomene")
-                        || url.contains("albizia");
+                        || url.contains("albizia") || url.contains("bambusa");
             }
             if (AeschynomeneElaphroxylonData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("albizia");
+                        || url.contains("albizia") || url.contains("bambusa");
             }
             if (AlbiziaVersicolorData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("aeschynomene");
+                        || url.contains("aeschynomene") || url.contains("bambusa");
+            }
+            if (BambusaVulgarisData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia");
             }
             return false;
         });
