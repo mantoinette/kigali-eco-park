@@ -138,6 +138,9 @@ export default function AboutPage() {
             <Link to="/qr-label/erythrina-abyssinica" className="btn btn-secondary">
               Umuko (TREE-006)
             </Link>
+            <Link to="/qr-label/olea-europaea-subsp-africana" className="btn btn-secondary">
+              Umunzenze (TREE-007)
+            </Link>
           </div>
         </div>
       </section>

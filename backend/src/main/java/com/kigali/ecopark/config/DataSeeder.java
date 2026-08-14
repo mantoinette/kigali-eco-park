@@ -46,6 +46,8 @@ public class DataSeeder {
                     seedBambusaVulgaris(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status ->
                     seedErythrinaAbyssinica(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            tx.executeWithoutResult(status ->
+                    seedOleaEuropaeaSubspAfricana(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status -> keepOnlyPublishedParkTrees(treeRepository));
         };
     }
@@ -296,6 +298,43 @@ public class DataSeeder {
         }
     }
 
+    void seedOleaEuropaeaSubspAfricana(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(OleaEuropaeaSubspAfricanaData.SLUG);
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            OleaEuropaeaSubspAfricanaData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    OleaEuropaeaSubspAfricanaData.SLUG,
+                    OleaEuropaeaSubspAfricanaData.SCIENTIFIC_NAME,
+                    OleaEuropaeaSubspAfricanaData.imageSources()
+            );
+            OleaEuropaeaSubspAfricanaData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            OleaEuropaeaSubspAfricanaData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, OleaEuropaeaSubspAfricanaData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, OleaEuropaeaSubspAfricanaData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        OleaEuropaeaSubspAfricanaData.SLUG,
+                        OleaEuropaeaSubspAfricanaData.SCIENTIFIC_NAME,
+                        OleaEuropaeaSubspAfricanaData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    OleaEuropaeaSubspAfricanaData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
@@ -304,7 +343,8 @@ public class DataSeeder {
                         && !AeschynomeneElaphroxylonData.SLUG.equals(t.getSlug())
                         && !AlbiziaVersicolorData.SLUG.equals(t.getSlug())
                         && !BambusaVulgarisData.SLUG.equals(t.getSlug())
-                        && !ErythrinaAbyssinicaData.SLUG.equals(t.getSlug()))
+                        && !ErythrinaAbyssinicaData.SLUG.equals(t.getSlug())
+                        && !OleaEuropaeaSubspAfricanaData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -339,27 +379,37 @@ public class DataSeeder {
             String url = img.getUrl() == null ? "" : img.getUrl().toLowerCase();
             if (FicusOvataData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("aeschynomene") || url.contains("albizia")
-                        || url.contains("bambusa") || url.contains("erythrina");
+                        || url.contains("bambusa") || url.contains("erythrina") || url.contains("olea");
             }
             if (SyzygiumGuineenseData.SLUG.equals(slug)) {
                 return url.contains("ficus_ovata") || url.contains("ficus-ovata") || url.contains("aeschynomene")
-                        || url.contains("albizia") || url.contains("bambusa") || url.contains("erythrina");
+                        || url.contains("albizia") || url.contains("bambusa") || url.contains("erythrina")
+                        || url.contains("olea");
             }
             if (AeschynomeneElaphroxylonData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("albizia") || url.contains("bambusa") || url.contains("erythrina");
+                        || url.contains("albizia") || url.contains("bambusa") || url.contains("erythrina")
+                        || url.contains("olea");
             }
             if (AlbiziaVersicolorData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("aeschynomene") || url.contains("bambusa") || url.contains("erythrina");
+                        || url.contains("aeschynomene") || url.contains("bambusa") || url.contains("erythrina")
+                        || url.contains("olea");
             }
             if (BambusaVulgarisData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("erythrina");
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("erythrina")
+                        || url.contains("olea");
             }
             if (ErythrinaAbyssinicaData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa");
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("olea");
+            }
+            if (OleaEuropaeaSubspAfricanaData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina");
             }
             return false;
         });

@@ -34,6 +34,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'Red hot poker tree',
     fr: 'Érythrine d\'Abyssinie',
   },
+  'olea-europaea-subsp-africana': {
+    rw: 'Umunzenze',
+    en: 'Wild olive',
+    fr: 'Olivier sauvage',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);

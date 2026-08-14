@@ -98,6 +98,21 @@ const PLAQUE_COPY = {
       'Agroforestry: shade and soil enrichment (green manure).',
     ],
   },
+  'olea-europaea-subsp-africana': {
+    localName: 'UMUNZENZE',
+    englishName: 'wild olive / African olive',
+    family: 'Oleaceae',
+    akamaro:
+      'Amababi atekwamo icyayi. Igiti kibazwamo amashusho, imidaho n\'ibindi bikoresho byo mu rugo.',
+    ubuvuzi:
+      'Umuti ukozwe mu mababi n\'imbuto uvura amaso, ukagabanya umuvuduko w\'amaraso, ugatuma impyiko zikora neza, ukavura no mu mihogo. Amababi afite kurinda kanseri, kubyimbirwa, diabete n\'umuvuduko w\'amaraso.',
+    uses: [
+      'Leaf tea from Umunzenze leaves.',
+      'Hard wood carved into figures, spoons and household items.',
+      'Traditional medicine: eye infection, sore throat, headache, hypertension.',
+      'Parts used: leaves, bark, roots, flowers and seeds.',
+    ],
+  },
 };
 
 function ParkLogo() {
