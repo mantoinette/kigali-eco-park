@@ -113,6 +113,21 @@ const PLAQUE_COPY = {
       'Parts used: leaves, bark, roots, flowers and seeds.',
     ],
   },
+  'senegalia-polyacantha-campylacantha': {
+    localName: 'UMUHARATA',
+    englishName: "falcon's claw acacia / white thorn",
+    family: 'Fabaceae',
+    akamaro:
+      'Gushyira nitrogen mu butaka. Imizi yirukana inzoka n\'imbeba.',
+    ubuvuzi:
+      'Kugombora urumwe n\'inzoka — imizi ikoreshwa mu kuvura inzoka. Amababi akafashwa, akumurwa, akavunika akashyirwa ku bisebe.',
+    uses: [
+      'Pioneer of woodland forest; nitrogen fixation.',
+      'Traditional medicine: leaves pounded, dried and applied to sores.',
+      'Roots used to treat snakebites.',
+      'Roots recorded as repelling snakes, crocodiles and rats.',
+    ],
+  },
 };
 
 function ParkLogo() {

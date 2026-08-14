@@ -141,6 +141,9 @@ export default function AboutPage() {
             <Link to="/qr-label/olea-europaea-subsp-africana" className="btn btn-secondary">
               Umunzenze (TREE-007)
             </Link>
+            <Link to="/qr-label/senegalia-polyacantha-campylacantha" className="btn btn-secondary">
+              Umuharata (TREE-008)
+            </Link>
           </div>
         </div>
       </section>
