@@ -128,6 +128,19 @@ const PLAQUE_COPY = {
       'Roots recorded as repelling snakes, crocodiles and rats.',
     ],
   },
+  'entada-abyssinica': {
+    localName: 'UMUSANGE',
+    englishName: 'splinter bean',
+    family: 'Fabaceae (Mimosaceae)',
+    akamaro: 'Umusange — igiti kinini cy\'umuryango wa Fabaceae.',
+    ubuvuzi:
+      'Abavuzi gakonda bayivuza: Inkorora, Rubagimpande, indwara z\'ubuhumekero, Gucibwamo, umuriro, gukuuramo inda. Ubushakashatsi: entadanin ivura kanseri, ikagira imbaraga zo kurwanya bakteriya.',
+    uses: [
+      'Traditional medicine for cough, respiratory disease, diarrhoea and fever.',
+      'Research: entadanin with antibacterial activity against Salmonella typhimurium.',
+      'Documented antioxidant and anticancer activity in scientific studies.',
+    ],
+  },
 };
 
 function ParkLogo() {
