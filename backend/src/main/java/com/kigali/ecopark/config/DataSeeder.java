@@ -52,6 +52,10 @@ public class DataSeeder {
                     seedSenegaliaPolyacanthaCampylacantha(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status ->
                     seedEntadaAbyssinica(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            tx.executeWithoutResult(status ->
+                    seedPhragmitesMauritianus(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            tx.executeWithoutResult(status ->
+                    seedMaesaLanceolata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             tx.executeWithoutResult(status -> keepOnlyPublishedParkTrees(treeRepository));
         };
     }
@@ -413,6 +417,80 @@ public class DataSeeder {
         }
     }
 
+    void seedPhragmitesMauritianus(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(PhragmitesMauritianusData.SLUG);
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            PhragmitesMauritianusData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    PhragmitesMauritianusData.SLUG,
+                    PhragmitesMauritianusData.SCIENTIFIC_NAME,
+                    PhragmitesMauritianusData.imageSources()
+            );
+            PhragmitesMauritianusData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            PhragmitesMauritianusData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, PhragmitesMauritianusData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, PhragmitesMauritianusData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        PhragmitesMauritianusData.SLUG,
+                        PhragmitesMauritianusData.SCIENTIFIC_NAME,
+                        PhragmitesMauritianusData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    PhragmitesMauritianusData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
+    void seedMaesaLanceolata(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(MaesaLanceolataData.SLUG);
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            MaesaLanceolataData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    MaesaLanceolataData.SLUG,
+                    MaesaLanceolataData.SCIENTIFIC_NAME,
+                    MaesaLanceolataData.imageSources()
+            );
+            MaesaLanceolataData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            MaesaLanceolataData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, MaesaLanceolataData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, MaesaLanceolataData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        MaesaLanceolataData.SLUG,
+                        MaesaLanceolataData.SCIENTIFIC_NAME,
+                        MaesaLanceolataData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    MaesaLanceolataData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
@@ -424,7 +502,9 @@ public class DataSeeder {
                         && !ErythrinaAbyssinicaData.SLUG.equals(t.getSlug())
                         && !OleaEuropaeaSubspAfricanaData.SLUG.equals(t.getSlug())
                         && !SenegaliaPolyacanthaCampylacanthaData.SLUG.equals(t.getSlug())
-                        && !EntadaAbyssinicaData.SLUG.equals(t.getSlug()))
+                        && !EntadaAbyssinicaData.SLUG.equals(t.getSlug())
+                        && !PhragmitesMauritianusData.SLUG.equals(t.getSlug())
+                        && !MaesaLanceolataData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -459,47 +539,69 @@ public class DataSeeder {
             String url = img.getUrl() == null ? "" : img.getUrl().toLowerCase();
             if (FicusOvataData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("aeschynomene") || url.contains("albizia")
-                        || url.contains("bambusa") || url.contains("erythrina")                         || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica");
+                        || url.contains("bambusa") || url.contains("erythrina") || url.contains("olea")
+                        || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
             }
             if (SyzygiumGuineenseData.SLUG.equals(slug)) {
                 return url.contains("ficus_ovata") || url.contains("ficus-ovata") || url.contains("aeschynomene")
                         || url.contains("albizia") || url.contains("bambusa") || url.contains("erythrina")
-                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica");
+                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
             }
             if (AeschynomeneElaphroxylonData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
                         || url.contains("albizia") || url.contains("bambusa") || url.contains("erythrina")
-                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica");
+                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
             }
             if (AlbiziaVersicolorData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
                         || url.contains("aeschynomene") || url.contains("bambusa") || url.contains("erythrina")
-                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica");
+                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
             }
             if (BambusaVulgarisData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
                         || url.contains("aeschynomene") || url.contains("albizia") || url.contains("erythrina")
-                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica");
+                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
             }
             if (ErythrinaAbyssinicaData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
                         || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
-                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica");
+                        || url.contains("olea") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
             }
             if (OleaEuropaeaSubspAfricanaData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
                         || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
-                        || url.contains("erythrina") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica");
+                        || url.contains("erythrina") || url.contains("acacia_polyacantha") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
             }
             if (SenegaliaPolyacanthaCampylacanthaData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
                         || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
-                        || url.contains("erythrina") || url.contains("olea") || url.contains("entada_abyssinica");
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
             }
             if (EntadaAbyssinicaData.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
                         || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
-                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha");
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
+            }
+            if (PhragmitesMauritianusData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("maesa_lanceolata");
+            }
+            if (MaesaLanceolataData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus");
             }
             return false;
         });

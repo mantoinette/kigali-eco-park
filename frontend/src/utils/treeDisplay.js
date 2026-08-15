@@ -49,6 +49,16 @@ const LOCAL_COMMON_NAMES = {
     en: 'Splinter bean',
     fr: 'Entada d\'Abyssinie',
   },
+  'phragmites-mauritianus': {
+    rw: 'Imiseke',
+    en: 'Reed grass',
+    fr: 'Roseau africain',
+  },
+  'maesa-lanceolata': {
+    rw: 'Umuhanga',
+    en: 'False assegai',
+    fr: 'Fausse assegai',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);

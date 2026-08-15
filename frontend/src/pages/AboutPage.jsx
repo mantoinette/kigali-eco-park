@@ -147,6 +147,12 @@ export default function AboutPage() {
             <Link to="/qr-label/entada-abyssinica" className="btn btn-secondary">
               Umusange (TREE-009)
             </Link>
+            <Link to="/qr-label/phragmites-mauritianus" className="btn btn-secondary">
+              Imiseke (TREE-010)
+            </Link>
+            <Link to="/qr-label/maesa-lanceolata" className="btn btn-secondary">
+              Umuhanga (TREE-011)
+            </Link>
           </div>
         </div>
       </section>

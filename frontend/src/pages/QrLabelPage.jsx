@@ -141,6 +141,33 @@ const PLAQUE_COPY = {
       'Documented antioxidant and anticancer activity in scientific studies.',
     ],
   },
+  'phragmites-mauritianus': {
+    localName: 'IMISEKE',
+    englishName: 'reed grass / African reed',
+    family: 'Poaceae',
+    akamaro:
+      'Gukora plafond y\'imiseke. Gukora urugo rw\'imiseke. Imiseke irinda inkombe z\'imigezi cyangwa ibiyaga.',
+    ubuvuzi:
+      'Abaturage bo ku nkengero z\'ikiyaga cya Ruhondo bakoramo Urusengo — igikinisho cy\'umuziki.',
+    uses: [
+      'Stabilise river banks and lake shores.',
+      'Ceilings (plafond) and reed fences for houses.',
+      'Musical instrument Urusengo from leaves (Lake Ruhondo area).',
+    ],
+  },
+  'maesa-lanceolata': {
+    localName: 'UMUHANGA',
+    englishName: 'false assegai',
+    family: 'Myrsinaceae',
+    akamaro: 'Imihango yo Kubandwa. Kuvura ibisazi.',
+    ubuvuzi:
+      'Umuhanga — igiti cy\'umuryango wa Myrsinaceae. Imbuto zafite anticancer n\'antifungal activity.',
+    uses: [
+      'Culturally used in the Kubandwa ceremony.',
+      'Traditional treatment of mental illness (ibisazi).',
+      'Seeds have anticancer compounds and antifungal activity.',
+    ],
+  },
 };
 
 function ParkLogo() {
