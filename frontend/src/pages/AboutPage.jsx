@@ -153,6 +153,9 @@ export default function AboutPage() {
             <Link to="/qr-label/maesa-lanceolata" className="btn btn-secondary">
               Umuhanga (TREE-011)
             </Link>
+            <Link to="/qr-label/senegalia-polyacantha-ruganambuga" className="btn btn-secondary">
+              Ruganambuga (TREE-012)
+            </Link>
           </div>
         </div>
       </section>

@@ -59,6 +59,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'False assegai',
     fr: 'Fausse assegai',
   },
+  'senegalia-polyacantha-ruganambuga': {
+    rw: 'Ruganambuga',
+    en: "Falcon's claw acacia",
+    fr: 'Acacia à griffes de faucon',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);
