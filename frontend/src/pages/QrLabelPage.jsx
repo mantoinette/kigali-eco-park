@@ -196,6 +196,20 @@ const PLAQUE_COPY = {
       'Roots emit compounds that repel snakes, crocodiles and rats.',
     ],
   },
+  'elaeis-guineensis': {
+    localName: 'IKIGAZI',
+    englishName: 'African oil palm',
+    family: 'Arecaceae',
+    akamaro:
+      'Amavuta y\'amamesa akoreshwa mu guteka ibiryo, cosmetics no mu gukora amasabune. Mu mababi bakoramo inkangara n\'imikubuzo.',
+    ubuvuzi:
+      'Ikigazi gishobora kugeza mu burebure bwa metero 20. Agakoko Elaeidobius kamerunicus gituma kizana imbuto.',
+    uses: [
+      'Palm oil for cooking, cosmetics and soap; kernel oil from the seed.',
+      'Leaves and fibres for thatch, baskets, brooms and ropes.',
+      'Pollinated by Elaeidobius kamerunicus.',
+    ],
+  },
 };
 
 function ParkLogo() {

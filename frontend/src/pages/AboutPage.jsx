@@ -159,6 +159,9 @@ export default function AboutPage() {
             <Link to="/qr-label/senegalia-polyacantha-tree-013" className="btn btn-secondary">
               Umuharata (TREE-013)
             </Link>
+            <Link to="/qr-label/elaeis-guineensis" className="btn btn-secondary">
+              Ikigazi (TREE-014)
+            </Link>
           </div>
         </div>
       </section>
