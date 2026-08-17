@@ -10,4 +10,4 @@ FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/eco-park-1.0.0.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java -Dserver.address=0.0.0.0 -Dserver.port=${PORT:-8080} -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS:--Xmx384m -XX:+UseContainerSupport} -Dserver.address=0.0.0.0 -Dserver.port=${PORT:-8080} -jar app.jar"]

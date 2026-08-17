@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import TreeDirectory from '../components/TreeDirectory';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { fetchTreeCatalog, fetchTreeFilters } from '../api/client';
+import { fetchTreeCatalog, fetchTreeFilters, wakeApi } from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
@@ -90,39 +90,31 @@ export default function TreesPage() {
 
   useEffect(() => {
     let cancelled = false;
-    let attempt = 0;
 
-    const loadCatalog = () => {
-      attempt += 1;
+    const loadCatalog = async () => {
       setLoading(true);
       setError('');
-      fetchTreeCatalog({
-        lang: language,
-        q,
-        family,
-        category,
-        nativeStatus,
-        page,
-        size: PAGE_SIZE,
-      })
-        .then((data) => {
-          if (cancelled) return;
-          setCatalog(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          if (cancelled) return;
-          // Render free tier can take ~50s to wake; retry once.
-          if (attempt < 2) {
-            setTimeout(() => {
-              if (!cancelled) loadCatalog();
-            }, 2500);
-            return;
-          }
-          setCatalog(null);
-          setError(err.message || t(language, 'error'));
-          setLoading(false);
+      try {
+        await wakeApi(120000);
+        if (cancelled) return;
+        const data = await fetchTreeCatalog({
+          lang: language,
+          q,
+          family,
+          category,
+          nativeStatus,
+          page,
+          size: PAGE_SIZE,
         });
+        if (cancelled) return;
+        setCatalog(data);
+      } catch (err) {
+        if (cancelled) return;
+        setCatalog(null);
+        setError(err.message || t(language, 'error'));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     };
 
     loadCatalog();

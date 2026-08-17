@@ -1,5 +1,24 @@
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Ping the API until Render free tier wakes (or timeout). */
+export async function wakeApi(maxWaitMs = 120000) {
+  const started = Date.now();
+  let delayMs = 4000;
+  while (Date.now() - started < maxWaitMs) {
+    try {
+      const response = await fetch(`${API_BASE}/health`, { method: 'GET' });
+      if (response.ok) return true;
+    } catch {
+      // Backend sleeping, redeploying, or unreachable — retry.
+    }
+    await sleep(delayMs);
+    delayMs = Math.min(delayMs + 3000, 20000);
+  }
+  return false;
+}
+
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
     headers: {
