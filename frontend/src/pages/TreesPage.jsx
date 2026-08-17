@@ -95,7 +95,7 @@ export default function TreesPage() {
       setLoading(true);
       setError('');
       try {
-        await wakeApi(120000);
+        await wakeApi(300000);
         if (cancelled) return;
         const data = await fetchTreeCatalog({
           lang: language,

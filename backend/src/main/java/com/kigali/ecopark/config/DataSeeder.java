@@ -12,13 +12,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
 public class DataSeeder {
+
+    private static final Logger log = LoggerFactory.getLogger(DataSeeder.class);
 
     @Bean
     CommandLineRunner seedData(
@@ -28,38 +33,77 @@ public class DataSeeder {
             PasswordEncoder passwordEncoder,
             TreeImageAcquisitionService imageAcquisitionService,
             PlatformTransactionManager transactionManager,
+            DataSource dataSource,
             @Value("${app.api.public-base-url:http://localhost:8082}") String apiPublicBaseUrl
     ) {
         TransactionTemplate tx = new TransactionTemplate(transactionManager);
         return args -> {
+            dropScientificNameUniqueConstraint(dataSource);
             seedLanguagesIfNeeded(languageRepository);
             seedAdminUser(userAccountRepository, passwordEncoder);
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-001", () ->
                     seedSyzygiumGuineense(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-002", () ->
                     seedFicusOvata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-003", () ->
                     seedAeschynomeneElaphroxylon(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-004", () ->
                     seedAlbiziaVersicolor(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-005", () ->
                     seedBambusaVulgaris(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-006", () ->
                     seedErythrinaAbyssinica(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-007", () ->
                     seedOleaEuropaeaSubspAfricana(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-008", () ->
                     seedSenegaliaPolyacanthaCampylacantha(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-009", () ->
                     seedEntadaAbyssinica(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-010", () ->
                     seedPhragmitesMauritianus(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-011", () ->
                     seedMaesaLanceolata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status ->
+            seedSafely(tx, "TREE-012", () ->
                     seedSenegaliaPolyacanthaRuganambuga(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            tx.executeWithoutResult(status -> keepOnlyPublishedParkTrees(treeRepository));
+            seedSafely(tx, "TREE-013", () ->
+                    seedSenegaliaPolyacanthaTree013(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "publish-park-trees", () -> keepOnlyPublishedParkTrees(treeRepository));
         };
+    }
+
+    private void seedSafely(TransactionTemplate tx, String label, Runnable work) {
+        try {
+            tx.executeWithoutResult(status -> work.run());
+        } catch (Exception e) {
+            log.error("Tree seed failed for {}: {}", label, e.getMessage(), e);
+        }
+    }
+
+    /** Allow multiple park specimens of the same species (e.g. TREE-008 and TREE-012). */
+    private void dropScientificNameUniqueConstraint(DataSource dataSource) {
+        String sql = """
+                DO $$
+                DECLARE r RECORD;
+                BEGIN
+                  FOR r IN
+                    SELECT c.conname
+                    FROM pg_constraint c
+                    JOIN pg_class t ON c.conrelid = t.oid
+                    JOIN pg_attribute a ON a.attrelid = t.oid AND a.attnum = ANY (c.conkey)
+                    WHERE t.relname = 'trees'
+                      AND c.contype = 'u'
+                      AND a.attname = 'scientific_name'
+                      AND array_length(c.conkey, 1) = 1
+                  LOOP
+                    EXECUTE format('ALTER TABLE trees DROP CONSTRAINT %I', r.conname);
+                  END LOOP;
+                END $$;
+                """;
+        try (var conn = dataSource.getConnection(); var st = conn.createStatement()) {
+            st.execute(sql);
+        } catch (Exception e) {
+            log.warn("Could not drop scientific_name unique constraint: {}", e.getMessage());
+        }
     }
 
     private void seedLanguagesIfNeeded(LanguageRepository languageRepository) {
@@ -530,6 +574,43 @@ public class DataSeeder {
         }
     }
 
+    void seedSenegaliaPolyacanthaTree013(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(SenegaliaPolyacanthaTree013Data.SLUG);
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            SenegaliaPolyacanthaTree013Data.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    SenegaliaPolyacanthaTree013Data.SLUG,
+                    SenegaliaPolyacanthaTree013Data.SCIENTIFIC_NAME,
+                    SenegaliaPolyacanthaTree013Data.imageSources()
+            );
+            SenegaliaPolyacanthaTree013Data.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            SenegaliaPolyacanthaTree013Data.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, SenegaliaPolyacanthaTree013Data.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, SenegaliaPolyacanthaTree013Data.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        SenegaliaPolyacanthaTree013Data.SLUG,
+                        SenegaliaPolyacanthaTree013Data.SCIENTIFIC_NAME,
+                        SenegaliaPolyacanthaTree013Data.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    SenegaliaPolyacanthaTree013Data.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
@@ -544,7 +625,8 @@ public class DataSeeder {
                         && !EntadaAbyssinicaData.SLUG.equals(t.getSlug())
                         && !PhragmitesMauritianusData.SLUG.equals(t.getSlug())
                         && !MaesaLanceolataData.SLUG.equals(t.getSlug())
-                        && !SenegaliaPolyacanthaRuganambugaData.SLUG.equals(t.getSlug()))
+                        && !SenegaliaPolyacanthaRuganambugaData.SLUG.equals(t.getSlug())
+                        && !SenegaliaPolyacanthaTree013Data.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -644,6 +726,12 @@ public class DataSeeder {
                         || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus");
             }
             if (SenegaliaPolyacanthaRuganambugaData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("entada_abyssinica")
+                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata");
+            }
+            if (SenegaliaPolyacanthaTree013Data.SLUG.equals(slug)) {
                 return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
                         || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
                         || url.contains("erythrina") || url.contains("olea") || url.contains("entada_abyssinica")

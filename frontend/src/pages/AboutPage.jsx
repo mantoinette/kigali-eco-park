@@ -156,6 +156,9 @@ export default function AboutPage() {
             <Link to="/qr-label/senegalia-polyacantha-ruganambuga" className="btn btn-secondary">
               Ruganambuga (TREE-012)
             </Link>
+            <Link to="/qr-label/senegalia-polyacantha-tree-013" className="btn btn-secondary">
+              Umuharata (TREE-013)
+            </Link>
           </div>
         </div>
       </section>

@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: kigali-ecopark-db
+    restart: unless-stopped
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: kigali_eco_park_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - kigali_ecopark_pgdata:/var/lib/postgresql/data
+
+volumes:
+  kigali_ecopark_pgdata:

@@ -2,21 +2,34 @@ const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-/** Ping the API until Render free tier wakes (or timeout). */
-export async function wakeApi(maxWaitMs = 120000) {
+/** Ping the API until Render free tier wakes (or timeout). Free tier can take 3–5 minutes. */
+export async function wakeApi(maxWaitMs = 300000) {
   const started = Date.now();
-  let delayMs = 4000;
+  let delayMs = 5000;
   while (Date.now() - started < maxWaitMs) {
     try {
       const response = await fetch(`${API_BASE}/health`, { method: 'GET' });
       if (response.ok) return true;
     } catch {
-      // Backend sleeping, redeploying, or unreachable — retry.
+      // Backend sleeping — retry until timeout.
     }
     await sleep(delayMs);
-    delayMs = Math.min(delayMs + 3000, 20000);
+    delayMs = Math.min(delayMs + 5000, 25000);
   }
   return false;
+}
+
+async function requestWithRetry(path, options = {}, attempts = 3) {
+  let lastError;
+  for (let i = 0; i < attempts; i += 1) {
+    try {
+      return await request(path, options);
+    } catch (err) {
+      lastError = err;
+      if (i < attempts - 1) await sleep(15000);
+    }
+  }
+  throw lastError;
 }
 
 async function request(path, options = {}) {
@@ -78,7 +91,7 @@ export function fetchTreeCatalog({
   if (family) params.set('family', family);
   if (category) params.set('category', category);
   if (nativeStatus) params.set('nativeStatus', nativeStatus);
-  return request(`/trees/catalog?${params.toString()}`);
+  return requestWithRetry(`/trees/catalog?${params.toString()}`);
 }
 
 export function fetchTreeFilters() {

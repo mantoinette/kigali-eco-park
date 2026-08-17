@@ -182,6 +182,20 @@ const PLAQUE_COPY = {
       'Roots emit compounds that repel snakes, crocodiles and rats.',
     ],
   },
+  'senegalia-polyacantha-tree-013': {
+    localName: 'UMUHARATA',
+    englishName: "falcon's claw acacia",
+    family: 'Fabaceae',
+    akamaro:
+      'Kugombora urumwe n\'inzoka. Gushyira nitrogen mu butaka. Imizi yirukana inzoka n\'imbeba.',
+    ubuvuzi:
+      'Amababi akafashwa ku bisebe; imizi ikoreshwa mu kuvura inzoka. Amazina: Umuharata · Ruganambuga.',
+    uses: [
+      'Pioneer of woodland forest; nitrogen fixation.',
+      'Leaves pounded and applied to sores; roots for snakebites.',
+      'Roots emit compounds that repel snakes, crocodiles and rats.',
+    ],
+  },
 };
 
 function ParkLogo() {

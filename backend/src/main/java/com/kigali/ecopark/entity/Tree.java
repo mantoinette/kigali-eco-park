@@ -13,7 +13,7 @@ public class Tree {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "scientific_name", nullable = false, unique = true, length = 200)
+    @Column(name = "scientific_name", nullable = false, length = 200)
     private String scientificName;
 
     @Column(nullable = false, unique = true, length = 200)
