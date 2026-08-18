@@ -182,20 +182,6 @@ const PLAQUE_COPY = {
       'Roots emit compounds that repel snakes, crocodiles and rats.',
     ],
   },
-  'senegalia-polyacantha-tree-013': {
-    localName: 'UMUHARATA',
-    englishName: "falcon's claw acacia",
-    family: 'Fabaceae',
-    akamaro:
-      'Kugombora urumwe n\'inzoka. Gushyira nitrogen mu butaka. Imizi yirukana inzoka n\'imbeba.',
-    ubuvuzi:
-      'Amababi akafashwa ku bisebe; imizi ikoreshwa mu kuvura inzoka. Amazina: Umuharata · Ruganambuga.',
-    uses: [
-      'Pioneer of woodland forest; nitrogen fixation.',
-      'Leaves pounded and applied to sores; roots for snakebites.',
-      'Roots emit compounds that repel snakes, crocodiles and rats.',
-    ],
-  },
   'elaeis-guineensis': {
     localName: 'IKIGAZI',
     englishName: 'African oil palm',
@@ -208,6 +194,20 @@ const PLAQUE_COPY = {
       'Palm oil for cooking, cosmetics and soap; kernel oil from the seed.',
       'Leaves and fibres for thatch, baskets, brooms and ropes.',
       'Pollinated by Elaeidobius kamerunicus.',
+    ],
+  },
+  'chrysophyllum-gorungosanum': {
+    localName: 'UMUTOYI',
+    englishName: 'fluted milkwood',
+    family: 'Sapotaceae',
+    akamaro:
+      'Latex, ibiti byo kubaka no kubaza, inkwi n\'amakara; indabo zifasha inzuki.',
+    ubuvuzi:
+      'Umutoyi ni igiti kinini cy\'ishyamba gihora kibisi, gifite uruti rukunze kuba rufite ubusate kandi gisohora latex.',
+    uses: [
+      'Latex, timber and local construction wood.',
+      'Firewood and charcoal.',
+      'Bee forage and canopy habitat in evergreen forest.',
     ],
   },
 };

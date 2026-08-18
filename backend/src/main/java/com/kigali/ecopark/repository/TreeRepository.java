@@ -23,6 +23,7 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
             LEFT JOIN FETCH t.translations
             LEFT JOIN FETCH t.images
             WHERE t.published = true
+            AND t.qrCodeId <> 'TREE-013'
             ORDER BY t.displayOrder ASC, t.scientificName ASC
             """)
     List<Tree> findAllPublishedWithDetails();
@@ -39,7 +40,16 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
             SELECT t FROM Tree t
             LEFT JOIN FETCH t.translations
             LEFT JOIN FETCH t.images
+            WHERE LOWER(t.qrCodeId) = LOWER(:qrCodeId)
+            """)
+    Optional<Tree> findByQrCodeIdWithDetails(@Param("qrCodeId") String qrCodeId);
+
+    @Query("""
+            SELECT t FROM Tree t
+            LEFT JOIN FETCH t.translations
+            LEFT JOIN FETCH t.images
             WHERE t.slug = :slug AND t.published = true
+            AND t.qrCodeId <> 'TREE-013'
             """)
     Optional<Tree> findPublishedBySlugWithDetails(@Param("slug") String slug);
 
@@ -47,7 +57,9 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
             SELECT t FROM Tree t
             LEFT JOIN FETCH t.translations
             LEFT JOIN FETCH t.images
-            WHERE LOWER(t.qrCodeId) = LOWER(:qrCodeId) AND t.published = true
+            WHERE LOWER(t.qrCodeId) = LOWER(:qrCodeId)
+            AND t.published = true
+            AND t.qrCodeId <> 'TREE-013'
             """)
     Optional<Tree> findPublishedByQrCodeIdWithDetails(@Param("qrCodeId") String qrCodeId);
 
@@ -55,7 +67,9 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
             SELECT t FROM Tree t
             LEFT JOIN FETCH t.translations
             LEFT JOIN FETCH t.images
-            WHERE t.id = :id AND t.published = true
+            WHERE t.id = :id
+            AND t.published = true
+            AND t.qrCodeId <> 'TREE-013'
             """)
     Optional<Tree> findPublishedByIdWithDetails(@Param("id") Long id);
 
@@ -64,6 +78,7 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
             LEFT JOIN FETCH t.translations tr
             LEFT JOIN FETCH t.images
             WHERE t.published = true
+            AND t.qrCodeId <> 'TREE-013'
             AND (
                 LOWER(t.scientificName) LIKE LOWER(CONCAT('%', :query, '%'))
                 OR LOWER(t.family) LIKE LOWER(CONCAT('%', :query, '%'))
@@ -83,6 +98,7 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
             LEFT JOIN t.translations tr
             LEFT JOIN t.categories cat
             WHERE t.published = true
+            AND t.qrCodeId <> 'TREE-013'
             AND (
                 :query IS NULL OR :query = ''
                 OR LOWER(t.scientificName) LIKE LOWER(CONCAT('%', :query, '%'))
@@ -114,7 +130,9 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
 
     @Query("""
             SELECT DISTINCT t.family FROM Tree t
-            WHERE t.published = true AND t.family IS NOT NULL AND t.family <> ''
+            WHERE t.published = true
+            AND t.qrCodeId <> 'TREE-013'
+            AND t.family IS NOT NULL AND t.family <> ''
             ORDER BY t.family ASC
             """)
     List<String> findDistinctFamilies();
@@ -122,6 +140,7 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
     @Query("""
             SELECT DISTINCT c FROM Tree t JOIN t.categories c
             WHERE t.published = true
+            AND t.qrCodeId <> 'TREE-013'
             ORDER BY c ASC
             """)
     List<String> findDistinctCategories();
@@ -129,6 +148,7 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
     @Query("""
             SELECT DISTINCT UPPER(COALESCE(t.nativeStatus, 'UNKNOWN')) FROM Tree t
             WHERE t.published = true
+            AND t.qrCodeId <> 'TREE-013'
             """)
     List<String> findDistinctNativeStatuses();
 }

@@ -156,11 +156,11 @@ export default function AboutPage() {
             <Link to="/qr-label/senegalia-polyacantha-ruganambuga" className="btn btn-secondary">
               Ruganambuga (TREE-012)
             </Link>
-            <Link to="/qr-label/senegalia-polyacantha-tree-013" className="btn btn-secondary">
-              Umuharata (TREE-013)
-            </Link>
             <Link to="/qr-label/elaeis-guineensis" className="btn btn-secondary">
               Ikigazi (TREE-014)
+            </Link>
+            <Link to="/qr-label/chrysophyllum-gorungosanum" className="btn btn-secondary">
+              Umutoyi (TREE-015)
             </Link>
           </div>
         </div>

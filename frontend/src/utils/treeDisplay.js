@@ -64,15 +64,15 @@ const LOCAL_COMMON_NAMES = {
     en: "Falcon's claw acacia",
     fr: 'Acacia à griffes de faucon',
   },
-  'senegalia-polyacantha-tree-013': {
-    rw: 'Umuharata',
-    en: "Falcon's claw acacia",
-    fr: 'Acacia à griffes de faucon',
-  },
   'elaeis-guineensis': {
     rw: 'Ikigazi',
     en: 'African oil palm',
     fr: 'Palmier à huile d\'Afrique',
+  },
+  'chrysophyllum-gorungosanum': {
+    rw: 'Umutoyi',
+    en: 'Fluted milkwood',
+    fr: 'Fluted milkwood',
   },
 };
 
