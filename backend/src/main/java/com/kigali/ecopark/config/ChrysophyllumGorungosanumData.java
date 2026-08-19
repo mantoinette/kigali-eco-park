@@ -8,14 +8,14 @@ import com.kigali.ecopark.service.TreeImageAcquisitionService;
 import java.util.List;
 
 /**
- * Chrysophyllum gorungosanum (Umutoyi / Fluted milkwood) - TREE-015.
+ * Chrysophyllum gorungosanum (Umutoyi / Fluted milkwood) - TREE-014.
  * Sources aligned with Flora of Rwanda / Zimbabwe and park note wording.
  */
 public final class ChrysophyllumGorungosanumData {
 
     public static final String SLUG = "chrysophyllum-gorungosanum";
     public static final String SCIENTIFIC_NAME = "Chrysophyllum gorungosanum";
-    public static final String QR_CODE_ID = "TREE-015";
+    public static final String QR_CODE_ID = "TREE-014";
     public static final String FAMILY = "Sapotaceae";
     // Keep this short: `trees.typical_height` is varchar(50) in the DB.
     public static final String TYPICAL_HEIGHT = "Fluted evergreen forest tree";
@@ -24,8 +24,8 @@ public final class ChrysophyllumGorungosanumData {
     public static final String AGE_ESTIMATE = "Approx. 20-60 years (park specimen)";
     public static final double LATITUDE = -1.9666;
     public static final double LONGITUDE = 30.1098;
-    public static final String AUDIO_BASE_PATH = "/media/audio/TREE-015";
-    public static final String VIDEO_BASE_PATH = "/media/video/TREE-015";
+    public static final String AUDIO_BASE_PATH = "/media/audio/TREE-014";
+    public static final String VIDEO_BASE_PATH = "/media/video/TREE-014";
     public static final String REFERENCE_URL = "https://www.rwandaflora.com/speciesdata/species.php?species_id=143740";
 
     private ChrysophyllumGorungosanumData() {}
@@ -84,7 +84,7 @@ public final class ChrysophyllumGorungosanumData {
         tree.setAudioUrl(apiPublicBaseUrl + AUDIO_BASE_PATH + "-en.mp3");
         tree.setVideoUrl(apiPublicBaseUrl + VIDEO_BASE_PATH + "-en.mp4");
         tree.setPublished(true);
-        tree.setDisplayOrder(15);
+        tree.setDisplayOrder(14);
     }
 
     public static List<TreeImageAcquisitionService.ImageRequest> imageSources() {
@@ -147,7 +147,7 @@ public final class ChrysophyllumGorungosanumData {
                 "Alternative common name: Brown-berry fluted-milkwood",
                 "Local name (Kinyarwanda): Umutoyi",
                 "Habit: large evergreen forest tree with a fluted bole",
-                "Park ID: TREE-015"
+                "Park ID: TREE-014"
         ));
         t.setDescription(
                 "Chrysophyllum gorungosanum is a large evergreen tree of the milkwood family, Sapotaceae. " +
@@ -156,7 +156,7 @@ public final class ChrysophyllumGorungosanumData {
                 "It occurs in tropical African highland forests, including Rwanda, where it is part of moist " +
                 "evergreen forest vegetation. The tree produces latex and durable wood that is used locally " +
                 "for timber, construction, firewood and charcoal.\n\n" +
-                "At Kigali Eco-Park, TREE-015 presents this species under its Kinyarwanda name Umutoyi and " +
+                "At Kigali Eco-Park, TREE-014 presents this species under its Kinyarwanda name Umutoyi and " +
                 "its English name Fluted milkwood."
         );
         t.setUses(
@@ -179,7 +179,7 @@ public final class ChrysophyllumGorungosanumData {
         );
         t.setAdditionalInfo(
                 "Reference: " + REFERENCE_URL + "\n\n" +
-                "QR label: Scan the TREE-015 Umutoyi sign to reopen the full multilingual guide.\n\n" +
+                "QR label: Scan the TREE-014 Umutoyi sign to reopen the full multilingual guide.\n\n" +
                 "Also listed in some sources as Gambeya gorungosana."
         );
         return t;
@@ -206,7 +206,7 @@ public final class ChrysophyllumGorungosanumData {
                 "Izina ry'icyongereza: Fluted milkwood",
                 "Ahandi banayita: Brown-berry fluted-milkwood",
                 "Imiterere: igiti kinini cy'ishyamba gihora kibisi",
-                "Ikimenyetso: TREE-015"
+                "Ikimenyetso: TREE-014"
         ));
         t.setDescription(
                 "Umutoyi ni igiti kinini cy'umuryango wa Sapotaceae. Ubusanzwe kiba mu mashyamba atoshye kandi " +
@@ -214,7 +214,7 @@ public final class ChrysophyllumGorungosanumData {
                 "Mu Rwanda no mu bindi bice by'Afurika yo hagati n'iburasirazuba, kiba mu mashyamba y'imisozi " +
                 "ifite imvura nyinshi. Gikoreshwa mu kuvamo amata y'ibiti, mu kubaka, mu kubaza, mu nkwi no mu " +
                 "gukora amakara.\n\n" +
-                "Muri Kigali Eco-Park, TREE-015 yerekana Umutoyi nk'igiti gifite akamaro ku bantu no ku bidukikije."
+                "Muri Kigali Eco-Park, TREE-014 yerekana Umutoyi nk'igiti gifite akamaro ku bantu no ku bidukikije."
         );
         t.setUses(
                 "Akamaro:\n" +
@@ -237,7 +237,7 @@ public final class ChrysophyllumGorungosanumData {
         );
         t.setAdditionalInfo(
                 "Inkomoko: " + REFERENCE_URL + "\n\n" +
-                "Sikana QR iri ku kimenyetso cya TREE-015 Umutoyi urebe amajwi, videwo n'ibisobanuro mu ndimi nyinshi."
+                "Sikana QR iri ku kimenyetso cya TREE-014 Umutoyi urebe amajwi, videwo n'ibisobanuro mu ndimi nyinshi."
         );
         return t;
     }
@@ -261,14 +261,14 @@ public final class ChrysophyllumGorungosanumData {
                 "Nom commun : Fluted milkwood",
                 "Autre nom anglais : Brown-berry fluted-milkwood",
                 "Nom local : Umutoyi",
-                "Identifiant parc : TREE-015"
+                "Identifiant parc : TREE-014"
         ));
         t.setDescription(
                 "Chrysophyllum gorungosanum est un grand arbre sempervirent des forêts humides africaines. " +
                 "Son tronc droit est souvent cannelé, et ses feuilles ont une face inférieure soyeuse.\n\n" +
                 "L'espèce est présente dans les forêts tropicales d'altitude, y compris au Rwanda. Elle est " +
                 "utilisée pour le latex, le bois d'oeuvre, la construction, le bois de feu et le charbon.\n\n" +
-                "Au Kigali Eco-Park, TREE-015 présente cette espèce sous le nom local Umutoyi."
+                "Au Kigali Eco-Park, TREE-014 présente cette espèce sous le nom local Umutoyi."
         );
         t.setUses(
                 "Latex.\n\n" +
@@ -289,7 +289,7 @@ public final class ChrysophyllumGorungosanumData {
         );
         t.setAdditionalInfo(
                 "Référence : " + REFERENCE_URL + "\n\n" +
-                "Scannez le QR TREE-015 pour rouvrir le guide complet."
+                "Scannez le QR TREE-014 pour rouvrir le guide complet."
         );
         return t;
     }

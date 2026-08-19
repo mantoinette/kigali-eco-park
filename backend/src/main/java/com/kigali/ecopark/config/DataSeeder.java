@@ -65,11 +65,23 @@ public class DataSeeder {
                     seedMaesaLanceolata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "TREE-012", () ->
                     seedSenegaliaPolyacanthaRuganambuga(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            seedSafely(tx, "unpublish-TREE-013", () -> unpublishDuplicateTree013(treeRepository));
-            seedSafely(tx, "TREE-014", () ->
+            seedSafely(tx, "free-TREE-013", () -> freeRetiredDuplicateTree013(treeRepository));
+            seedSafely(tx, "TREE-013", () ->
                     seedElaeisGuineensis(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            seedSafely(tx, "TREE-015", () ->
+            seedSafely(tx, "TREE-014", () ->
                     seedChrysophyllumGorungosanum(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "TREE-015", () ->
+                    seedPhoenixReclinata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "TREE-016", () ->
+                    seedMillettiaLaurentii(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "TREE-017", () ->
+                    seedFicusThonningii(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "TREE-018", () ->
+                    seedTremaOrientalis(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "TREE-019", () ->
+                    seedNewtoniaBuchananii(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "TREE-020", () ->
+                    seedBlighiaUnijugata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "publish-park-trees", () -> keepOnlyPublishedParkTrees(treeRepository));
         };
     }
@@ -577,12 +589,27 @@ public class DataSeeder {
         }
     }
 
-    /** TREE-013 was a duplicate of TREE-008 (same species, same name). Unpublish it if it exists. */
-    private void unpublishDuplicateTree013(TreeRepository treeRepository) {
+    /**
+     * TREE-013 was previously a duplicate of TREE-008. Reuse that ID for Ikigazi
+     * by freeing the retired duplicate row first (qr_code_id is unique).
+     */
+    private void freeRetiredDuplicateTree013(TreeRepository treeRepository) {
+        treeRepository.findByQrCodeIdWithDetails("TREE-013").ifPresent(tree -> {
+            if (ElaeisGuineensisData.SLUG.equals(tree.getSlug())
+                    || ChrysophyllumGorungosanumData.SLUG.equals(tree.getSlug())) {
+                return;
+            }
+            tree.setPublished(false);
+            tree.setQrCodeId("TREE-013-RETIRED");
+            treeRepository.saveAndFlush(tree);
+            log.info("Freed TREE-013 from retired duplicate {}.", tree.getSlug());
+        });
         treeRepository.findBySlugWithDetails("senegalia-polyacantha-tree-013").ifPresent(tree -> {
             tree.setPublished(false);
-            treeRepository.save(tree);
-            log.info("Unpublished duplicate TREE-013 (same as TREE-008 Umuharata).");
+            if ("TREE-013".equalsIgnoreCase(tree.getQrCodeId())) {
+                tree.setQrCodeId("TREE-013-RETIRED");
+            }
+            treeRepository.saveAndFlush(tree);
         });
     }
 
@@ -661,6 +688,234 @@ public class DataSeeder {
         }
     }
 
+    void seedPhoenixReclinata(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(PhoenixReclinataData.SLUG)
+                .or(() -> treeRepository.findByQrCodeIdWithDetails(PhoenixReclinataData.QR_CODE_ID));
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            PhoenixReclinataData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    PhoenixReclinataData.SLUG,
+                    PhoenixReclinataData.SCIENTIFIC_NAME,
+                    PhoenixReclinataData.imageSources()
+            );
+            PhoenixReclinataData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            PhoenixReclinataData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, PhoenixReclinataData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, PhoenixReclinataData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        PhoenixReclinataData.SLUG,
+                        PhoenixReclinataData.SCIENTIFIC_NAME,
+                        PhoenixReclinataData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    PhoenixReclinataData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
+    void seedMillettiaLaurentii(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(MillettiaLaurentiiData.SLUG)
+                .or(() -> treeRepository.findByQrCodeIdWithDetails(MillettiaLaurentiiData.QR_CODE_ID));
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            MillettiaLaurentiiData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    MillettiaLaurentiiData.SLUG,
+                    MillettiaLaurentiiData.SCIENTIFIC_NAME,
+                    MillettiaLaurentiiData.imageSources()
+            );
+            MillettiaLaurentiiData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            MillettiaLaurentiiData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, MillettiaLaurentiiData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, MillettiaLaurentiiData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        MillettiaLaurentiiData.SLUG,
+                        MillettiaLaurentiiData.SCIENTIFIC_NAME,
+                        MillettiaLaurentiiData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    MillettiaLaurentiiData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
+    void seedFicusThonningii(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(FicusThonningiiData.SLUG)
+                .or(() -> treeRepository.findByQrCodeIdWithDetails(FicusThonningiiData.QR_CODE_ID));
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            FicusThonningiiData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    FicusThonningiiData.SLUG,
+                    FicusThonningiiData.SCIENTIFIC_NAME,
+                    FicusThonningiiData.imageSources()
+            );
+            FicusThonningiiData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            FicusThonningiiData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, FicusThonningiiData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, FicusThonningiiData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        FicusThonningiiData.SLUG,
+                        FicusThonningiiData.SCIENTIFIC_NAME,
+                        FicusThonningiiData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    FicusThonningiiData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
+    void seedTremaOrientalis(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(TremaOrientalisData.SLUG)
+                .or(() -> treeRepository.findByQrCodeIdWithDetails(TremaOrientalisData.QR_CODE_ID));
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            TremaOrientalisData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    TremaOrientalisData.SLUG,
+                    TremaOrientalisData.SCIENTIFIC_NAME,
+                    TremaOrientalisData.imageSources()
+            );
+            TremaOrientalisData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            TremaOrientalisData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, TremaOrientalisData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, TremaOrientalisData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        TremaOrientalisData.SLUG,
+                        TremaOrientalisData.SCIENTIFIC_NAME,
+                        TremaOrientalisData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    TremaOrientalisData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
+    void seedNewtoniaBuchananii(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(NewtoniaBuchananiiData.SLUG)
+                .or(() -> treeRepository.findByQrCodeIdWithDetails(NewtoniaBuchananiiData.QR_CODE_ID));
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            NewtoniaBuchananiiData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    NewtoniaBuchananiiData.SLUG,
+                    NewtoniaBuchananiiData.SCIENTIFIC_NAME,
+                    NewtoniaBuchananiiData.imageSources()
+            );
+            NewtoniaBuchananiiData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            NewtoniaBuchananiiData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, NewtoniaBuchananiiData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, NewtoniaBuchananiiData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        NewtoniaBuchananiiData.SLUG,
+                        NewtoniaBuchananiiData.SCIENTIFIC_NAME,
+                        NewtoniaBuchananiiData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    NewtoniaBuchananiiData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
+    void seedBlighiaUnijugata(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(BlighiaUnijugataData.SLUG)
+                .or(() -> treeRepository.findByQrCodeIdWithDetails(BlighiaUnijugataData.QR_CODE_ID));
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            BlighiaUnijugataData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    BlighiaUnijugataData.SLUG,
+                    BlighiaUnijugataData.SCIENTIFIC_NAME,
+                    BlighiaUnijugataData.imageSources()
+            );
+            BlighiaUnijugataData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            BlighiaUnijugataData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, BlighiaUnijugataData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, BlighiaUnijugataData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        BlighiaUnijugataData.SLUG,
+                        BlighiaUnijugataData.SCIENTIFIC_NAME,
+                        BlighiaUnijugataData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    BlighiaUnijugataData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
@@ -677,7 +932,13 @@ public class DataSeeder {
                         && !MaesaLanceolataData.SLUG.equals(t.getSlug())
                         && !SenegaliaPolyacanthaRuganambugaData.SLUG.equals(t.getSlug())
                         && !ElaeisGuineensisData.SLUG.equals(t.getSlug())
-                        && !ChrysophyllumGorungosanumData.SLUG.equals(t.getSlug()))
+                        && !ChrysophyllumGorungosanumData.SLUG.equals(t.getSlug())
+                        && !PhoenixReclinataData.SLUG.equals(t.getSlug())
+                        && !MillettiaLaurentiiData.SLUG.equals(t.getSlug())
+                        && !FicusThonningiiData.SLUG.equals(t.getSlug())
+                        && !TremaOrientalisData.SLUG.equals(t.getSlug())
+                        && !NewtoniaBuchananiiData.SLUG.equals(t.getSlug())
+                        && !BlighiaUnijugataData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -795,7 +1056,68 @@ public class DataSeeder {
                         || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
                         || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus")
                         || url.contains("maesa_lanceolata") || url.contains("elaeis")
-                        || url.contains("vachellia") || url.contains("acacia_abyssinica") || url.contains("flat-top");
+                        || url.contains("vachellia") || url.contains("acacia_abyssinica") || url.contains("flat-top")
+                        || url.contains("phoenix");
+            }
+            if (PhoenixReclinataData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus")
+                        || url.contains("maesa_lanceolata") || url.contains("elaeis")
+                        || url.contains("chrysophyllum") || url.contains("143740") || url.contains("vachellia")
+                        || url.contains("milllaur") || url.contains("wenge");
+            }
+            if (MillettiaLaurentiiData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus")
+                        || url.contains("maesa_lanceolata") || url.contains("elaeis")
+                        || url.contains("chrysophyllum") || url.contains("phoenix") || url.contains("143740");
+            }
+            if (FicusThonningiiData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus")
+                        || url.contains("maesa_lanceolata") || url.contains("elaeis")
+                        || url.contains("chrysophyllum") || url.contains("phoenix") || url.contains("143740")
+                        || url.contains("milllaur") || url.contains("wenge")
+                        || url.contains("trema_orientalis") || url.contains("126400");
+            }
+            if (TremaOrientalisData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus")
+                        || url.contains("maesa_lanceolata") || url.contains("elaeis")
+                        || url.contains("chrysophyllum") || url.contains("phoenix") || url.contains("143740")
+                        || url.contains("milllaur") || url.contains("wenge")
+                        || url.contains("ficus_thonningii") || url.contains("mulemba")
+                        || url.contains("126400") || url.contains("newtonia");
+            }
+            if (NewtoniaBuchananiiData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus")
+                        || url.contains("maesa_lanceolata") || url.contains("elaeis")
+                        || url.contains("chrysophyllum") || url.contains("phoenix") || url.contains("143740")
+                        || url.contains("milllaur") || url.contains("wenge")
+                        || url.contains("ficus_thonningii") || url.contains("mulemba")
+                        || url.contains("trema_orientalis") || url.contains("blighia") || url.contains("137480");
+            }
+            if (BlighiaUnijugataData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus")
+                        || url.contains("maesa_lanceolata") || url.contains("elaeis")
+                        || url.contains("chrysophyllum") || url.contains("phoenix") || url.contains("143740")
+                        || url.contains("milllaur") || url.contains("wenge")
+                        || url.contains("ficus_thonningii") || url.contains("mulemba")
+                        || url.contains("trema_orientalis") || url.contains("126400") || url.contains("newtonia");
             }
             return false;
         });

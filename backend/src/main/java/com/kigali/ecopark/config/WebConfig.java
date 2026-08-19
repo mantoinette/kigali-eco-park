@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations(location);
 
         // ONLY classpath — never serve stale uploads/media duplicates from Render disk.
-        // Each tree has unique files: TREE-001 … TREE-015 (Umutoyi / Chrysophyllum gorungosanum).
+        // Each tree has unique files: TREE-001 … TREE-014 (Umutoyi / Chrysophyllum gorungosanum).
         registry.addResourceHandler("/media/**")
                 .addResourceLocations("classpath:/static/media/")
                 .setCachePeriod(0);

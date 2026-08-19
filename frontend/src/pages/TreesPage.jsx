@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import TreeDirectory from '../components/TreeDirectory';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { fetchTreeCatalog, fetchTreeFilters, wakeApi } from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
-const HERO_IMG = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80';
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 12;
 
 const CATEGORY_LABELS = {
   en: {
@@ -39,18 +38,8 @@ const CATEGORY_LABELS = {
   },
 };
 
-const NATIVE_LABELS = {
-  en: { NATIVE: 'Native', INTRODUCED: 'Introduced', UNKNOWN: 'Unspecified' },
-  rw: { NATIVE: 'By\'igihugu', INTRODUCED: 'Byinjijwe', UNKNOWN: 'Ntibizwi' },
-  fr: { NATIVE: 'Indigène', INTRODUCED: 'Introduit', UNKNOWN: 'Non précisé' },
-};
-
 function categoryLabel(language, code) {
   return CATEGORY_LABELS[language]?.[code] || CATEGORY_LABELS.en[code] || code;
-}
-
-function nativeLabel(language, code) {
-  return NATIVE_LABELS[language]?.[code] || NATIVE_LABELS.en[code] || code;
 }
 
 function shortFamily(family) {
@@ -58,9 +47,11 @@ function shortFamily(family) {
   return family.split('(')[0].trim();
 }
 
+const selectClass =
+  'w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm font-medium text-gray-800 focus:border-primary focus:outline-none';
+
 /**
- * Explore Trees — compact searchable directory (not a card grid).
- * Each name opens /trees/{qrCodeId}; new DB trees appear automatically.
+ * Tree directory — search, filters, 12-per-page table, pagination.
  */
 export default function TreesPage() {
   const { language } = useLanguage();
@@ -69,11 +60,11 @@ export default function TreesPage() {
   const q = searchParams.get('q') || '';
   const family = searchParams.get('family') || '';
   const category = searchParams.get('category') || '';
-  const nativeStatus = searchParams.get('nativeStatus') || '';
+  const sort = searchParams.get('sort') || 'park';
   const page = Math.max(0, Number(searchParams.get('page') || 0));
 
   const [searchInput, setSearchInput] = useState(q);
-  const [filters, setFilters] = useState({ families: [], categories: [], nativeStatuses: [] });
+  const [filters, setFilters] = useState({ families: [], categories: [] });
   const [catalog, setCatalog] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -85,7 +76,7 @@ export default function TreesPage() {
   useEffect(() => {
     fetchTreeFilters()
       .then(setFilters)
-      .catch(() => setFilters({ families: [], categories: [], nativeStatuses: [] }));
+      .catch(() => setFilters({ families: [], categories: [] }));
   }, []);
 
   useEffect(() => {
@@ -102,7 +93,7 @@ export default function TreesPage() {
           q,
           family,
           category,
-          nativeStatus,
+          sort,
           page,
           size: PAGE_SIZE,
         });
@@ -121,7 +112,7 @@ export default function TreesPage() {
     return () => {
       cancelled = true;
     };
-  }, [language, q, family, category, nativeStatus, page]);
+  }, [language, q, family, category, sort, page]);
 
   const updateParams = useCallback(
     (patch, { resetPage = true } = {}) => {
@@ -154,10 +145,12 @@ export default function TreesPage() {
     setSearchParams({}, { replace: true });
   };
 
-  const hasActiveFilters = Boolean(q || family || category || nativeStatus);
+  const hasActiveFilters = Boolean(q || family || category || (sort && sort !== 'park'));
   const trees = catalog?.content || [];
   const totalPages = catalog?.totalPages || 0;
   const totalElements = catalog?.totalElements || 0;
+  const from = totalElements === 0 ? 0 : page * PAGE_SIZE + 1;
+  const to = Math.min((page + 1) * PAGE_SIZE, totalElements);
 
   const pageNumbers = useMemo(() => {
     if (totalPages <= 1) return [];
@@ -172,96 +165,86 @@ export default function TreesPage() {
 
   return (
     <div className="bg-surface">
-      <section className="relative flex min-h-[300px] items-end overflow-hidden sm:min-h-[360px]">
-        <img src={HERO_IMG} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-dark via-primary-dark/75 to-primary-dark/40" />
-
-        <div className="section-container relative w-full pb-10 pt-24 sm:pb-12">
-          <nav className="mb-6 flex items-center gap-2 text-sm text-white/70" aria-label="Breadcrumb">
-            <Link to="/" className="transition hover:text-white">{t(language, 'navHome')}</Link>
-            <span aria-hidden="true">/</span>
-            <span className="text-white">{t(language, 'navTrees')}</span>
-          </nav>
-
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-light">
-            {t(language, 'treesPageEyebrow')}
-          </p>
-          <h1 className="mt-2 max-w-3xl font-display text-4xl font-semibold leading-tight text-white sm:text-5xl">
-            {t(language, 'exploreTrees')}
+      <section className="border-b border-gray-200 bg-white py-12 sm:py-16">
+        <div className="section-container text-center">
+          <h1 className="font-display text-3xl font-semibold uppercase tracking-[0.18em] text-primary-dark sm:text-4xl">
+            {t(language, 'treesCatalogTitle')}
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
-            {t(language, 'exploreTreesIntro')}
+          <p className="mx-auto mt-3 max-w-2xl text-base text-gray-500 sm:text-lg">
+            {t(language, 'treesCatalogSubtitle')}
           </p>
         </div>
       </section>
 
       <section className="border-b border-gray-200 bg-white py-6">
         <div className="section-container space-y-4">
-          <form onSubmit={handleSearchSubmit} className="flex flex-col gap-3 sm:flex-row">
+          <form onSubmit={handleSearchSubmit} className="relative">
             <label className="sr-only" htmlFor="explore-search">
               {t(language, 'searchTrees')}
             </label>
+            <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+                <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 3.44 9.74l3.16 3.16a.75.75 0 1 0 1.06-1.06l-3.16-3.16A5.5 5.5 0 0 0 9 3.5ZM5.5 9a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0Z" clipRule="evenodd" />
+              </svg>
+            </span>
             <input
               id="explore-search"
               type="search"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder={t(language, 'exploreSearchPlaceholder')}
-              className="flex-1 rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-full rounded-xl border border-gray-300 py-3 pl-11 pr-4 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
-            <button type="submit" className="btn btn-primary !rounded-xl !px-6">
-              {t(language, 'search')}
-            </button>
           </form>
 
           <div className="grid gap-3 sm:grid-cols-3">
-            <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
-              {t(language, 'filterFamily')}
-              <select
-                value={family}
-                onChange={(e) => updateParams({ family: e.target.value })}
-                className="mt-1.5 w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm font-medium text-gray-800 focus:border-primary focus:outline-none"
-              >
-                <option value="">{t(language, 'filterAll')}</option>
-                {filters.families?.map((item) => (
-                  <option key={item} value={shortFamily(item)}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
+            <label className="sr-only" htmlFor="filter-all-trees">
               {t(language, 'filterCategory')}
-              <select
-                value={category}
-                onChange={(e) => updateParams({ category: e.target.value })}
-                className="mt-1.5 w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm font-medium text-gray-800 focus:border-primary focus:outline-none"
-              >
-                <option value="">{t(language, 'filterAll')}</option>
-                {filters.categories?.map((item) => (
-                  <option key={item} value={item}>
-                    {categoryLabel(language, item)}
-                  </option>
-                ))}
-              </select>
             </label>
+            <select
+              id="filter-all-trees"
+              value={category}
+              onChange={(e) => updateParams({ category: e.target.value })}
+              className={selectClass}
+            >
+              <option value="">{t(language, 'filterAllTrees')}</option>
+              {filters.categories?.map((item) => (
+                <option key={item} value={item}>
+                  {categoryLabel(language, item)}
+                </option>
+              ))}
+            </select>
 
-            <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
-              {t(language, 'filterOrigin')}
-              <select
-                value={nativeStatus}
-                onChange={(e) => updateParams({ nativeStatus: e.target.value })}
-                className="mt-1.5 w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm font-medium text-gray-800 focus:border-primary focus:outline-none"
-              >
-                <option value="">{t(language, 'filterAll')}</option>
-                {filters.nativeStatuses?.map((item) => (
-                  <option key={item} value={item}>
-                    {nativeLabel(language, item)}
-                  </option>
-                ))}
-              </select>
+            <label className="sr-only" htmlFor="filter-family">
+              {t(language, 'filterFamily')}
             </label>
+            <select
+              id="filter-family"
+              value={family}
+              onChange={(e) => updateParams({ family: e.target.value })}
+              className={selectClass}
+            >
+              <option value="">{t(language, 'filterFamily')}</option>
+              {filters.families?.map((item) => (
+                <option key={item} value={shortFamily(item)}>
+                  {shortFamily(item)}
+                </option>
+              ))}
+            </select>
+
+            <label className="sr-only" htmlFor="filter-sort">
+              {t(language, 'sortTrees')}
+            </label>
+            <select
+              id="filter-sort"
+              value={sort}
+              onChange={(e) => updateParams({ sort: e.target.value === 'park' ? '' : e.target.value })}
+              className={selectClass}
+            >
+              <option value="park">{t(language, 'sortParkOrder')}</option>
+              <option value="az">{t(language, 'sortAZ')}</option>
+              <option value="za">{t(language, 'sortZA')}</option>
+            </select>
           </div>
 
           {hasActiveFilters && (
@@ -282,9 +265,9 @@ export default function TreesPage() {
                   {categoryLabel(language, category)} ×
                 </button>
               )}
-              {nativeStatus && (
-                <button type="button" onClick={() => updateParams({ nativeStatus: '' })} className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary-dark">
-                  {nativeLabel(language, nativeStatus)} ×
+              {sort && sort !== 'park' && (
+                <button type="button" onClick={() => updateParams({ sort: '' })} className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary-dark">
+                  {sort === 'za' ? t(language, 'sortZA') : t(language, 'sortAZ')} ×
                 </button>
               )}
               <button type="button" onClick={clearFilters} className="text-xs font-semibold text-gray-600 underline">
@@ -295,23 +278,14 @@ export default function TreesPage() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16">
+      <section className="py-10 sm:py-14">
         <div className="section-container">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h2 className="font-display text-2xl font-semibold text-primary-dark sm:text-3xl">
-                {t(language, 'treesCatalogTitle')}
-              </h2>
-              <p className="mt-2 max-w-xl text-sm text-gray-500 sm:text-base">
-                {t(language, 'treesCatalogSubtitle')}
-              </p>
-            </div>
-            <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary-dark">
-              {t(language, 'showingTreesCount')
-                .replace('{shown}', String(trees.length))
-                .replace('{total}', String(totalElements))}
-            </span>
-          </div>
+          <p className="mb-4 text-sm text-gray-500">
+            {t(language, 'showingTreesRange')
+              .replace('{from}', String(from))
+              .replace('{to}', String(to))
+              .replace('{total}', String(totalElements))}
+          </p>
 
           {loading && (
             <div className="py-8 text-center">
@@ -354,7 +328,7 @@ export default function TreesPage() {
                 onClick={() => updateParams({ page: page - 1 }, { resetPage: false })}
                 className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-primary-dark disabled:opacity-40"
               >
-                {t(language, 'prevPage')}
+                ← {t(language, 'prevPage')}
               </button>
               {pageNumbers.map((n) => (
                 <button
@@ -376,7 +350,7 @@ export default function TreesPage() {
                 onClick={() => updateParams({ page: page + 1 }, { resetPage: false })}
                 className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-primary-dark disabled:opacity-40"
               >
-                {t(language, 'nextPage')}
+                {t(language, 'nextPage')} →
               </button>
             </nav>
           )}

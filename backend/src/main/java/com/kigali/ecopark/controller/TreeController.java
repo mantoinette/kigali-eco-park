@@ -35,9 +35,10 @@ public class TreeController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String nativeStatus,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "park") String sort
     ) {
-        return treeService.browseCatalog(lang, q, family, category, nativeStatus, page, size);
+        return treeService.browseCatalog(lang, q, family, category, nativeStatus, page, size, sort);
     }
 
     @GetMapping("/filters")

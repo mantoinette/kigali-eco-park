@@ -1,4 +1,4 @@
-"""Generate TREE-015 Umutoyi audio and video guide assets."""
+"""Generate TREE-014 Umutoyi audio and video guide assets."""
 from __future__ import annotations
 
 import asyncio
@@ -58,7 +58,7 @@ def collect_images() -> list[Path]:
 
     if not paths:
         raise SystemExit(
-            "No images available for TREE-015 video. Add files to "
+            "No images available for TREE-014 video. Add files to "
             "backend/uploads/trees/chrysophyllum-gorungosanum/ or "
             "backend/src/main/resources/static/media/tmp/chrysophyllum-gorungosanum/."
         )
@@ -69,7 +69,7 @@ async def synthesize_audio() -> dict[str, Path]:
     AUDIO_DIR.mkdir(parents=True, exist_ok=True)
     out: dict[str, Path] = {}
     for lang, (voice, text) in SCRIPTS.items():
-        path = AUDIO_DIR / f"TREE-015-{lang}.mp3"
+        path = AUDIO_DIR / f"TREE-014-{lang}.mp3"
         print(f"Generating audio {path.name} ({voice})")
         await edge_tts.Communicate(text, voice).save(str(path))
         out[lang] = path
@@ -123,8 +123,8 @@ async def main() -> None:
     print(f"Using {len(images)} images")
     audio_files = await synthesize_audio()
     for lang, audio_path in audio_files.items():
-        make_video(audio_path, images, VIDEO_DIR / f"TREE-015-{lang}.mp4")
-    print("Done - TREE-015 Umutoyi media generated.")
+        make_video(audio_path, images, VIDEO_DIR / f"TREE-014-{lang}.mp4")
+    print("Done - TREE-014 Umutoyi media generated.")
 
 
 if __name__ == "__main__":

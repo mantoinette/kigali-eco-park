@@ -157,10 +157,28 @@ export default function AboutPage() {
               Ruganambuga (TREE-012)
             </Link>
             <Link to="/qr-label/elaeis-guineensis" className="btn btn-secondary">
-              Ikigazi (TREE-014)
+              Ikigazi (TREE-013)
             </Link>
             <Link to="/qr-label/chrysophyllum-gorungosanum" className="btn btn-secondary">
-              Umutoyi (TREE-015)
+              Umutoyi (TREE-014)
+            </Link>
+            <Link to="/qr-label/phoenix-reclinata" className="btn btn-secondary">
+              Umukindo (TREE-015)
+            </Link>
+            <Link to="/qr-label/millettia-laurentii" className="btn btn-secondary">
+              Umuyogoro (TREE-016)
+            </Link>
+            <Link to="/qr-label/ficus-thonningii" className="btn btn-secondary">
+              Umuvumu (TREE-017)
+            </Link>
+            <Link to="/qr-label/trema-orientalis" className="btn btn-secondary">
+              Umudobori (TREE-018)
+            </Link>
+            <Link to="/qr-label/newtonia-buchananii" className="btn btn-secondary">
+              Umukereko (TREE-019)
+            </Link>
+            <Link to="/qr-label/blighia-unijugata" className="btn btn-secondary">
+              Umuturamugina (TREE-020)
             </Link>
           </div>
         </div>

@@ -1,4 +1,4 @@
-"""Download Chrysophyllum gorungosanum images for TREE-015."""
+"""Download Chrysophyllum gorungosanum images for TREE-014."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -47,7 +47,7 @@ def main() -> None:
 
     if saved == 0:
         raise SystemExit("No images downloaded.")
-    print(f"Done — {saved} images ready for TREE-015.")
+    print(f"Done — {saved} images ready for TREE-014.")
 
 
 if __name__ == "__main__":

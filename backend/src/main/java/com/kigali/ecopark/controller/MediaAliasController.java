@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Maps legacy species filenames to unique per-tree media (TREE-001 … TREE-012, TREE-014, TREE-015).
+ * Maps legacy species filenames to unique per-tree media (TREE-001 … TREE-020).
  */
 @RestController
 public class MediaAliasController {
@@ -47,8 +47,11 @@ public class MediaAliasController {
                 || lower.startsWith("tree-004-") || lower.startsWith("tree-005-") || lower.startsWith("tree-006-")
                 || lower.startsWith("tree-007-") || lower.startsWith("tree-008-") || lower.startsWith("tree-009-")
                 || lower.startsWith("tree-010-") || lower.startsWith("tree-011-")
-                || lower.startsWith("tree-012-")
-                || lower.startsWith("tree-014-") || lower.startsWith("tree-015-")) {
+                || lower.startsWith("tree-012-") || lower.startsWith("tree-013-")
+                || lower.startsWith("tree-014-") || lower.startsWith("tree-015-")
+                || lower.startsWith("tree-016-") || lower.startsWith("tree-017-")
+                || lower.startsWith("tree-018-") || lower.startsWith("tree-019-")
+                || lower.startsWith("tree-020-")) {
             return fileName;
         }
         if (lower.startsWith("syzygium-guineense-")) {
@@ -91,13 +94,31 @@ public class MediaAliasController {
             return "TREE-012-" + fileName.substring("senegalia-polyacantha-ruganambuga-".length());
         }
         if (lower.startsWith("elaeis-guineensis-")) {
-            return "TREE-014-" + fileName.substring("elaeis-guineensis-".length());
+            return "TREE-013-" + fileName.substring("elaeis-guineensis-".length());
         }
         if (lower.startsWith("vachellia-abyssinica-")) {
-            return "TREE-015-" + fileName.substring("vachellia-abyssinica-".length());
+            return "TREE-014-" + fileName.substring("vachellia-abyssinica-".length());
         }
         if (lower.startsWith("chrysophyllum-gorungosanum-")) {
-            return "TREE-015-" + fileName.substring("chrysophyllum-gorungosanum-".length());
+            return "TREE-014-" + fileName.substring("chrysophyllum-gorungosanum-".length());
+        }
+        if (lower.startsWith("phoenix-reclinata-")) {
+            return "TREE-015-" + fileName.substring("phoenix-reclinata-".length());
+        }
+        if (lower.startsWith("millettia-laurentii-")) {
+            return "TREE-016-" + fileName.substring("millettia-laurentii-".length());
+        }
+        if (lower.startsWith("ficus-thonningii-")) {
+            return "TREE-017-" + fileName.substring("ficus-thonningii-".length());
+        }
+        if (lower.startsWith("trema-orientalis-")) {
+            return "TREE-018-" + fileName.substring("trema-orientalis-".length());
+        }
+        if (lower.startsWith("newtonia-buchananii-")) {
+            return "TREE-019-" + fileName.substring("newtonia-buchananii-".length());
+        }
+        if (lower.startsWith("blighia-unijugata-")) {
+            return "TREE-020-" + fileName.substring("blighia-unijugata-".length());
         }
         return fileName;
     }

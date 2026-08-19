@@ -74,6 +74,36 @@ const LOCAL_COMMON_NAMES = {
     en: 'Fluted milkwood',
     fr: 'Fluted milkwood',
   },
+  'phoenix-reclinata': {
+    rw: 'Umukindo',
+    en: 'Wild date palm',
+    fr: 'Palmier-dattier sauvage',
+  },
+  'millettia-laurentii': {
+    rw: 'Umuyogoro',
+    en: 'Faux ebony',
+    fr: 'Faux ébène',
+  },
+  'ficus-thonningii': {
+    rw: 'Umuvumu',
+    en: 'Wild fig',
+    fr: 'Figuier sauvage',
+  },
+  'trema-orientalis': {
+    rw: 'Umudobori',
+    en: 'Pigeon wood',
+    fr: 'Charbonnier',
+  },
+  'newtonia-buchananii': {
+    rw: 'Umukereko',
+    en: 'Forest newtonia',
+    fr: 'Newtonia des forêts',
+  },
+  'blighia-unijugata': {
+    rw: 'Umuturamugina',
+    en: 'Triangle-top',
+    fr: 'Blighia à deux folioles',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -52,17 +53,14 @@ public class TreeService {
             String category,
             String nativeStatus,
             int page,
-            int size
+            int size,
+            String sortKey
     ) {
         String lang = normalizeLanguage(languageCode);
         int safePage = Math.max(page, 0);
         int safeSize = size <= 0 ? DEFAULT_PAGE_SIZE : Math.min(size, MAX_PAGE_SIZE);
 
-        PageRequest pageable = PageRequest.of(
-                safePage,
-                safeSize,
-                Sort.by(Sort.Order.asc("displayOrder"), Sort.Order.asc("scientificName"))
-        );
+        PageRequest pageable = PageRequest.of(safePage, safeSize, catalogSort(sortKey));
 
         Page<Tree> result = treeRepository.findCatalog(
                 blankToNull(query),
@@ -135,7 +133,8 @@ public class TreeService {
     }
 
     public TreeDetailDto getTreeByQrCodeId(String qrCodeId, String languageCode) {
-        Tree tree = treeRepository.findPublishedByQrCodeIdWithDetails(qrCodeId)
+        String code = qrCodeId == null ? "" : qrCodeId.trim();
+        Tree tree = treeRepository.findPublishedByQrCodeIdWithDetails(code)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tree not found"));
         return toDetail(tree, normalizeLanguage(languageCode));
     }
@@ -240,6 +239,17 @@ public class TreeService {
                         .findFirst())
                 .or(() -> tree.getTranslations().stream().findFirst())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No translation available"));
+    }
+
+    private Sort catalogSort(String sortKey) {
+        String key = sortKey == null ? "" : sortKey.trim().toLowerCase(Locale.ROOT);
+        if ("az".equals(key)) {
+            return Sort.by(Sort.Order.asc("scientificName"));
+        }
+        if ("za".equals(key)) {
+            return Sort.by(Sort.Order.desc("scientificName"));
+        }
+        return Sort.by(Sort.Order.asc("displayOrder"), Sort.Order.asc("scientificName"));
     }
 
     private String normalizeLanguage(String languageCode) {

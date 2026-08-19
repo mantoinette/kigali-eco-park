@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 import { displayCommonName } from '../utils/treeDisplay';
-import { TreeSpeciesHeading } from './TreeSpeciesHeading';
 
 function shortFamily(family) {
   if (!family) return '';
@@ -14,14 +13,14 @@ function treeHref(tree) {
 }
 
 /**
- * Compact, scalable tree directory — scientific name first, no large images.
+ * Compact tree directory table: scientific name, common name, family, open arrow.
  */
 export default function TreeDirectory({ trees }) {
   const { language } = useLanguage();
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-      <div className="hidden grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,0.9fr)_2.5rem] gap-3 border-b border-gray-100 bg-primary-dark/5 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 md:grid">
+      <div className="hidden grid-cols-[minmax(0,1.5fr)_minmax(0,1.1fr)_minmax(0,0.9fr)_2.5rem] gap-3 border-b border-gray-200 bg-gray-50 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 md:grid">
         <span>{t(language, 'directoryColumnScientific')}</span>
         <span>{t(language, 'directoryColumnName')}</span>
         <span>{t(language, 'directoryColumnFamily')}</span>
@@ -36,15 +35,19 @@ export default function TreeDirectory({ trees }) {
             <li key={tree.id || tree.slug || tree.qrCodeId}>
               <Link
                 to={href}
-                className="group grid items-center gap-1 px-4 py-3.5 transition hover:bg-primary/5 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,0.9fr)_2.5rem] md:gap-3 md:px-5"
+                className="group grid items-center gap-1 px-4 py-3.5 transition hover:bg-primary/5 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1.1fr)_minmax(0,0.9fr)_2.5rem] md:gap-3 md:px-5"
                 aria-label={`${tree.scientificName || ''} — ${commonName}`}
               >
-                <TreeSpeciesHeading
-                  scientificName={tree.scientificName}
-                  commonName={commonName}
-                  variant="directory"
-                />
-                <span className="hidden truncate text-sm text-gray-500 md:block">
+                <span className="min-w-0">
+                  <span className="block truncate font-serif text-base font-semibold italic text-primary-dark group-hover:text-primary">
+                    {tree.scientificName}
+                  </span>
+                  <span className="mt-0.5 block truncate text-sm text-gray-500 md:hidden">
+                    {commonName}
+                    {tree.family ? ` · ${shortFamily(tree.family)}` : ''}
+                  </span>
+                </span>
+                <span className="hidden truncate text-sm text-gray-600 md:block">
                   {commonName}
                 </span>
                 <span className="hidden truncate text-sm text-gray-500 md:block">

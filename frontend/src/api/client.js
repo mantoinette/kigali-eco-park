@@ -80,6 +80,7 @@ export function fetchTreeCatalog({
   family = '',
   category = '',
   nativeStatus = '',
+  sort = 'park',
   page = 0,
   size = 12,
 } = {}) {
@@ -91,6 +92,7 @@ export function fetchTreeCatalog({
   if (family) params.set('family', family);
   if (category) params.set('category', category);
   if (nativeStatus) params.set('nativeStatus', nativeStatus);
+  if (sort) params.set('sort', sort);
   return requestWithRetry(`/trees/catalog?${params.toString()}`);
 }
 

@@ -5,6 +5,7 @@ export function TreeSpeciesHeading({
   scientificName,
   commonName,
   family,
+  qrCodeId,
   variant = 'inline',
   inverted = false,
 }) {

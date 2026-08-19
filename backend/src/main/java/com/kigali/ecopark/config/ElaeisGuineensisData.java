@@ -8,22 +8,22 @@ import com.kigali.ecopark.service.TreeImageAcquisitionService;
 import java.util.List;
 
 /**
- * Elaeis guineensis (Ikigazi / African oil palm) — TREE-014.
+ * Elaeis guineensis (Ikigazi / African oil palm) — TREE-013.
  * Content aligned with park ethnobotanical notes and regional species profiles.
  */
 public final class ElaeisGuineensisData {
 
     public static final String SLUG = "elaeis-guineensis";
     public static final String SCIENTIFIC_NAME = "Elaeis guineensis";
-    public static final String QR_CODE_ID = "TREE-014";
+    public static final String QR_CODE_ID = "TREE-013";
     public static final String FAMILY = "Arecaceae (Palm family)";
     public static final String TYPICAL_HEIGHT = "Up to 20 m; leaves to 5 m";
     public static final String ORIGIN = "West and Central Africa — widely cultivated in tropical Africa including Rwanda";
     public static final String AGE_ESTIMATE = "Approx. 10–40 years (park specimen)";
     public static final double LATITUDE = -1.9668;
     public static final double LONGITUDE = 30.1096;
-    public static final String AUDIO_BASE_PATH = "/media/audio/TREE-014";
-    public static final String VIDEO_BASE_PATH = "/media/video/TREE-014";
+    public static final String AUDIO_BASE_PATH = "/media/audio/TREE-013";
+    public static final String VIDEO_BASE_PATH = "/media/video/TREE-013";
     public static final String REFERENCE_URL =
             "https://en.wikipedia.org/wiki/Elaeis_guineensis";
 
@@ -83,7 +83,7 @@ public final class ElaeisGuineensisData {
         tree.setAudioUrl(apiPublicBaseUrl + AUDIO_BASE_PATH + "-en.mp3");
         tree.setVideoUrl(apiPublicBaseUrl + VIDEO_BASE_PATH + "-en.mp4");
         tree.setPublished(true);
-        tree.setDisplayOrder(14);
+        tree.setDisplayOrder(13);
     }
 
     public static List<TreeImageAcquisitionService.ImageRequest> imageSources() {
@@ -151,7 +151,7 @@ public final class ElaeisGuineensisData {
                 "Typical height: up to 20 m; leaves to 5 m",
                 "Pollinator: Elaeidobius kamerunicus",
                 "Status in Rwanda: Cultivated (West African origin)",
-                "Park ID: TREE-014"
+                "Park ID: TREE-013"
         ));
         t.setDescription(
                 "Elaeis guineensis is the African oil palm — a tall palm of the family Arecaceae. In Rwanda it is " +
@@ -159,7 +159,7 @@ public final class ElaeisGuineensisData {
                 "Fruit set is helped by a small weevil, Elaeidobius kamerunicus. The fleshy fruit produces palm oil " +
                 "used for cooking in Africa, and also in cosmetics, soap and biofuels. The inner seed yields palm " +
                 "kernel oil. Leaves and fibres are used for traditional thatch, baskets, brooms and ropes.\n\n" +
-                "At Kigali Eco-Park this TREE-014 specimen is presented as Ikigazi / African oil palm, matching local naming " +
+                "At Kigali Eco-Park this TREE-013 specimen is presented as Ikigazi / African oil palm, matching local naming " +
                 "and documented uses."
         );
         t.setUses(
@@ -181,7 +181,7 @@ public final class ElaeisGuineensisData {
         );
         t.setAdditionalInfo(
                 "Species reference: " + REFERENCE_URL + "\n\n" +
-                "At Kigali Eco-Park, scan the QR on the Ikigazi (TREE-014) label for photos, map location, and " +
+                "At Kigali Eco-Park, scan the QR on the Ikigazi (TREE-013) label for photos, map location, and " +
                 "multilingual audio/video.\n\n" +
                 "Also known as: African oil palm · oil palm · Ikigazi · Arecaceae."
         );
@@ -208,13 +208,13 @@ public final class ElaeisGuineensisData {
                 "Izina ry'icyongereza: African oil palm",
                 "Uburebure: kugeza metero 20; amababi metero 5",
                 "Agakoko: Elaeidobius kamerunicus",
-                "Ikimenyetso: TREE-014"
+                "Ikimenyetso: TREE-013"
         ));
         t.setDescription(
                 "Elaeis guineensis ni Ikigazi — ikigazi cy'umuryango wa Arecaceae. Gishobora kugeza mu burebure " +
                 "bwa metero 20. Amababi ageza ku burebure bwa metero 5.\n\n" +
                 "Ikigazi gifite agakoko gatuma kizana imbuto kitwa Elaeidobius kamerunicus.\n\n" +
-                "Mu Kigali Eco-Park, iki cyerekanwa nk'Ikigazi / African oil palm (TREE-014) hakurikijwe amazina n'akamaro k'aho."
+                "Mu Kigali Eco-Park, iki cyerekanwa nk'Ikigazi / African oil palm (TREE-013) hakurikijwe amazina n'akamaro k'aho."
         );
         t.setUses(
                 "Akamaro:\n" +
@@ -234,7 +234,7 @@ public final class ElaeisGuineensisData {
         );
         t.setAdditionalInfo(
                 "Inkomoko: " + REFERENCE_URL + "\n\n" +
-                "Sikana QR ku kimenyetso cy'Ikigazi (TREE-014) kugira ngo ubone amafoto, ikarita, n'amajwi.\n\n" +
+                "Sikana QR ku kimenyetso cy'Ikigazi (TREE-013) kugira ngo ubone amafoto, ikarita, n'amajwi.\n\n" +
                 "Ikigazi · Elaeis guineensis · African oil palm · Arecaceae."
         );
         return t;
@@ -259,7 +259,7 @@ public final class ElaeisGuineensisData {
                 "Nom commun : Palmier à huile d'Afrique",
                 "Nom local : Ikigazi",
                 "Hauteur : jusqu'à 20 m",
-                "Identifiant parc : TREE-014"
+                "Identifiant parc : TREE-013"
         ));
         t.setDescription(
                 "Elaeis guineensis est le palmier à huile d'Afrique. Au Rwanda : Ikigazi.\n\n" +

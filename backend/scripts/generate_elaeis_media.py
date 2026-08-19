@@ -70,7 +70,7 @@ def collect_images() -> list[Path]:
         paths.append(dest)
 
     if not paths:
-        raise SystemExit("No images available for TREE-014 video")
+        raise SystemExit("No images available for TREE-013 video")
     return paths
 
 
@@ -78,7 +78,7 @@ async def synthesize_audio() -> dict[str, Path]:
     AUDIO_DIR.mkdir(parents=True, exist_ok=True)
     out: dict[str, Path] = {}
     for lang, (voice, text) in SCRIPTS.items():
-        path = AUDIO_DIR / f"TREE-014-{lang}.mp3"
+        path = AUDIO_DIR / f"TREE-013-{lang}.mp3"
         if path.exists() and path.stat().st_size > 10_000:
             print(f"Reusing audio {path.name}")
             out[lang] = path
@@ -139,8 +139,8 @@ async def main() -> None:
     print(f"Using {len(images)} images")
     audio_files = await synthesize_audio()
     for lang, audio_path in audio_files.items():
-        make_video(audio_path, images, VIDEO_DIR / f"TREE-014-{lang}.mp4")
-    print("Done — Ikigazi (TREE-014) media is unique from earlier trees.")
+        make_video(audio_path, images, VIDEO_DIR / f"TREE-013-{lang}.mp4")
+    print("Done — Ikigazi (TREE-013) media is unique from earlier trees.")
 
 
 if __name__ == "__main__":

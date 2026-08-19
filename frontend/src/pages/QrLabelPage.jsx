@@ -210,6 +210,91 @@ const PLAQUE_COPY = {
       'Bee forage and canopy habitat in evergreen forest.',
     ],
   },
+  'phoenix-reclinata': {
+    localName: 'UMUKINDO',
+    englishName: 'wild date palm / Senegal date palm',
+    family: 'Arecaceae',
+    akamaro:
+      'Imbuto ziraribwa. Amababi akiri mato bayakoramo imikeka, imikubuzo. Ku munsi wa mashami (Kiriziya Gatorika) bakoresha amababi y\'umukindo akiri mato.',
+    ubuvuzi:
+      'Umukindo ni igisabo cy\'umuryango wa Arecaceae. Umuti wo mu mababi ushobora gukoreshwa mu gukora inzoga y\'igisabo.',
+    uses: [
+      'The fruit are edible.',
+      'Sap gives palm wine.',
+      'Fibre of young unopened leaves used for carpets, kilts and brooms.',
+      'Young palm leaves used on Palm Sunday in the Catholic Church.',
+    ],
+  },
+  'millettia-laurentii': {
+    localName: 'UMUYOGORO',
+    englishName: 'faux ebony / African rosewood / wenge',
+    family: 'Fabaceae',
+    akamaro:
+      'Imbaho nziza (Wenge). Igiti cy\'umulimbo.',
+    ubuvuzi:
+      'Bark ikivura indwara z\'umwijima, diabete, umuriro, indwara z\'uruhu n\'ibindi. Bark ifite imikorere yo kurwanya udukoko.',
+    uses: [
+      'Dark timber marketed as wenge, African rosewood or faux ebony.',
+      'Endangered on the IUCN Red List.',
+      'Bark decoction for liver complaints in traditional medicine.',
+      'Bark has insecticidal properties; ornamental shade tree.',
+    ],
+  },
+  'ficus-thonningii': {
+    localName: 'UMUVUMU',
+    englishName: 'wild fig',
+    family: 'Moraceae',
+    akamaro:
+      'Igishishwa cy\'igiti bagikoragamo inkanda. Babazagamo imivure, amasekuru n\'intebe. Amababi agaburira amatungo mu gihe cy\'impeshi.',
+    ubuvuzi:
+      'Icyo bavuza: amababi, imizi. Indwara zivugwa: gucibwamo, mburugu, diabete, ibihushi, ibisebe, bronchiite, imuyoboro w\'inkari.',
+    uses: [
+      'Planted around rural houses and royal burial grounds.',
+      'Bole used for boats, mortars and troughs; bark for inkanda cloth.',
+      'Leaves used as livestock fodder in dry seasons.',
+      'Leaves and figs used in traditional medicine for diarrhoea, gonorrhoea and diabetes.',
+    ],
+  },
+  'trema-orientalis': {
+    localName: 'UMUDOBORI',
+    englishName: 'pigeon wood / gunpowder tree',
+    family: 'Cannabaceae',
+    akamaro: 'Inkwi zo gucana.',
+    ubuvuzi:
+      'Amababi n\'igishishwa cy\'igiti bivura inkorora, kubabara mu mihogo, asima n\'indwara z\'ubuhumekero.',
+    uses: [
+      'Firewood for cooking and heating.',
+      'Leaves and bark used in traditional medicine for coughs and sore throat.',
+      'Traditional use for asthma and bronchitis.',
+    ],
+  },
+  'newtonia-buchananii': {
+    localName: 'UMUKEREKO',
+    englishName: 'forest newtonia / African newtonia',
+    family: 'Fabaceae',
+    akamaro:
+      'Imbaho. Kivangwa n\'imyaka. Kugaburira amatungo. Inzuki zirahova.',
+    ubuvuzi:
+      'Umukereko ni igiti kinini cy\'ishyamba. Amababi n\'imbuto bigaburira amatungo; amashurwe afasha inzuki.',
+    uses: [
+      'Timber for construction and carpentry.',
+      'Agroforestry: grown with crops; leaves and pods as livestock fodder.',
+      'Flowers provide nectar and pollen for bees.',
+    ],
+  },
+  'blighia-unijugata': {
+    localName: 'UMUTURAMUGINA',
+    englishName: 'triangle-top',
+    family: 'Sapindaceae',
+    akamaro: 'Imbaho zo kubaka ibyoroshye.',
+    ubuvuzi:
+      'Mu buvuzi gakondo bakivuza rubagimpande, ububabare bw\'impyiko, no kumugara kw\'ingingo. Amababi, igishishwa n\'imizi bikoreshwa mu kabyaza abagore.',
+    uses: [
+      'Traditional medicine for rheumatism, kidney pain and joint stiffness.',
+      'Leaves, bark and roots recorded as oxytocic in childbirth.',
+      'Wood used in light construction.',
+    ],
+  },
 };
 
 function ParkLogo() {
