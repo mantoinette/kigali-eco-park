@@ -295,6 +295,20 @@ const PLAQUE_COPY = {
       'Wood used in light construction.',
     ],
   },
+  'croton-megalocarpus': {
+    localName: 'UMUNEGE',
+    englishName: 'croton tree / croto tree',
+    family: 'Euphorbiaceae',
+    akamaro:
+      'Urugara ku bantu n\'inyamaswa. Kurinda umuyaga. Gufata ubutaka. Amavuta y\'imbuto muri moteri.',
+    ubuvuzi:
+      'Umunege ni igiti kiba mu mashyamba yo mu misozi miremire nka Nyungwe na Gishwati. Imbuto zivamo amavuta akoreshwa muri za moteri; ntahumanya ikirere.',
+    uses: [
+      'Shade for people and wildlife; wind protection and soil conservation.',
+      'Nuts yield oil used in engines as biofuel or biodiesel.',
+      'Highland forest tree of Rwanda (Nyungwe, Gishwati and similar areas).',
+    ],
+  },
 };
 
 function ParkLogo() {

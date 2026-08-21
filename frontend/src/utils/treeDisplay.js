@@ -104,6 +104,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'Triangle-top',
     fr: 'Blighia à deux folioles',
   },
+  'croton-megalocarpus': {
+    rw: 'Umunege',
+    en: 'Croton tree',
+    fr: 'Croton à gros fruits',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);

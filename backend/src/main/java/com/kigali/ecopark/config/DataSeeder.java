@@ -82,6 +82,8 @@ public class DataSeeder {
                     seedNewtoniaBuchananii(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "TREE-020", () ->
                     seedBlighiaUnijugata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "TREE-021", () ->
+                    seedCrotonMegalocarpus(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "publish-park-trees", () -> keepOnlyPublishedParkTrees(treeRepository));
         };
     }
@@ -916,6 +918,44 @@ public class DataSeeder {
         }
     }
 
+    void seedCrotonMegalocarpus(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(CrotonMegalocarpusData.SLUG)
+                .or(() -> treeRepository.findByQrCodeIdWithDetails(CrotonMegalocarpusData.QR_CODE_ID));
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            CrotonMegalocarpusData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    CrotonMegalocarpusData.SLUG,
+                    CrotonMegalocarpusData.SCIENTIFIC_NAME,
+                    CrotonMegalocarpusData.imageSources()
+            );
+            CrotonMegalocarpusData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            CrotonMegalocarpusData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, CrotonMegalocarpusData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, CrotonMegalocarpusData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        CrotonMegalocarpusData.SLUG,
+                        CrotonMegalocarpusData.SCIENTIFIC_NAME,
+                        CrotonMegalocarpusData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    CrotonMegalocarpusData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
@@ -938,7 +978,8 @@ public class DataSeeder {
                         && !FicusThonningiiData.SLUG.equals(t.getSlug())
                         && !TremaOrientalisData.SLUG.equals(t.getSlug())
                         && !NewtoniaBuchananiiData.SLUG.equals(t.getSlug())
-                        && !BlighiaUnijugataData.SLUG.equals(t.getSlug()))
+                        && !BlighiaUnijugataData.SLUG.equals(t.getSlug())
+                        && !CrotonMegalocarpusData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -1117,7 +1158,20 @@ public class DataSeeder {
                         || url.contains("chrysophyllum") || url.contains("phoenix") || url.contains("143740")
                         || url.contains("milllaur") || url.contains("wenge")
                         || url.contains("ficus_thonningii") || url.contains("mulemba")
-                        || url.contains("trema_orientalis") || url.contains("126400") || url.contains("newtonia");
+                        || url.contains("trema_orientalis") || url.contains("126400") || url.contains("newtonia")
+                        || url.contains("croton");
+            }
+            if (CrotonMegalocarpusData.SLUG.equals(slug)) {
+                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
+                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
+                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
+                        || url.contains("entada_abyssinica") || url.contains("phragmites_mauritianus")
+                        || url.contains("maesa_lanceolata") || url.contains("elaeis")
+                        || url.contains("chrysophyllum") || url.contains("phoenix") || url.contains("143740")
+                        || url.contains("milllaur") || url.contains("wenge")
+                        || url.contains("ficus_thonningii") || url.contains("mulemba")
+                        || url.contains("trema_orientalis") || url.contains("126400") || url.contains("newtonia")
+                        || url.contains("blighia") || url.contains("137480");
             }
             return false;
         });

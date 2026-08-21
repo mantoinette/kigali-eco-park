@@ -180,6 +180,9 @@ export default function AboutPage() {
             <Link to="/qr-label/blighia-unijugata" className="btn btn-secondary">
               Umuturamugina (TREE-020)
             </Link>
+            <Link to="/qr-label/croton-megalocarpus" className="btn btn-secondary">
+              Umunege (TREE-021)
+            </Link>
           </div>
         </div>
       </section>
