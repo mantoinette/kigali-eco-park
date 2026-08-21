@@ -78,7 +78,7 @@ export default function Footer() {
                 <img
                   src="/treescan-rwanda-logo.png"
                   alt={t(language, 'siteName')}
-                  className="h-14 w-auto max-w-[240px] object-contain object-left drop-shadow-sm sm:h-16"
+                  className="h-14 w-auto max-w-[240px] object-contain object-left brightness-0 invert drop-shadow-sm sm:h-16"
                 />
               </Link>
               <p className="mt-5 text-sm leading-relaxed text-white/75">

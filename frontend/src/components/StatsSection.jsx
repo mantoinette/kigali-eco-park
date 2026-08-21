@@ -47,6 +47,7 @@ export default function StatsSection() {
                 value={item.value}
                 language={language}
                 duration={item.duration}
+                suffix="+"
                 className="block font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl"
               />
               <div className="mt-3 text-sm font-medium uppercase tracking-[0.16em] text-white/70">
