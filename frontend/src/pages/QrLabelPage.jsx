@@ -309,6 +309,20 @@ const PLAQUE_COPY = {
       'Highland forest tree of Rwanda (Nyungwe, Gishwati and similar areas).',
     ],
   },
+  'entada-abyssinica-022': {
+    localName: 'UMUSANGE',
+    englishName: 'splinter bean',
+    family: 'Fabaceae (Mimosaceae)',
+    akamaro:
+      'Abavuzi gakonda bayivuza: Inkorora, Rubagimpande, indwara z\'ubuhumekero, Gucibwamo, umuriro, gukuuramo inda.',
+    ubuvuzi:
+      'Ubushakashatsi bwabonye muri icyo giti entadanin ivura kanseri, ikarwanya bakteriya ndetse na Salmonella typhimurium itera guhitwa no kubabara mu nda.',
+    uses: [
+      'Traditional medicine for cough, side pain, respiratory disease, diarrhoea and fever.',
+      'Research: entadanin with antibacterial activity against Salmonella typhimurium.',
+      'Documented antioxidant and anticancer activity in scientific studies.',
+    ],
+  },
 };
 
 function ParkLogo() {

@@ -109,6 +109,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'Croton tree',
     fr: 'Croton à gros fruits',
   },
+  'entada-abyssinica-022': {
+    rw: 'Umusange',
+    en: 'Splinter bean',
+    fr: 'Entada d\'Abyssinie',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);

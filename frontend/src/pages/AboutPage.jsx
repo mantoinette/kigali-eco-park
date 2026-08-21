@@ -183,6 +183,9 @@ export default function AboutPage() {
             <Link to="/qr-label/croton-megalocarpus" className="btn btn-secondary">
               Umunege (TREE-021)
             </Link>
+            <Link to="/qr-label/entada-abyssinica-022" className="btn btn-secondary">
+              Umusange (TREE-022)
+            </Link>
           </div>
         </div>
       </section>

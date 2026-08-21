@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Maps legacy species filenames to unique per-tree media (TREE-001 … TREE-021).
+ * Maps legacy species filenames to unique per-tree media (TREE-001 … TREE-022).
  */
 @RestController
 public class MediaAliasController {
@@ -51,7 +51,8 @@ public class MediaAliasController {
                 || lower.startsWith("tree-014-") || lower.startsWith("tree-015-")
                 || lower.startsWith("tree-016-") || lower.startsWith("tree-017-")
                 || lower.startsWith("tree-018-") || lower.startsWith("tree-019-")
-                || lower.startsWith("tree-020-") || lower.startsWith("tree-021-")) {
+                || lower.startsWith("tree-020-") || lower.startsWith("tree-021-")
+                || lower.startsWith("tree-022-")) {
             return fileName;
         }
         if (lower.startsWith("syzygium-guineense-")) {
@@ -80,6 +81,9 @@ public class MediaAliasController {
         }
         if (lower.startsWith("senegalia-polyacantha-campylacantha-")) {
             return "TREE-008-" + fileName.substring("senegalia-polyacantha-campylacantha-".length());
+        }
+        if (lower.startsWith("entada-abyssinica-022-")) {
+            return "TREE-022-" + fileName.substring("entada-abyssinica-022-".length());
         }
         if (lower.startsWith("entada-abyssinica-")) {
             return "TREE-009-" + fileName.substring("entada-abyssinica-".length());
