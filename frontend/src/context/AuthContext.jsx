@@ -4,6 +4,16 @@ import { fetchMe, loginRequest, registerRequest } from '../api/client';
 const AuthContext = createContext(null);
 const STORAGE_KEY = 'kigali-ecopark-auth';
 
+function isUnauthorizedError(err) {
+  const msg = String(err?.message || '');
+  return (
+    msg.includes('401')
+    || /unauthorized/i.test(msg)
+    || /invalid session/i.test(msg)
+    || /missing authorization/i.test(msg)
+  );
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
@@ -21,17 +31,29 @@ export function AuthProvider({ children }) {
       return;
     }
 
+    let cancelled = false;
     fetchMe(user.token)
       .then((profile) => {
-        const next = { ...profile, token: user.token };
+        if (cancelled) return;
+        const next = { ...profile, token: profile.token || user.token };
         setUser(next);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       })
-      .catch(() => {
-        setUser(null);
-        localStorage.removeItem(STORAGE_KEY);
+      .catch((err) => {
+        if (cancelled) return;
+        // Keep the session on network/API sleep failures; only clear real auth errors.
+        if (isUnauthorizedError(err)) {
+          setUser(null);
+          localStorage.removeItem(STORAGE_KEY);
+        }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const login = async (email, password) => {
@@ -53,14 +75,17 @@ export function AuthProvider({ children }) {
     localStorage.removeItem(STORAGE_KEY);
   };
 
+  const isAdmin = String(user?.role || '').toUpperCase() === 'ADMIN';
+
   const value = useMemo(() => ({
     user,
     loading,
     isAuthenticated: !!user?.token,
+    isAdmin,
     login,
     register,
     logout,
-  }), [user, loading]);
+  }), [user, loading, isAdmin]);
 
   return (
     <AuthContext.Provider value={value}>

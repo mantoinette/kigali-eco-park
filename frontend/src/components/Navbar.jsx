@@ -14,7 +14,7 @@ const navLinkClass = ({ isActive }) =>
 
 export default function Navbar() {
   const { language } = useLanguage();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
   const links = [
@@ -24,6 +24,32 @@ export default function Navbar() {
     { to: '/about', label: t(language, 'aboutUs') },
     { to: '/contact', label: t(language, 'navContact') },
   ];
+
+  const authControls = (
+    <>
+      {isAdmin && (
+        <Link to="/admin" className="btn btn-primary !px-4 !py-2 text-xs">
+          {t(language, 'admin')}
+        </Link>
+      )}
+      {isAuthenticated ? (
+        <button
+          type="button"
+          className="btn btn-secondary !px-4 !py-2 text-xs"
+          onClick={() => {
+            logout();
+            setOpen(false);
+          }}
+        >
+          {t(language, 'logout')}
+        </button>
+      ) : (
+        <Link to="/login" className="btn btn-secondary !px-4 !py-2 text-xs">
+          {t(language, 'login')}
+        </Link>
+      )}
+    </>
+  );
 
   return (
     <header className="no-print sticky top-0 z-50 border-b border-gray-200/80 bg-white/95 shadow-nav backdrop-blur-md">
@@ -49,15 +75,7 @@ export default function Navbar() {
           <Link to="/search" className="rounded-lg p-2 text-gray-600 hover:bg-gray-100" aria-label={t(language, 'search')}>
             🔍
           </Link>
-          {isAuthenticated && user?.role === 'ADMIN' ? (
-            <Link to="/admin" className="btn btn-secondary !px-4 !py-2 text-xs">
-              {t(language, 'admin')}
-            </Link>
-          ) : (
-            <Link to="/login" className="btn btn-secondary !px-4 !py-2 text-xs">
-              {t(language, 'login')}
-            </Link>
-          )}
+          {authControls}
         </div>
 
         <button
@@ -91,16 +109,13 @@ export default function Navbar() {
             <div className="mt-3 border-t border-gray-100 pt-3">
               <LanguageSelector />
             </div>
-            <Link
-              to={isAuthenticated && user?.role === 'ADMIN' ? '/admin' : '/login'}
-              className="btn btn-primary mt-3 w-full"
-              onClick={() => setOpen(false)}
-            >
-              {isAuthenticated && user?.role === 'ADMIN' ? t(language, 'admin') : t(language, 'login')}
-            </Link>
+            <div className="mt-3 flex flex-col gap-2" onClick={() => setOpen(false)}>
+              {authControls}
+            </div>
           </nav>
         </div>
       )}
     </header>
   );
 }
+

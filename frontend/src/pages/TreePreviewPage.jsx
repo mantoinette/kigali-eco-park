@@ -98,10 +98,16 @@ export default function TreePreviewPage() {
             />
             <p className="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-line">{summary}</p>
             <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                to={tree.qrCodeId ? `/scan/${tree.qrCodeId}` : `/tree/${tree.id}`}
+                className="btn btn-primary !rounded-xl"
+              >
+                {t(language, 'viewFullTreeInfo')}
+              </Link>
               <Link to="/trees" className="btn btn-secondary !rounded-xl">
                 {t(language, 'backToList')}
               </Link>
-              <Link to="/map" className="btn btn-primary !rounded-xl">
+              <Link to="/map" className="btn btn-secondary !rounded-xl">
                 {t(language, 'navMap')}
               </Link>
             </div>

@@ -20,7 +20,7 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       const response = await login(email.trim(), password);
-      navigate(response?.role === 'ADMIN' ? '/admin' : '/');
+      navigate(String(response?.role || '').toUpperCase() === 'ADMIN' ? '/admin' : '/');
     } catch (err) {
       setError(err.message || t(language, 'authError'));
     } finally {
@@ -47,6 +47,11 @@ export default function LoginPage() {
             {error}
           </div>
         )}
+
+        <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-primary-dark">
+          <p className="font-semibold">{t(language, 'adminLoginHintTitle')}</p>
+          <p className="mt-1 text-xs leading-relaxed text-gray-700">{t(language, 'adminLoginHint')}</p>
+        </div>
 
         <label className="block">
           <span className="text-sm font-medium text-gray-700">{t(language, 'email')}</span>

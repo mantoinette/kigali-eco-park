@@ -5,9 +5,9 @@ import { t } from '../i18n/ui';
 
 /** Redirects non-admins to login. */
 export function RequireAdmin({ children }) {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, isAdmin, loading } = useAuth();
   if (loading) return null;
-  if (!isAuthenticated || user?.role !== 'ADMIN') {
+  if (!isAuthenticated || !isAdmin) {
     return <Navigate to="/login" replace />;
   }
   return children;

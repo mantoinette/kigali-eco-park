@@ -145,7 +145,17 @@ public class DataSeeder {
     }
 
     private void seedAdminUser(UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder) {
-        if (userAccountRepository.existsByEmailIgnoreCase("admin@ecopark.rw")) {
+        var existing = userAccountRepository.findByEmailIgnoreCase("admin@ecopark.rw");
+        if (existing.isPresent()) {
+            UserAccount admin = existing.get();
+            boolean dirty = false;
+            if (!"ADMIN".equalsIgnoreCase(admin.getRole())) {
+                admin.setRole("ADMIN");
+                dirty = true;
+            }
+            if (dirty) {
+                userAccountRepository.save(admin);
+            }
             return;
         }
         UserAccount admin = new UserAccount();
