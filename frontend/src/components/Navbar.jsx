@@ -27,11 +27,15 @@ export default function Navbar() {
 
   const authControls = (
     <>
-      {isAdmin && (
+      {isAdmin ? (
         <Link to="/admin" className="btn btn-primary !px-4 !py-2 text-xs">
           {t(language, 'admin')}
         </Link>
-      )}
+      ) : isAuthenticated ? (
+        <span className="rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-600">
+          {t(language, 'visitorAccount')}
+        </span>
+      ) : null}
       {isAuthenticated ? (
         <button
           type="button"

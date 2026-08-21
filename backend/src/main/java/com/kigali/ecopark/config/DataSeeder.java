@@ -145,20 +145,9 @@ public class DataSeeder {
     }
 
     private void seedAdminUser(UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder) {
-        var existing = userAccountRepository.findByEmailIgnoreCase("admin@ecopark.rw");
-        if (existing.isPresent()) {
-            UserAccount admin = existing.get();
-            boolean dirty = false;
-            if (!"ADMIN".equalsIgnoreCase(admin.getRole())) {
-                admin.setRole("ADMIN");
-                dirty = true;
-            }
-            if (dirty) {
-                userAccountRepository.save(admin);
-            }
-            return;
-        }
-        UserAccount admin = new UserAccount();
+        // Always keep the known park admin account usable after deploys/DB resets.
+        UserAccount admin = userAccountRepository.findByEmailIgnoreCase("admin@ecopark.rw")
+                .orElseGet(UserAccount::new);
         admin.setFullName("Park Administrator");
         admin.setEmail("admin@ecopark.rw");
         admin.setPasswordHash(passwordEncoder.encode("admin123"));
