@@ -365,7 +365,7 @@ export const uiText = {
     treeQrCode: 'Kode QR',
     treeQrCodeHint: 'Sikana kugira ngo umenye byinshi.',
     jumpToPrintSign: 'Kora QR kode',
-    welcome: 'Murakaza neza kuri Tree Scan Rwanda',
+    welcome: 'Murakaza neza muri Tree Scan Rwanda',
     plantlist: 'Urutonde',
     faq: 'Ubufasha',
     heroBadge: 'Menya ibimera kavukire by’u Rwanda',
