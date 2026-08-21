@@ -15,6 +15,7 @@ import LoginPage from './pages/LoginPage';
 import QrLabelPage from './pages/QrLabelPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminQrPage from './pages/AdminQrPage';
 import { fetchTrees } from './api/client';
 import { useLanguage } from './context/LanguageContext';
 
@@ -43,15 +44,18 @@ export default function App() {
         <Route path="/search" element={<SearchRedirect />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/scan/:qrCodeId" element={<ScanTreePage />} />
+        <Route path="/scan/:qrCodeId" element={<ScanTreePage mode="legacy" />} />
+        <Route path="/t/:token" element={<ScanTreePage mode="token" />} />
         <Route path="/tree/:id" element={<TreeByIdPage />} />
         <Route path="/plantlist" element={<Navigate to="/trees" replace />} />
-        <Route path="/qr-label/:slug" element={<QrLabelPage />} />
+        <Route path="/qr-label/:slug" element={<Navigate to="/admin/qr" replace />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/qr" element={<AdminQrPage />} />
+        <Route path="/admin/qr-label/:slug" element={<QrLabelPage />} />
         <Route path="/admin/*" element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

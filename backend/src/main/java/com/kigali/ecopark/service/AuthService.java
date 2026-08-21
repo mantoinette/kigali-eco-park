@@ -65,6 +65,19 @@ public class AuthService {
         return toResponse(user);
     }
 
+    /** Require a valid Bearer session whose role is ADMIN. */
+    @Transactional(readOnly = true)
+    public void requireAdmin(String authorization) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Admin sign-in required");
+        }
+        String token = authorization.substring("Bearer ".length()).trim();
+        AuthResponse profile = me(token);
+        if (!"ADMIN".equalsIgnoreCase(profile.role())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Admin access required");
+        }
+    }
+
     private AuthResponse toResponse(UserAccount user) {
         return new AuthResponse(
                 user.getId(),

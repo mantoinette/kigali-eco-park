@@ -65,7 +65,7 @@ export default function Footer() {
   const visitorLinks = [
     { to: '/contact', label: t(language, 'navContact') },
     { to: '/privacy', label: t(language, 'privacyPolicy') },
-    { to: '/qr-label/syzygium-guineense', label: t(language, 'openQrLabel') },
+    { to: '/faq', label: t(language, 'faq') },
   ];
 
   return (

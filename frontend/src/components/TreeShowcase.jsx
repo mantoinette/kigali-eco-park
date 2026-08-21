@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchQrCode } from '../api/client';
+import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 import { resolveMediaUrl } from '../utils/mediaUrl';
@@ -9,9 +10,11 @@ import { displayCommonName } from '../utils/treeDisplay';
 /**
  * Unified park interpretive sign — tree illustration and QR label
  * are one visual unit, like the physical signage at Kigali Eco Park.
+ * QR image requires admin auth (not shown on public pages).
  */
 export default function TreeShowcase({ tree }) {
   const { language } = useLanguage();
+  const { user } = useAuth();
   const [qr, setQr] = useState(null);
   const [imgFailed, setImgFailed] = useState(false);
   const imageUrl = resolveMediaUrl(tree.primaryImageUrl);
@@ -22,10 +25,14 @@ export default function TreeShowcase({ tree }) {
   }, [tree.primaryImageUrl]);
 
   useEffect(() => {
-    fetchQrCode(tree.slug)
+    if (!user?.token) {
+      setQr(null);
+      return;
+    }
+    fetchQrCode(tree.slug, user.token)
       .then(setQr)
       .catch(() => setQr(null));
-  }, [tree.slug]);
+  }, [tree.slug, user?.token]);
 
   return (
     <article className="mx-auto max-w-4xl overflow-hidden rounded-[1.75rem] bg-white shadow-showcase ring-1 ring-gray-200/60">

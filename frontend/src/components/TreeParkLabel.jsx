@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react';
 import { fetchQrCode } from '../api/client';
+import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
-/** Park-style label strip — sits below the tree image, never covering it. */
+/** Park-style label strip — admin preview only (requires signed-in admin). */
 export default function TreeParkLabel({ slug, compact = false }) {
   const { language } = useLanguage();
+  const { user } = useAuth();
   const [qr, setQr] = useState(null);
 
   useEffect(() => {
-    if (!slug) return;
-    fetchQrCode(slug)
+    if (!slug || !user?.token) {
+      setQr(null);
+      return;
+    }
+    fetchQrCode(slug, user.token)
       .then(setQr)
       .catch(() => setQr(null));
-  }, [slug]);
+  }, [slug, user?.token]);
 
   return (
     <div

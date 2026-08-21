@@ -18,6 +18,8 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
 
     Optional<Tree> findByQrCodeIdAndPublishedTrue(String qrCodeId);
 
+    Optional<Tree> findByQrAccessTokenAndPublishedTrue(String qrAccessToken);
+
     @Query("""
             SELECT DISTINCT t FROM Tree t
             LEFT JOIN FETCH t.translations
@@ -59,6 +61,15 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
             AND t.published = true
             """)
     Optional<Tree> findPublishedByQrCodeIdWithDetails(@Param("qrCodeId") String qrCodeId);
+
+    @Query("""
+            SELECT t FROM Tree t
+            LEFT JOIN FETCH t.translations
+            LEFT JOIN FETCH t.images
+            WHERE t.qrAccessToken = :token
+            AND t.published = true
+            """)
+    Optional<Tree> findPublishedByAccessTokenWithDetails(@Param("token") String token);
 
     @Query("""
             SELECT t FROM Tree t

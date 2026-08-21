@@ -3,24 +3,29 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
-const ADMIN_LINKS = [
-  { key: 'adminDashboard', to: '/admin', icon: '📊' },
-  { key: 'adminAddTree', to: '/admin/trees/new', icon: '➕' },
-  { key: 'adminManageTrees', to: '/admin/trees', icon: '🌳' },
-  { key: 'adminQrCodes', to: '/admin/qr', icon: '📱' },
-  { key: 'adminLanguages', to: '/admin/languages', icon: '🌍' },
-  { key: 'adminUsers', to: '/admin/users', icon: '👥' },
-  { key: 'adminStats', to: '/admin/stats', icon: '📈' },
-];
-
-export default function AdminDashboard() {
+/** Redirects non-admins to login. */
+export function RequireAdmin({ children }) {
   const { user, isAuthenticated, loading } = useAuth();
-  const { language } = useLanguage();
-
   if (loading) return null;
   if (!isAuthenticated || user?.role !== 'ADMIN') {
     return <Navigate to="/login" replace />;
   }
+  return children;
+}
+
+export function AdminHome() {
+  const { user } = useAuth();
+  const { language } = useLanguage();
+
+  const links = [
+    { key: 'adminDashboard', to: '/admin', icon: '📊' },
+    { key: 'adminAddTree', to: '/admin/trees/new', icon: '➕' },
+    { key: 'adminManageTrees', to: '/admin/trees', icon: '🌳' },
+    { key: 'adminQrCodes', to: '/admin/qr', icon: '📱' },
+    { key: 'adminLanguages', to: '/admin/languages', icon: '🌍' },
+    { key: 'adminUsers', to: '/admin/users', icon: '👥' },
+    { key: 'adminStats', to: '/admin/stats', icon: '📈' },
+  ];
 
   return (
     <div className="bg-surface py-12">
@@ -36,7 +41,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {ADMIN_LINKS.map((item) => (
+          {links.map((item) => (
             <Link key={item.key} to={item.to} className="card flex items-center gap-4">
               <span className="text-3xl" aria-hidden="true">{item.icon}</span>
               <div>
@@ -46,11 +51,15 @@ export default function AdminDashboard() {
             </Link>
           ))}
         </div>
-
-        <div className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
-          {t(language, 'adminComingSoon')}
-        </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminDashboard() {
+  return (
+    <RequireAdmin>
+      <AdminHome />
+    </RequireAdmin>
   );
 }

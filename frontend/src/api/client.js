@@ -33,12 +33,13 @@ async function requestWithRetry(path, options = {}, attempts = 3) {
 }
 
 async function request(path, options = {}) {
+  const { headers: customHeaders, ...rest } = options;
   const response = await fetch(`${API_BASE}${path}`, {
+    ...rest,
     headers: {
       'Content-Type': 'application/json',
-      ...(options.headers || {}),
+      ...(customHeaders || {}),
     },
-    ...options,
   });
 
   if (!response.ok) {
@@ -124,8 +125,21 @@ export function fetchTreeByQrCode(qrCodeId, lang) {
   return request(`/trees/qr/${encodeURIComponent(qrCodeId)}?lang=${encodeURIComponent(lang)}`);
 }
 
-export function fetchQrCode(slug) {
-  return request(`/qr/${encodeURIComponent(slug)}`);
+/** Public visitor landing for park QR labels (opaque access token). */
+export function fetchTreeByAccessToken(token, lang) {
+  return request(`/trees/access/${encodeURIComponent(token)}?lang=${encodeURIComponent(lang)}`);
+}
+
+/** Admin-only: generate printable QR image for a tree slug. */
+export function fetchQrCode(slug, authToken) {
+  if (!authToken) {
+    return Promise.reject(new Error('Admin sign-in required to generate QR codes'));
+  }
+  return request(`/qr/${encodeURIComponent(slug)}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
 }
 
 export function registerRequest(fullName, email, password) {

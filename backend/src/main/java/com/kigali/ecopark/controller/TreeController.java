@@ -87,4 +87,13 @@ public class TreeController {
     ) {
         return treeService.getTreeByQrCodeId(qrCodeId, lang);
     }
+
+    /** Public visitor landing for park QR labels (opaque access token). */
+    @GetMapping("/access/{token}")
+    public TreeDetailDto getTreeByAccessToken(
+            @PathVariable String token,
+            @RequestParam(defaultValue = "en") String lang
+    ) {
+        return treeService.getTreeByAccessToken(token, lang);
+    }
 }

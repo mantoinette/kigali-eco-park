@@ -11,11 +11,13 @@ import com.kigali.ecopark.repository.TreeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class QrCodeService {
@@ -31,13 +33,16 @@ public class QrCodeService {
         this.frontendBaseUrl = frontendBaseUrl.replaceAll("/$", "");
     }
 
+    /**
+     * Admin-only: generate printable QR image whose URL uses the tree's opaque access token.
+     */
+    @Transactional
     public QrCodeResponseDto generateQrCode(String slug) {
         Tree tree = treeRepository.findBySlugAndPublishedTrue(slug)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tree not found"));
 
-        // Park QR codes unlock the full guide:
-        // TREE-001 -> /scan/TREE-001
-        String url = frontendBaseUrl + "/scan/" + tree.getQrCodeId();
+        String token = ensureAccessToken(tree);
+        String url = frontendBaseUrl + "/t/" + token;
         String base64 = generateBase64QrCode(url);
 
         return new QrCodeResponseDto(
@@ -49,10 +54,23 @@ public class QrCodeService {
         );
     }
 
-    public String buildTreeUrl(String slug) {
-        Tree tree = treeRepository.findBySlugAndPublishedTrue(slug)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tree not found"));
-        return frontendBaseUrl + "/scan/" + tree.getQrCodeId();
+    @Transactional
+    public void ensureAccessTokensForAllPublished() {
+        for (Tree tree : treeRepository.findAll()) {
+            if (tree.isPublished()) {
+                ensureAccessToken(tree);
+            }
+        }
+    }
+
+    private String ensureAccessToken(Tree tree) {
+        if (tree.getQrAccessToken() != null && !tree.getQrAccessToken().isBlank()) {
+            return tree.getQrAccessToken();
+        }
+        String token = UUID.randomUUID().toString().replace("-", "");
+        tree.setQrAccessToken(token);
+        treeRepository.save(tree);
+        return token;
     }
 
     private String generateBase64QrCode(String content) {

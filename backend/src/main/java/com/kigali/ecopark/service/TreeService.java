@@ -139,6 +139,13 @@ public class TreeService {
         return toDetail(tree, normalizeLanguage(languageCode));
     }
 
+    public TreeDetailDto getTreeByAccessToken(String accessToken, String languageCode) {
+        String token = accessToken == null ? "" : accessToken.trim();
+        Tree tree = treeRepository.findPublishedByAccessTokenWithDetails(token)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tree not found"));
+        return toDetail(tree, normalizeLanguage(languageCode));
+    }
+
     private TreeSummaryDto toSummary(Tree tree, String languageCode) {
         TreeTranslation translation = resolveTranslation(tree, languageCode);
         String primaryImage = tree.getImages().stream()

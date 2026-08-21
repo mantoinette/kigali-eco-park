@@ -22,6 +22,10 @@ public class Tree {
     @Column(name = "qr_code_id", nullable = false, unique = true, length = 50)
     private String qrCodeId;
 
+    /** Opaque public scan token encoded in park QR labels (not the park display ID). */
+    @Column(name = "qr_access_token", unique = true, length = 64)
+    private String qrAccessToken;
+
     @Column(name = "is_published", nullable = false)
     private boolean published = true;
 
@@ -111,6 +115,14 @@ public class Tree {
 
     public void setQrCodeId(String qrCodeId) {
         this.qrCodeId = qrCodeId;
+    }
+
+    public String getQrAccessToken() {
+        return qrAccessToken;
+    }
+
+    public void setQrAccessToken(String qrAccessToken) {
+        this.qrAccessToken = qrAccessToken;
     }
 
     public boolean isPublished() {

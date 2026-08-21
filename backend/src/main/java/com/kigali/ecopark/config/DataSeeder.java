@@ -34,6 +34,7 @@ public class DataSeeder {
             TreeImageAcquisitionService imageAcquisitionService,
             PlatformTransactionManager transactionManager,
             DataSource dataSource,
+            com.kigali.ecopark.service.QrCodeService qrCodeService,
             @Value("${app.api.public-base-url:http://localhost:8082}") String apiPublicBaseUrl
     ) {
         TransactionTemplate tx = new TransactionTemplate(transactionManager);
@@ -87,6 +88,7 @@ public class DataSeeder {
             seedSafely(tx, "TREE-022", () ->
                     seedEntadaAbyssinica022(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "publish-park-trees", () -> keepOnlyPublishedParkTrees(treeRepository));
+            seedSafely(tx, "qr-access-tokens", qrCodeService::ensureAccessTokensForAllPublished);
         };
     }
 
