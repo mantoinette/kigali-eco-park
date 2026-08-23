@@ -18,9 +18,9 @@ export default function AuthLayout({ title, subtitle, footer, children }) {
         <div className="relative flex flex-1 flex-col justify-center p-12 xl:p-16">
           <Link to="/" className="mb-8 inline-flex items-center text-white/90 transition hover:opacity-90">
             <img
-              src="/kigali-eco-park-logo.png"
-              alt="Kigali Eco-Park"
-              className="h-14 w-auto object-contain"
+              src="/treescan-rwanda-logo.png"
+              alt={t(language, 'siteName')}
+              className="h-14 w-auto max-w-[240px] object-contain brightness-0 invert"
             />
           </Link>
           <h1 className="font-display text-3xl font-bold leading-tight text-white xl:text-4xl">
@@ -36,7 +36,7 @@ export default function AuthLayout({ title, subtitle, footer, children }) {
             ))}
           </ul>
         </div>
-        <p className="relative p-8 text-xs text-white/50">© {new Date().getFullYear()} Kigali Eco-Park</p>
+        <p className="relative p-8 text-xs text-white/50">© {new Date().getFullYear()} {t(language, 'siteName')}</p>
       </div>
 
       {/* Form panel */}
@@ -44,9 +44,9 @@ export default function AuthLayout({ title, subtitle, footer, children }) {
         <div className="w-full max-w-md">
           <div className="mb-8 text-center lg:text-left">
             <img
-              src="/kigali-eco-park-brand.png"
-              alt="Kigali Eco-Park"
-              className="mx-auto h-14 w-auto object-contain lg:mx-0"
+              src="/treescan-rwanda-logo.png"
+              alt={t(language, 'siteName')}
+              className="mx-auto h-14 w-auto max-w-[240px] object-contain object-left lg:mx-0"
             />
             <h2 className="mt-3 font-display text-2xl font-bold text-primary-dark sm:text-3xl">{title}</h2>
             <p className="mt-2 text-gray-600">{subtitle}</p>

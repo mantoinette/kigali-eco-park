@@ -67,6 +67,14 @@ export default function Navbar() {
           <Link to="/search" className="rounded-lg p-2 text-gray-600 hover:bg-gray-100" aria-label={t(language, 'search')}>
             🔍
           </Link>
+          {!isAdmin && (
+            <Link
+              to="/admin/login"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-primary-dark"
+            >
+              {t(language, 'navStaffLogin')}
+            </Link>
+          )}
           {adminControls}
         </div>
 
@@ -101,6 +109,15 @@ export default function Navbar() {
             <div className="mt-3 border-t border-gray-100 pt-3">
               <LanguageSelector />
             </div>
+            {!isAdmin && (
+              <Link
+                to="/admin/login"
+                className="mt-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-700"
+                onClick={() => setOpen(false)}
+              >
+                {t(language, 'navStaffLogin')}
+              </Link>
+            )}
             {adminControls && (
               <div className="mt-3 flex flex-col gap-2" onClick={() => setOpen(false)}>
                 {adminControls}

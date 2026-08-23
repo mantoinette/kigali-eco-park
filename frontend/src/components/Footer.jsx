@@ -187,12 +187,6 @@ export default function Footer() {
             </p>
             <div className="flex flex-col items-center gap-1 sm:items-end">
               <p className="tracking-wide text-white/45">{t(language, 'footerGuided')}</p>
-              <Link
-                to="/admin/login"
-                className="text-white/45 transition hover:text-white/75"
-              >
-                {t(language, 'footerStaffLogin')}
-              </Link>
               <p className="font-medium text-white/60">{t(language, 'footerDevelopedBy')}</p>
             </div>
           </div>
