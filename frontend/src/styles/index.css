@@ -45,6 +45,10 @@
     @apply rounded-2xl bg-white p-6 shadow-card transition hover:-translate-y-1 hover:shadow-lg;
   }
 
+  .admin-sidebar {
+    @apply bg-gradient-to-b from-[#143d18] to-primary-dark;
+  }
+
   .auth-page {
     @apply flex min-h-[70vh] items-center justify-center bg-surface px-4 py-12;
   }

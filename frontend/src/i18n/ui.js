@@ -226,6 +226,9 @@ export const uiText = {
     adminSignIn: 'Sign in to dashboard',
     adminComingSoon: 'Full CRUD features are coming soon. Log in as admin@treescan.rw to access this area.',
     adminHubTitle: 'Admin tools',
+    adminWelcomeBack: 'Welcome back, {name}',
+    adminQuickActions: 'Quick actions',
+    adminTodayOverview: "Today's overview",
     adminEditTree: 'Edit tree',
     adminEditTreeDesc: 'Update tree profile and visitor content.',
     saveChanges: 'Save changes',
@@ -641,6 +644,9 @@ export const uiText = {
     adminSignIn: 'Injira mu dashboard',
     adminComingSoon: 'Ibiranga CRUD bizaza vuba. Injira nka admin@treescan.rw.',
     adminHubTitle: 'Ibikoresho by\'ubuyobozi',
+    adminWelcomeBack: 'Murakaza neza, {name}',
+    adminQuickActions: 'Ibikorwa byihuse',
+    adminTodayOverview: 'Incamake y\'uyu munsi',
     adminEditTree: 'Hindura igiti',
     adminEditTreeDesc: 'Hindura amakuru y\'igiti n\'ibisobanuro by\'abashyitsi.',
     saveChanges: 'Bika impinduka',
@@ -1055,6 +1061,9 @@ export const uiText = {
     adminSignIn: 'Se connecter au tableau de bord',
     adminComingSoon: 'Les fonctionnalités CRUD complètes arrivent bientôt. Connectez-vous avec admin@treescan.rw.',
     adminHubTitle: 'Outils admin',
+    adminWelcomeBack: 'Bon retour, {name}',
+    adminQuickActions: 'Actions rapides',
+    adminTodayOverview: 'Aperçu du jour',
     adminEditTree: 'Modifier l\'arbre',
     adminEditTreeDesc: 'Mettre à jour le profil et le contenu visiteur.',
     saveChanges: 'Enregistrer',
@@ -1242,6 +1251,12 @@ export const uiText = {
   },
 };
 
-export function t(lang, key) {
-  return uiText[lang]?.[key] ?? uiText.en[key] ?? key;
+export function t(lang, key, vars) {
+  let text = uiText[lang]?.[key] ?? uiText.en[key] ?? key;
+  if (vars) {
+    Object.entries(vars).forEach(([name, value]) => {
+      text = text.replaceAll(`{${name}}`, String(value));
+    });
+  }
+  return text;
 }
