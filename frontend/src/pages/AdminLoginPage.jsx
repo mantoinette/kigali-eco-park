@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
-const ADMIN_EMAIL = 'admin@ecopark.rw';
+const ADMIN_EMAIL = 'admin@treescan.rw';
 
 export default function AdminLoginPage() {
   const { language } = useLanguage();
