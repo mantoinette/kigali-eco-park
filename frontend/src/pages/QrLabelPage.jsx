@@ -9,7 +9,6 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
-import { RequireAdmin } from './AdminDashboard';
 
 const PLAQUE_COPY = {
   'syzygium-guineense': {
@@ -338,11 +337,7 @@ function ParkLogo() {
 }
 
 export default function QrLabelPage() {
-  return (
-    <RequireAdmin>
-      <QrLabelPageContent />
-    </RequireAdmin>
-  );
+  return <QrLabelPageContent />;
 }
 
 function QrLabelPageContent() {

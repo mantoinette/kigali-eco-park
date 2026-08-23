@@ -1,39 +1,43 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AuthLayout from '../components/AuthLayout';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
 const ADMIN_EMAIL = 'admin@ecopark.rw';
-const ADMIN_PASSWORD = 'admin123';
 
-export default function LoginPage() {
+export default function AdminLoginPage() {
   const { language } = useLanguage();
-  const { login } = useAuth();
+  const { loginAdmin, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [info, setInfo] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  const redirectTo = location.state?.from || '/admin/dashboard';
+
+  useEffect(() => {
+    if (!loading && isAdmin) {
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [loading, isAdmin, navigate]);
+
+  if (!loading && isAdmin) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setInfo('');
     setSubmitting(true);
     try {
-      const response = await login(email.trim(), password);
-      const admin = String(response?.role || '').toUpperCase() === 'ADMIN';
-      if (admin) {
-        navigate('/admin');
-        return;
-      }
-      setInfo(t(language, 'visitorLoginNoAdmin'));
-      navigate('/');
+      await loginAdmin(email.trim(), password);
+      navigate(redirectTo.startsWith('/admin') ? redirectTo : '/admin/dashboard', { replace: true });
     } catch (err) {
-      setError(err.message || t(language, 'authError'));
+      setError(err.message || t(language, 'adminLoginFailed'));
     } finally {
       setSubmitting(false);
     }
@@ -41,15 +45,12 @@ export default function LoginPage() {
 
   return (
     <AuthLayout
-      title={t(language, 'loginTitle')}
-      subtitle={t(language, 'loginSubtitle')}
+      title={t(language, 'adminLoginTitle')}
+      subtitle={t(language, 'adminLoginSubtitle')}
       footer={(
-        <>
-          {t(language, 'noAccount')}{' '}
-          <Link to="/register" className="font-semibold text-primary hover:underline">
-            {t(language, 'register')}
-          </Link>
-        </>
+        <Link to="/" className="font-semibold text-primary hover:underline">
+          {t(language, 'backToWebsite')}
+        </Link>
       )}
     >
       <form className="space-y-5" onSubmit={handleSubmit}>
@@ -58,28 +59,10 @@ export default function LoginPage() {
             {error}
           </div>
         )}
-        {info && (
-          <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950" role="status">
-            {info}
-          </div>
-        )}
 
-        <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-primary-dark">
-          <p className="font-semibold">{t(language, 'adminLoginHintTitle')}</p>
-          <p className="mt-1 text-xs leading-relaxed text-gray-700">{t(language, 'adminLoginHint')}</p>
-          <button
-            type="button"
-            className="mt-3 text-xs font-semibold text-primary underline hover:text-primary-dark"
-            onClick={() => {
-              setEmail(ADMIN_EMAIL);
-              setPassword(ADMIN_PASSWORD);
-              setError('');
-              setInfo('');
-            }}
-          >
-            {t(language, 'fillAdminCredentials')}
-          </button>
-        </div>
+        <p className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-xs leading-relaxed text-gray-700">
+          {t(language, 'adminLoginNotice')}
+        </p>
 
         <label className="block">
           <span className="text-sm font-medium text-gray-700">{t(language, 'email')}</span>
@@ -88,7 +71,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            autoComplete="email"
+            autoComplete="username"
             placeholder={ADMIN_EMAIL}
             className="mt-1.5 w-full rounded-xl border border-gray-300 px-4 py-3 text-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
@@ -112,7 +95,7 @@ export default function LoginPage() {
           className="btn btn-primary w-full !rounded-xl py-3.5"
           disabled={submitting}
         >
-          {submitting ? t(language, 'pleaseWait') : t(language, 'login')}
+          {submitting ? t(language, 'pleaseWait') : t(language, 'adminSignIn')}
         </button>
       </form>
     </AuthLayout>

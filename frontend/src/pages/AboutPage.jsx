@@ -103,9 +103,6 @@ export default function AboutPage() {
             <Link to="/trees" className="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-primary-dark shadow-lg transition hover:bg-white/95">
               {t(language, 'plantlist')}
             </Link>
-            <Link to="/register" className="rounded-xl border-2 border-white/80 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
-              {t(language, 'createAccount')}
-            </Link>
             <Link to="/contact" className="rounded-xl border-2 border-white/80 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
               {t(language, 'navContact')}
             </Link>

@@ -30,6 +30,12 @@ public class AuthController {
         return authService.login(request);
     }
 
+    /** Admin dashboard sign-in — only ADMIN role accounts succeed. */
+    @PostMapping("/admin/login")
+    public AuthResponse adminLogin(@Valid @RequestBody LoginRequest request) {
+        return authService.loginAdmin(request);
+    }
+
     @GetMapping("/me")
     public AuthResponse me(@RequestHeader(value = "Authorization", required = false) String authorization) {
         if (authorization == null || !authorization.startsWith("Bearer ")) {

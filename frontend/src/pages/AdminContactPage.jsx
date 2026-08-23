@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   deleteContactRequest,
   fetchContactRequests,
@@ -8,7 +8,6 @@ import {
 } from '../api/client';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useAuth } from '../context/AuthContext';
-import { RequireAdmin } from './AdminDashboard';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
@@ -39,6 +38,7 @@ function statusBadgeClass(status) {
 function AdminContactContent() {
   const { language } = useLanguage();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
   const [messages, setMessages] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,6 +66,15 @@ function AdminContactContent() {
       .catch((err) => setError(err.message || 'Failed to load messages'))
       .finally(() => setLoading(false));
   }, [user.token, statusFilter, typeFilter]);
+
+  useEffect(() => {
+    const status = searchParams.get('status');
+    const type = searchParams.get('type');
+    const id = searchParams.get('id');
+    if (status) setStatusFilter(status);
+    if (type) setTypeFilter(type);
+    if (id) setSelectedId(Number(id));
+  }, [searchParams]);
 
   useEffect(() => {
     load();
@@ -122,20 +131,13 @@ function AdminContactContent() {
   };
 
   return (
-    <div className="bg-surface py-10 sm:py-12">
-      <div className="section-container">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{t(language, 'admin')}</p>
-            <h1 className="mt-2 font-display text-3xl font-bold text-primary-dark">
-              {t(language, 'adminMessages')}
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm text-gray-600">{t(language, 'adminMessagesDesc')}</p>
-          </div>
-          <Link to="/admin" className="btn btn-secondary !rounded-xl">
-            {t(language, 'adminDashboard')}
-          </Link>
-        </div>
+    <div>
+      <div className="mb-8">
+        <h1 className="font-display text-3xl font-bold text-primary-dark">
+          {t(language, 'adminMessages')}
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm text-gray-600">{t(language, 'adminMessagesDesc')}</p>
+      </div>
 
         {stats && (
           <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -348,15 +350,8 @@ function AdminContactContent() {
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }
 
-export default function AdminContactPage() {
-  return (
-    <RequireAdmin>
-      <AdminContactContent />
-    </RequireAdmin>
-  );
-}
+export default AdminContactContent;

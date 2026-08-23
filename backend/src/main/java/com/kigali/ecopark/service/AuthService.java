@@ -57,6 +57,16 @@ public class AuthService {
         return toResponse(user);
     }
 
+    /** Admin-only login — rejects visitor accounts even with valid credentials. */
+    @Transactional(readOnly = true)
+    public AuthResponse loginAdmin(LoginRequest request) {
+        AuthResponse response = login(request);
+        if (!"ADMIN".equalsIgnoreCase(response.role())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Administrator access required");
+        }
+        return response;
+    }
+
     @Transactional(readOnly = true)
     public AuthResponse me(String token) {
         Long userId = parseUserId(token);

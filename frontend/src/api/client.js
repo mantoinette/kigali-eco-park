@@ -156,6 +156,14 @@ export function loginRequest(email, password) {
   });
 }
 
+/** Admin-only sign-in — rejects non-ADMIN accounts on the backend. */
+export function loginAdminRequest(email, password) {
+  return request('/auth/admin/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  });
+}
+
 export function fetchMe(token) {
   return request('/auth/me', {
     headers: {

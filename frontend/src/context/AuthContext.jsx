@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { fetchMe, loginRequest, registerRequest } from '../api/client';
+import { fetchMe, loginAdminRequest } from '../api/client';
 
 const AuthContext = createContext(null);
 const STORAGE_KEY = 'kigali-ecopark-auth';
@@ -35,6 +35,12 @@ export function AuthProvider({ children }) {
     fetchMe(user.token)
       .then((profile) => {
         if (cancelled) return;
+        const role = String(profile.role || '').toUpperCase();
+        if (role !== 'ADMIN') {
+          setUser(null);
+          localStorage.removeItem(STORAGE_KEY);
+          return;
+        }
         const next = { ...profile, token: profile.token || user.token };
         setUser(next);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
@@ -56,15 +62,8 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  const login = async (email, password) => {
-    const response = await loginRequest(email, password);
-    setUser(response);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(response));
-    return response;
-  };
-
-  const register = async (fullName, email, password) => {
-    const response = await registerRequest(fullName, email, password);
+  const loginAdmin = async (email, password) => {
+    const response = await loginAdminRequest(email, password);
     setUser(response);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(response));
     return response;
@@ -82,8 +81,7 @@ export function AuthProvider({ children }) {
     loading,
     isAuthenticated: !!user?.token,
     isAdmin,
-    login,
-    register,
+    loginAdmin,
     logout,
   }), [user, loading, isAdmin]);
 
