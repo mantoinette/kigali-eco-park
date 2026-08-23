@@ -15,6 +15,7 @@ public record TreeDetailDto(
         Double longitude,
         String audioUrl,
         String videoUrl,
+        boolean published,
         String languageCode,
         String commonName,
         String shortDescription,

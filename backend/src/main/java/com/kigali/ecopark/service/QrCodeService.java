@@ -38,7 +38,7 @@ public class QrCodeService {
      */
     @Transactional
     public QrCodeResponseDto generateQrCode(String slug) {
-        Tree tree = treeRepository.findBySlugAndPublishedTrue(slug)
+        Tree tree = treeRepository.findBySlugWithDetails(slug)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tree not found"));
 
         String token = ensureAccessToken(tree);

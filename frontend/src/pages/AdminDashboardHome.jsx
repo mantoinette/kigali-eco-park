@@ -6,6 +6,17 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { t } from '../i18n/ui';
 
+const HUB_CARDS = [
+  { key: 'adminDashboard', descKey: 'adminDashboardDesc', to: '/admin/dashboard', icon: '📊' },
+  { key: 'adminAddTree', descKey: 'adminAddTreeDesc', to: '/admin/trees/new', icon: '➕' },
+  { key: 'adminManageTrees', descKey: 'adminManageTreesDesc', to: '/admin/trees', icon: '🌳' },
+  { key: 'adminQrCodes', descKey: 'adminQrCodesDesc', to: '/admin/qr', icon: '📱' },
+  { key: 'adminLanguages', descKey: 'adminLanguagesDesc', to: '/admin/languages', icon: '🌐' },
+  { key: 'adminUsers', descKey: 'adminUsersDesc', to: '/admin/users', icon: '👥' },
+  { key: 'adminStats', descKey: 'adminStatsDesc', to: '/admin/stats', icon: '📈' },
+  { key: 'adminMessages', descKey: 'adminMessagesDesc', to: '/admin/requests', icon: '✉️' },
+];
+
 function formatDate(iso, language) {
   if (!iso) return '—';
   return new Date(iso).toLocaleString(language === 'rw' ? 'rw-RW' : language === 'fr' ? 'fr-FR' : 'en-GB', {
@@ -57,7 +68,28 @@ export default function AdminDashboardHome() {
     <div>
       <div className="mb-8">
         <h1 className="font-display text-3xl font-bold text-primary-dark">{t(language, 'adminDashboard')}</h1>
-        <p className="mt-2 text-sm text-gray-600">{t(language, 'adminDashboardOverview')}</p>
+        <p className="mt-2 text-sm text-gray-600">{t(language, 'adminIntro')}</p>
+      </div>
+
+      <div className="mb-10">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">{t(language, 'adminHubTitle')}</h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {HUB_CARDS.map((card) => (
+            <Link
+              key={card.to}
+              to={card.to}
+              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-primary/30 hover:shadow-md"
+            >
+              <span className="text-2xl" aria-hidden="true">{card.icon}</span>
+              <h3 className="mt-3 font-display text-lg font-bold text-primary-dark">{t(language, card.key)}</h3>
+              <p className="mt-1 text-sm text-gray-600">{t(language, card.descKey)}</p>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <h2 className="font-display text-xl font-bold text-primary-dark">{t(language, 'adminDashboardOverview')}</h2>
       </div>
 
       {error && (

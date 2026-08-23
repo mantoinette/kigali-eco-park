@@ -14,6 +14,31 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
 
     Optional<Tree> findBySlug(String slug);
 
+    boolean existsBySlug(String slug);
+
+    boolean existsByQrCodeId(String qrCodeId);
+
+    @Query("""
+            SELECT DISTINCT t FROM Tree t
+            LEFT JOIN FETCH t.translations
+            LEFT JOIN FETCH t.images
+            ORDER BY t.displayOrder ASC NULLS LAST, t.scientificName ASC
+            """)
+    List<Tree> findAllWithDetails();
+
+    @Query("""
+            SELECT t FROM Tree t
+            LEFT JOIN FETCH t.translations
+            LEFT JOIN FETCH t.images
+            WHERE t.id = :id
+            """)
+    Optional<Tree> findByIdWithDetails(@Param("id") Long id);
+
+    @Query("""
+            SELECT COALESCE(MAX(t.displayOrder), 0) FROM Tree t
+            """)
+    Integer findMaxDisplayOrder();
+
     Optional<Tree> findBySlugAndPublishedTrue(String slug);
 
     Optional<Tree> findByQrCodeIdAndPublishedTrue(String qrCodeId);

@@ -146,6 +146,11 @@ public class TreeService {
         return toDetail(tree, normalizeLanguage(languageCode));
     }
 
+    /** Admin: build detail DTO from a loaded tree (includes unpublished). */
+    public TreeDetailDto getTreeDetailForAdmin(Tree tree, String languageCode) {
+        return toDetail(tree, normalizeLanguage(languageCode));
+    }
+
     private TreeSummaryDto toSummary(Tree tree, String languageCode) {
         TreeTranslation translation = resolveTranslation(tree, languageCode);
         String primaryImage = tree.getImages().stream()
@@ -221,6 +226,7 @@ public class TreeService {
                 tree.getLongitude(),
                 tree.getAudioUrl(),
                 tree.getVideoUrl(),
+                tree.isPublished(),
                 translation.getLanguageCode(),
                 translation.getCommonName(),
                 translation.getShortDescription(),

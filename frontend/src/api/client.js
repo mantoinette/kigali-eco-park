@@ -211,3 +211,100 @@ export function deleteContactRequest(token, id) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+function adminHeaders(token) {
+  return { Authorization: `Bearer ${token}` };
+}
+
+export function fetchAdminTrees(token, lang = 'en') {
+  return request(`/admin/trees?lang=${encodeURIComponent(lang)}`, {
+    headers: adminHeaders(token),
+  });
+}
+
+export function fetchAdminTree(token, id, lang = 'en') {
+  return request(`/admin/trees/${encodeURIComponent(id)}?lang=${encodeURIComponent(lang)}`, {
+    headers: adminHeaders(token),
+  });
+}
+
+export function createAdminTree(token, payload) {
+  return request('/admin/trees', {
+    method: 'POST',
+    headers: adminHeaders(token),
+    body: JSON.stringify(payload),
+  });
+}
+
+export function updateAdminTree(token, id, payload) {
+  return request(`/admin/trees/${encodeURIComponent(id)}`, {
+    method: 'PUT',
+    headers: adminHeaders(token),
+    body: JSON.stringify(payload),
+  });
+}
+
+export function deleteAdminTree(token, id) {
+  return request(`/admin/trees/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: adminHeaders(token),
+  });
+}
+
+export function fetchAdminLanguages(token) {
+  return request('/admin/languages', {
+    headers: adminHeaders(token),
+  });
+}
+
+export function createAdminLanguage(token, payload) {
+  return request('/admin/languages', {
+    method: 'POST',
+    headers: adminHeaders(token),
+    body: JSON.stringify(payload),
+  });
+}
+
+export function updateAdminLanguage(token, code, payload) {
+  return request(`/admin/languages/${encodeURIComponent(code)}`, {
+    method: 'PATCH',
+    headers: adminHeaders(token),
+    body: JSON.stringify(payload),
+  });
+}
+
+export function deleteAdminLanguage(token, code) {
+  return request(`/admin/languages/${encodeURIComponent(code)}`, {
+    method: 'DELETE',
+    headers: adminHeaders(token),
+  });
+}
+
+export function fetchAdminUsers(token) {
+  return request('/admin/users', {
+    headers: adminHeaders(token),
+  });
+}
+
+export function createAdminUser(token, payload) {
+  return request('/admin/users', {
+    method: 'POST',
+    headers: adminHeaders(token),
+    body: JSON.stringify(payload),
+  });
+}
+
+export function updateAdminUser(token, id, payload) {
+  return request(`/admin/users/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    headers: adminHeaders(token),
+    body: JSON.stringify(payload),
+  });
+}
+
+export function deleteAdminUser(token, id) {
+  return request(`/admin/users/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: adminHeaders(token),
+  });
+}

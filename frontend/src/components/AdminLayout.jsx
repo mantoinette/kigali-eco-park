@@ -16,10 +16,12 @@ export default function AdminLayout() {
 
   const links = [
     { to: '/admin/dashboard', labelKey: 'adminDashboard', icon: '📊' },
-    { to: '/admin/requests', labelKey: 'adminMessages', icon: '✉️' },
     { to: '/admin/trees', labelKey: 'adminManageTrees', icon: '🌳' },
     { to: '/admin/qr', labelKey: 'adminQrCodes', icon: '📱' },
-    { to: '/admin/settings', labelKey: 'adminSettings', icon: '⚙️' },
+    { to: '/admin/requests', labelKey: 'adminMessages', icon: '✉️' },
+    { to: '/admin/languages', labelKey: 'adminLanguages', icon: '🌐' },
+    { to: '/admin/users', labelKey: 'adminUsers', icon: '👥' },
+    { to: '/admin/stats', labelKey: 'adminStats', icon: '📈' },
   ];
 
   return (
