@@ -16,6 +16,7 @@ import QrLabelPage from './pages/QrLabelPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminQrPage from './pages/AdminQrPage';
+import AdminContactPage from './pages/AdminContactPage';
 import { fetchTrees } from './api/client';
 import { useLanguage } from './context/LanguageContext';
 
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/qr" element={<AdminQrPage />} />
+        <Route path="/admin/messages" element={<AdminContactPage />} />
         <Route path="/admin/qr-label/:slug" element={<QrLabelPage />} />
         <Route path="/admin/*" element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />

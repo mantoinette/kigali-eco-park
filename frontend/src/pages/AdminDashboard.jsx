@@ -22,6 +22,7 @@ export function AdminHome() {
     { key: 'adminAddTree', to: '/admin/trees/new', icon: '➕' },
     { key: 'adminManageTrees', to: '/admin/trees', icon: '🌳' },
     { key: 'adminQrCodes', to: '/admin/qr', icon: '📱' },
+    { key: 'adminMessages', to: '/admin/messages', icon: '✉️' },
     { key: 'adminLanguages', to: '/admin/languages', icon: '🌍' },
     { key: 'adminUsers', to: '/admin/users', icon: '👥' },
     { key: 'adminStats', to: '/admin/stats', icon: '📈' },

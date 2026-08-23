@@ -163,3 +163,43 @@ export function fetchMe(token) {
     },
   });
 }
+
+/** Public: submit contact / QR request form. */
+export function submitContactRequest(payload) {
+  return request('/contact', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+/** Admin: list contact requests. */
+export function fetchContactRequests(token, { status, requestType } = {}) {
+  const params = new URLSearchParams();
+  if (status) params.set('status', status);
+  if (requestType) params.set('requestType', requestType);
+  const qs = params.toString();
+  return request(`/contact${qs ? `?${qs}` : ''}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export function fetchContactStats(token) {
+  return request('/contact/stats', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export function updateContactRequest(token, id, payload) {
+  return request(`/contact/${id}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function deleteContactRequest(token, id) {
+  return request(`/contact/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
