@@ -1,5 +1,5 @@
-import { downloadDataUri, downloadSvg, fileStem, printQrOnly } from '../utils/qrDownload';
-import { t } from '../i18n/ui';
+import { downloadDataUri, downloadSvg, fileStem, printQrOnly } from '../../utils/qrDownload';
+import { t } from '../../i18n/ui';
 
 export default function QrCodeActions({ qr, language }) {
   if (!qr?.qrCodeBase64) return null;
