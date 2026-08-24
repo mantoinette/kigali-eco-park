@@ -87,7 +87,7 @@ export default function AdminTreesPage() {
                       {t(language, 'viewTreeDetails')}
                     </Link>
                     <Link to={`/admin/qr-label/${tree.slug}`} className="text-xs font-semibold text-primary hover:underline">
-                      {t(language, 'openQrLabel')}
+                      {t(language, 'generateQrCode')}
                     </Link>
                     <button
                       type="button"

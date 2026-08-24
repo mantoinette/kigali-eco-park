@@ -5,5 +5,6 @@ public record QrCodeResponseDto(
         String slug,
         String scientificName,
         String url,
-        String qrCodeBase64
+        String qrCodeBase64,
+        String qrCodeSvg
 ) {}

@@ -40,7 +40,7 @@ export default function AdminQrPage() {
                 <th className="px-4 py-3">{t(language, 'directoryColumnId')}</th>
                 <th className="px-4 py-3">{t(language, 'directoryColumnName')}</th>
                 <th className="px-4 py-3">{t(language, 'directoryColumnScientific')}</th>
-                <th className="px-4 py-3">{t(language, 'printLabel')}</th>
+                <th className="px-4 py-3">{t(language, 'actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -54,9 +54,9 @@ export default function AdminQrPage() {
                   <td className="px-4 py-3">
                     <Link
                       to={`/admin/qr-label/${tree.slug}`}
-                      className="font-semibold text-primary hover:underline"
+                      className="inline-flex rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-dark"
                     >
-                      {t(language, 'openQrLabel')}
+                      {t(language, 'generateQrCode')}
                     </Link>
                   </td>
                 </tr>
