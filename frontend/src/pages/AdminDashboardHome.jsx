@@ -177,7 +177,7 @@ export default function AdminDashboardHome() {
                       <p className="font-semibold text-gray-900 group-hover:text-primary-dark">{t(language, action.key)}</p>
                       <p className="text-sm text-gray-500">{t(language, action.descKey)}</p>
                     </div>
-                    <IconChevronRight className="text-gray-300 transition group-hover:text-primary" />
+                    <IconChevronRight className="h-4 w-4 shrink-0 text-gray-300 transition group-hover:text-primary" />
                   </Link>
                 </li>
               );

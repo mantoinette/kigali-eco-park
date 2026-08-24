@@ -75,9 +75,14 @@ export function IconChart({ className = iconClass }) {
   );
 }
 
-export function IconChevronRight({ className = 'h-4 w-4' }) {
+export function IconChevronRight({ className = '' }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      className={`h-4 w-4 shrink-0 ${className}`.trim()}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
