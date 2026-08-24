@@ -300,7 +300,7 @@ function AdminContactContent() {
                       </label>
                       <div className="flex flex-wrap gap-2">
                         <Link
-                          to={linkedTreeSlug ? `/admin/qr-label/${linkedTreeSlug}` : '/admin/qr'}
+                          to={linkedTreeSlug ? `/admin/qr?slug=${encodeURIComponent(linkedTreeSlug)}` : '/admin/qr'}
                           className="btn btn-primary !rounded-xl !px-4 !py-2 text-xs"
                         >
                           {t(language, 'generateQrForRequest')}

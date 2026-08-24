@@ -17,14 +17,6 @@ export default function AdminRoutes() {
     <Routes>
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="login" element={<AdminLoginPage />} />
-      <Route
-        path="qr-label/:slug"
-        element={(
-          <RequireAdmin>
-            <QrLabelPage />
-          </RequireAdmin>
-        )}
-      />
 
       <Route
         element={(
@@ -41,6 +33,7 @@ export default function AdminRoutes() {
         <Route path="trees/new" element={<AdminTreeFormPage />} />
         <Route path="trees/:id/edit" element={<AdminTreeFormPage />} />
         <Route path="qr" element={<AdminQrPage />} />
+        <Route path="qr-label/:slug" element={<QrLabelPage />} />
         <Route path="languages" element={<AdminLanguagesPage />} />
         <Route path="users" element={<AdminUsersPage />} />
         <Route path="stats" element={<AdminStatsPage />} />
