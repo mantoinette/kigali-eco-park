@@ -44,7 +44,7 @@ function SocialLink({ href, label, children }) {
       target="_blank"
       rel="noreferrer"
       aria-label={label}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/85 transition hover:border-white/45 hover:bg-white/10 hover:text-white"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-200/25 text-amber-100/85 transition hover:border-amber-200/50 hover:bg-white/10 hover:text-white"
     >
       {children}
     </a>
@@ -69,8 +69,8 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="site-footer no-print mt-auto bg-[#143d18] text-white">
-      <div className="border-t border-white/10 bg-gradient-to-b from-[#1b5e20] to-[#143d18]">
+    <footer className="site-footer no-print mt-auto bg-[#241c14] text-[#f4efe6]">
+      <div className="border-t-4 border-[#c4a574]/40 bg-gradient-to-b from-[#3d3226] to-[#241c14]">
         <div className="section-container py-14 sm:py-16">
           <div className="grid gap-12 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
             <div className="max-w-sm">
@@ -81,16 +81,16 @@ export default function Footer() {
                   className="h-14 w-auto max-w-[240px] object-contain object-left brightness-0 invert drop-shadow-sm sm:h-16"
                 />
               </Link>
-              <p className="mt-5 text-sm leading-relaxed text-white/75">
+              <p className="mt-5 text-sm leading-relaxed text-amber-50/75">
                 {t(language, 'footerTagline')}
               </p>
-              <p className="mt-4 text-xs leading-relaxed text-white/55">
+              <p className="mt-4 text-xs leading-relaxed text-amber-50/50">
                 {t(language, 'footerMission')}
               </p>
             </div>
 
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200/90">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#d4c4a0]">
                 {t(language, 'footerExplore')}
               </h3>
               <ul className="mt-5 space-y-3 text-sm">
@@ -98,7 +98,7 @@ export default function Footer() {
                   <li key={item.to}>
                     <Link
                       to={item.to}
-                      className="text-white/75 transition hover:text-white"
+                      className="text-amber-50/75 transition hover:text-white"
                     >
                       {item.label}
                     </Link>
@@ -108,18 +108,18 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200/90">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#d4c4a0]">
                 {t(language, 'footerVisit')}
               </h3>
-              <ul className="mt-5 space-y-4 text-sm text-white/75">
+              <ul className="mt-5 space-y-4 text-sm text-amber-50/75">
                 <li className="flex gap-3">
-                  <span className="mt-0.5 text-emerald-200/80">
+                    <span className="mt-0.5 text-[#d4c4a0]">
                     <IconPin />
                   </span>
                   <span>{t(language, 'footerAddress')}</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="mt-0.5 text-emerald-200/80">
+                    <span className="mt-0.5 text-[#d4c4a0]">
                     <IconMail />
                   </span>
                   <a href="mailto:ateliernagaa@gmail.com" className="transition hover:text-white">
@@ -127,7 +127,7 @@ export default function Footer() {
                   </a>
                 </li>
                 <li className="flex gap-3">
-                  <span className="mt-0.5 text-emerald-200/80">
+                    <span className="mt-0.5 text-[#d4c4a0]">
                     <IconPhone />
                   </span>
                   <a href="tel:+250785553044" className="transition hover:text-white">
@@ -138,7 +138,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200/90">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#d4c4a0]">
                 {t(language, 'footerVisitor')}
               </h3>
               <ul className="mt-5 space-y-3 text-sm">
@@ -146,7 +146,7 @@ export default function Footer() {
                   <li key={item.to}>
                     <Link
                       to={item.to}
-                      className="text-white/75 transition hover:text-white"
+                      className="text-amber-50/75 transition hover:text-white"
                     >
                       {item.label}
                     </Link>
@@ -154,7 +154,7 @@ export default function Footer() {
                 ))}
               </ul>
 
-              <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200/90">
+              <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-[#d4c4a0]">
                 {t(language, 'footerFollow')}
               </p>
               <div className="mt-4 flex gap-3">
@@ -180,14 +180,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10">
-          <div className="section-container flex flex-col gap-3 py-5 text-center text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between sm:text-left">
+        <div className="border-t border-amber-100/10">
+          <div className="section-container flex flex-col gap-3 py-5 text-center text-xs text-amber-50/50 sm:flex-row sm:items-center sm:justify-between sm:text-left">
             <p>
               © {year} {t(language, 'siteName')}. {t(language, 'allRightsReserved')}
             </p>
             <div className="flex flex-col items-center gap-1 sm:items-end">
-              <p className="tracking-wide text-white/45">{t(language, 'footerGuided')}</p>
-              <p className="font-medium text-white/60">{t(language, 'footerDevelopedBy')}</p>
+              <p className="tracking-wide text-amber-50/40">{t(language, 'footerGuided')}</p>
+              <p className="font-medium text-amber-100/70">{t(language, 'footerDevelopedBy')}</p>
             </div>
           </div>
         </div>
