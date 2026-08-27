@@ -185,17 +185,12 @@ export default function TreeDetail({ tree, loading, error }) {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/90 via-primary-dark/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white sm:p-10">
-          <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
-            {t(language, 'indigenousTree')}
-          </span>
-          <div className="mt-3">
-            <TreeSpeciesHeading
-              scientificName={tree.scientificName}
-              commonName={commonName}
-              variant="hero"
-              inverted
-            />
-          </div>
+          <TreeSpeciesHeading
+            scientificName={tree.scientificName}
+            commonName={commonName}
+            variant="hero"
+            inverted
+          />
         </div>
       </div>
 
