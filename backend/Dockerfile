@@ -1,4 +1,5 @@
 # Build stage
+# Redeploy stamp: Umunege TREE-021 Kinyarwanda real audio (2026-08-27)
 FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY pom.xml .
