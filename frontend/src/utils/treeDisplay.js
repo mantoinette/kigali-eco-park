@@ -114,6 +114,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'Splinter bean',
     fr: 'Entada d\'Abyssinie',
   },
+  'bersama-abyssinica': {
+    rw: 'Umurera',
+    en: 'African bersama',
+    fr: 'Bersama d\'Abyssinie',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);
