@@ -85,8 +85,6 @@ public class DataSeeder {
                     seedBlighiaUnijugata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "TREE-021", () ->
                     seedCrotonMegalocarpus(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            seedSafely(tx, "TREE-022", () ->
-                    seedEntadaAbyssinica022(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "publish-park-trees", () -> keepOnlyPublishedParkTrees(treeRepository));
             seedSafely(tx, "qr-access-tokens", qrCodeService::ensureAccessTokensForAllPublished);
         };
@@ -960,44 +958,6 @@ public class DataSeeder {
         }
     }
 
-    void seedEntadaAbyssinica022(
-            TreeRepository treeRepository,
-            TreeImageAcquisitionService imageAcquisitionService,
-            String apiPublicBaseUrl
-    ) {
-        var existing = treeRepository.findBySlugWithDetails(EntadaAbyssinica022Data.SLUG)
-                .or(() -> treeRepository.findByQrCodeIdWithDetails(EntadaAbyssinica022Data.QR_CODE_ID));
-        if (existing.isEmpty()) {
-            Tree tree = new Tree();
-            EntadaAbyssinica022Data.applyTo(tree, apiPublicBaseUrl);
-            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
-                    EntadaAbyssinica022Data.SLUG,
-                    EntadaAbyssinica022Data.SCIENTIFIC_NAME,
-                    EntadaAbyssinica022Data.imageSources()
-            );
-            EntadaAbyssinica022Data.attachImages(tree, images);
-            treeRepository.save(tree);
-        } else {
-            Tree tree = existing.get();
-            EntadaAbyssinica022Data.refreshExisting(tree, apiPublicBaseUrl);
-            if (needsMediaUrlRefresh(tree, EntadaAbyssinica022Data.AUDIO_BASE_PATH)
-                    || needsImageRefresh(tree)
-                    || hasWrongSpeciesImages(tree, EntadaAbyssinica022Data.SLUG)) {
-                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
-                        EntadaAbyssinica022Data.SLUG,
-                        EntadaAbyssinica022Data.SCIENTIFIC_NAME,
-                        EntadaAbyssinica022Data.imageSources()
-                );
-                if (!images.isEmpty()) {
-                    tree.getImages().clear();
-                    treeRepository.saveAndFlush(tree);
-                    EntadaAbyssinica022Data.attachImages(tree, images);
-                }
-            }
-            treeRepository.save(tree);
-        }
-    }
-
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
@@ -1021,8 +981,7 @@ public class DataSeeder {
                         && !TremaOrientalisData.SLUG.equals(t.getSlug())
                         && !NewtoniaBuchananiiData.SLUG.equals(t.getSlug())
                         && !BlighiaUnijugataData.SLUG.equals(t.getSlug())
-                        && !CrotonMegalocarpusData.SLUG.equals(t.getSlug())
-                        && !EntadaAbyssinica022Data.SLUG.equals(t.getSlug()))
+                        && !CrotonMegalocarpusData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
@@ -1215,17 +1174,6 @@ public class DataSeeder {
                         || url.contains("ficus_thonningii") || url.contains("mulemba")
                         || url.contains("trema_orientalis") || url.contains("126400") || url.contains("newtonia")
                         || url.contains("blighia") || url.contains("137480");
-            }
-            if (EntadaAbyssinica022Data.SLUG.equals(slug)) {
-                return url.contains("syzygium") || url.contains("ficus_ovata") || url.contains("ficus-ovata")
-                        || url.contains("aeschynomene") || url.contains("albizia") || url.contains("bambusa")
-                        || url.contains("erythrina") || url.contains("olea") || url.contains("acacia_polyacantha")
-                        || url.contains("phragmites_mauritianus") || url.contains("maesa_lanceolata")
-                        || url.contains("elaeis") || url.contains("chrysophyllum") || url.contains("phoenix")
-                        || url.contains("143740") || url.contains("milllaur") || url.contains("wenge")
-                        || url.contains("ficus_thonningii") || url.contains("mulemba")
-                        || url.contains("trema_orientalis") || url.contains("126400") || url.contains("newtonia")
-                        || url.contains("blighia") || url.contains("137480") || url.contains("croton");
             }
             return false;
         });
