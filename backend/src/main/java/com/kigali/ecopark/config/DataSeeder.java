@@ -87,8 +87,6 @@ public class DataSeeder {
                     seedCrotonMegalocarpus(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "TREE-022", () ->
                     seedEntadaAbyssinica022(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
-            seedSafely(tx, "TREE-023", () ->
-                    seedBersamaAbyssinica(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "publish-park-trees", () -> keepOnlyPublishedParkTrees(treeRepository));
             seedSafely(tx, "qr-access-tokens", qrCodeService::ensureAccessTokensForAllPublished);
         };
@@ -962,44 +960,6 @@ public class DataSeeder {
         }
     }
 
-    void seedBersamaAbyssinica(
-            TreeRepository treeRepository,
-            TreeImageAcquisitionService imageAcquisitionService,
-            String apiPublicBaseUrl
-    ) {
-        var existing = treeRepository.findBySlugWithDetails(BersamaAbyssinicaData.SLUG)
-                .or(() -> treeRepository.findByQrCodeIdWithDetails(BersamaAbyssinicaData.QR_CODE_ID));
-        if (existing.isEmpty()) {
-            Tree tree = new Tree();
-            BersamaAbyssinicaData.applyTo(tree, apiPublicBaseUrl);
-            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
-                    BersamaAbyssinicaData.SLUG,
-                    BersamaAbyssinicaData.SCIENTIFIC_NAME,
-                    BersamaAbyssinicaData.imageSources()
-            );
-            BersamaAbyssinicaData.attachImages(tree, images);
-            treeRepository.save(tree);
-        } else {
-            Tree tree = existing.get();
-            BersamaAbyssinicaData.refreshExisting(tree, apiPublicBaseUrl);
-            if (needsMediaUrlRefresh(tree, BersamaAbyssinicaData.AUDIO_BASE_PATH)
-                    || needsImageRefresh(tree)
-                    || hasWrongSpeciesImages(tree, BersamaAbyssinicaData.SLUG)) {
-                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
-                        BersamaAbyssinicaData.SLUG,
-                        BersamaAbyssinicaData.SCIENTIFIC_NAME,
-                        BersamaAbyssinicaData.imageSources()
-                );
-                if (!images.isEmpty()) {
-                    tree.getImages().clear();
-                    treeRepository.saveAndFlush(tree);
-                    BersamaAbyssinicaData.attachImages(tree, images);
-                }
-            }
-            treeRepository.save(tree);
-        }
-    }
-
     void seedEntadaAbyssinica022(
             TreeRepository treeRepository,
             TreeImageAcquisitionService imageAcquisitionService,
@@ -1062,8 +1022,7 @@ public class DataSeeder {
                         && !NewtoniaBuchananiiData.SLUG.equals(t.getSlug())
                         && !BlighiaUnijugataData.SLUG.equals(t.getSlug())
                         && !CrotonMegalocarpusData.SLUG.equals(t.getSlug())
-                        && !EntadaAbyssinica022Data.SLUG.equals(t.getSlug())
-                        && !BersamaAbyssinicaData.SLUG.equals(t.getSlug()))
+                        && !EntadaAbyssinica022Data.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
