@@ -167,7 +167,7 @@ export default function AdminTreeFormPage() {
             <input
               value={form.qrCodeId}
               onChange={(e) => updateField('qrCodeId', e.target.value)}
-              placeholder="TREE-021"
+              placeholder="TREE-022"
               className="mt-1 w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm"
             />
           </label>

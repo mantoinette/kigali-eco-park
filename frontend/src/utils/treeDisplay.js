@@ -109,6 +109,11 @@ const LOCAL_COMMON_NAMES = {
     en: 'Croton tree',
     fr: 'Croton à gros fruits',
   },
+  'ficus-vallis-choudae': {
+    rw: 'Ikidoboli',
+    en: 'False cape fig',
+    fr: 'Figuier de Haroni',
+  },
 };
 
 const STALE_RW_NAMES = new Set(["Umubavu w'Igihugu", 'Umubavu w’Igihugu']);

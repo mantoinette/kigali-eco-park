@@ -85,6 +85,8 @@ public class DataSeeder {
                     seedBlighiaUnijugata(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "TREE-021", () ->
                     seedCrotonMegalocarpus(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
+            seedSafely(tx, "TREE-022", () ->
+                    seedFicusVallisChoudae(treeRepository, imageAcquisitionService, apiPublicBaseUrl));
             seedSafely(tx, "publish-park-trees", () -> keepOnlyPublishedParkTrees(treeRepository));
             seedSafely(tx, "qr-access-tokens", qrCodeService::ensureAccessTokensForAllPublished);
         };
@@ -958,6 +960,44 @@ public class DataSeeder {
         }
     }
 
+    void seedFicusVallisChoudae(
+            TreeRepository treeRepository,
+            TreeImageAcquisitionService imageAcquisitionService,
+            String apiPublicBaseUrl
+    ) {
+        var existing = treeRepository.findBySlugWithDetails(FicusVallisChoudaeData.SLUG)
+                .or(() -> treeRepository.findByQrCodeIdWithDetails(FicusVallisChoudaeData.QR_CODE_ID));
+        if (existing.isEmpty()) {
+            Tree tree = new Tree();
+            FicusVallisChoudaeData.applyTo(tree, apiPublicBaseUrl);
+            List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                    FicusVallisChoudaeData.SLUG,
+                    FicusVallisChoudaeData.SCIENTIFIC_NAME,
+                    FicusVallisChoudaeData.imageSources()
+            );
+            FicusVallisChoudaeData.attachImages(tree, images);
+            treeRepository.save(tree);
+        } else {
+            Tree tree = existing.get();
+            FicusVallisChoudaeData.refreshExisting(tree, apiPublicBaseUrl);
+            if (needsMediaUrlRefresh(tree, FicusVallisChoudaeData.AUDIO_BASE_PATH)
+                    || needsImageRefresh(tree)
+                    || hasWrongSpeciesImages(tree, FicusVallisChoudaeData.SLUG)) {
+                List<TreeImageAcquisitionService.AcquiredImage> images = imageAcquisitionService.acquireImages(
+                        FicusVallisChoudaeData.SLUG,
+                        FicusVallisChoudaeData.SCIENTIFIC_NAME,
+                        FicusVallisChoudaeData.imageSources()
+                );
+                if (!images.isEmpty()) {
+                    tree.getImages().clear();
+                    treeRepository.saveAndFlush(tree);
+                    FicusVallisChoudaeData.attachImages(tree, images);
+                }
+            }
+            treeRepository.save(tree);
+        }
+    }
+
     /** Keep published park guide trees; unpublish any other seeded leftovers. */
     private void keepOnlyPublishedParkTrees(TreeRepository treeRepository) {
         treeRepository.findAll().stream()
@@ -981,7 +1021,8 @@ public class DataSeeder {
                         && !TremaOrientalisData.SLUG.equals(t.getSlug())
                         && !NewtoniaBuchananiiData.SLUG.equals(t.getSlug())
                         && !BlighiaUnijugataData.SLUG.equals(t.getSlug())
-                        && !CrotonMegalocarpusData.SLUG.equals(t.getSlug()))
+                        && !CrotonMegalocarpusData.SLUG.equals(t.getSlug())
+                        && !FicusVallisChoudaeData.SLUG.equals(t.getSlug()))
                 .forEach(t -> {
                     t.setPublished(false);
                     treeRepository.save(t);
